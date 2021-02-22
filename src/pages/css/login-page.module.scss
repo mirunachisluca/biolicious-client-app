@@ -1,0 +1,21 @@
+.flexbox {
+  display: flex;
+  justify-content: center;
+}
+
+.formFlexbox {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 20%;
+}
+
+.alignRight {
+  text-align: right;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.linkButton {
+  font-size: 14px;
+}

@@ -1,0 +1,23 @@
+.shopBackground {
+  background-image: url(../../images/groceries.jpg);
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recipesBackground {
+  background-image: url(../../images/recipe.jpg);
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.textRectangle {
+  //   backgroundColor: "rgba(255, 255, 255, 0.80)",
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 5px;
+  width: 45%;
+}

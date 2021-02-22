@@ -1,0 +1,45 @@
+.flexbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flexboxColumn {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.infoDiv {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+}
+
+.userInfoDiv {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-right: 50px;
+  width: 60%;
+}
+
+.accountInfoDiv {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-left: 50px;
+  width: 60%;
+}
+
+.alignRight {
+  text-align: right;
+  width: 50%;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.linkButton {
+  font-size: 14px;
+}
