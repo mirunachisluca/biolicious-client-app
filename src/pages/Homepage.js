@@ -2,7 +2,7 @@ import React from "react";
 import { Jumbotron, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-import { MenuBar } from "../navbar/MenuBar";
+import { MenuBar } from "../components/navbar/MenuBar";
 
 import styles from "./css/home-page.module.scss";
 

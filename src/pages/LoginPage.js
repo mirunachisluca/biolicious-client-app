@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Form, Button } from "react-bootstrap";
-import { MenuBar } from "../navbar/MenuBar";
+import { MenuBar } from "../components/navbar/MenuBar";
 
 import { axiosInstance } from "../api/axios";
 import { UserContext } from "../context/context";

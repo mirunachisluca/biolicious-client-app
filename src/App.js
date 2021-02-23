@@ -13,6 +13,8 @@ import { SignupPage } from "./pages/SignupPage";
 
 import { axiosInstance } from "./api/axios";
 import { UserContext } from "./context/context";
+import { ProfilePage } from "./pages/ProfilePage";
+import { OrdersPage } from "./pages/OrdersPage";
 
 function App() {
   const [user, setUser] = React.useState(null);
@@ -62,14 +64,20 @@ function App() {
               <Route path="/signup">
                 <SignupPage />
               </Route>
-              <Route path="/shoppingCart">
-                <ShoppingCartPage />
-              </Route>
               <Route path="/shop">
                 <ShopPage />
               </Route>
               <Route path="/recipes">
                 <RecipesPage />
+              </Route>
+              <Route path="/shoppingCart">
+                <ShoppingCartPage />
+              </Route>
+              <Route path="/profile">
+                <ProfilePage />
+              </Route>
+              <Route path="/orders">
+                <OrdersPage />
               </Route>
             </Switch>
           </div>

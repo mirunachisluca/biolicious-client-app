@@ -4,7 +4,7 @@ import { axiosInstance } from "../api/axios";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 
-import { MenuBar } from "../navbar/MenuBar";
+import { MenuBar } from "../components/navbar/MenuBar";
 
 import styles from "./css/sign-up-page.module.scss";
 

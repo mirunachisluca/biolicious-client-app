@@ -1,5 +1,5 @@
 import React from "react";
-import { MenuBar } from "../navbar/MenuBar";
+import { MenuBar } from "../components/navbar/MenuBar";
 import { axiosInstance } from "../api/axios";
 
 function RecipesPage() {
