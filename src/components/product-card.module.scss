@@ -1,4 +1,19 @@
 .card {
   margin: 10px;
-  width: 22%;
+  position: inherit;
+  border: 0;
+}
+
+.addToCartButton {
+  border-radius: 50%;
+  float: right;
+}
+
+.cartIcon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.pointerCursor {
+  cursor: pointer;
 }

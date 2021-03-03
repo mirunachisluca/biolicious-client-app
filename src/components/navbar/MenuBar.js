@@ -9,7 +9,7 @@ import {
 } from "react-bootstrap";
 import { Cart3, Search, PersonCircle } from "react-bootstrap-icons";
 import { LinkContainer } from "react-router-bootstrap";
-import { Link, Route, useParams, useRouteMatch } from "react-router-dom";
+import { Route, useRouteMatch } from "react-router-dom";
 import { UserContext } from "../../context/context";
 import { ProductsList } from "../ProductsList";
 
@@ -53,9 +53,88 @@ function MenuBar({ navbarData }) {
       .replace(/\s/g, "-");
   };
 
+  // const routes = navbarData.map((category) => {
+  //   if (category.subcategories.length === 0) {
+  //     return (
+  //       <Route key={category.id} path={`${path}/${convertName(category.name)}`}>
+  //         {path === "/shop" && (
+  //           <ProductsList
+  //             categoryId={category.id}
+  //             subcategoryId={0}
+  //             name={category.name}
+  //           />
+  //         )}
+  //       </Route>
+  //     );
+  //   } else {
+  //     return category.subcategories.map((subcategory) => {
+  //       return (
+  //         <Route
+  //           key={subcategory.id}
+  //           path={`${path}/${convertName(category.name)}/${convertName(
+  //             subcategory.name
+  //           )}`}
+  //         >
+  //           {path === "/shop" && (
+  //             <ProductsList
+  //               categoryId={category.id}
+  //               subcategoryId={subcategory.id}
+  //               name={subcategory.name}
+  //             />
+  //           )}
+  //         </Route>
+  //       );
+  //     });
+  //   }
+  // });
+
+  const categoryRoutes = navbarData.map((category) => {
+    return (
+      <Route
+        key={category.id}
+        exact
+        path={`${path}/${convertName(category.name)}`}
+      >
+        {path === "/shop" && (
+          <ProductsList
+            categoryId={category.id}
+            subcategoryId={0}
+            name={category.name}
+          />
+        )}
+      </Route>
+    );
+  });
+
+  const subcategoryRoutes = [];
+  navbarData.forEach((category) => {
+    if (!(category.subcategories.length === 0)) {
+      category.subcategories.forEach((subcategory) => {
+        var route = (
+          <Route
+            key={subcategory.id}
+            exact
+            path={`${path}/${convertName(category.name)}/${convertName(
+              subcategory.name
+            )}`}
+          >
+            {path === "/shop" && (
+              <ProductsList
+                categoryId={category.id}
+                subcategoryId={subcategory.id}
+                name={subcategory.name}
+              />
+            )}
+          </Route>
+        );
+        subcategoryRoutes.push(route);
+      });
+    }
+  });
+
   return (
     <>
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="light" expand="lg" className={styles.fixedNavbar}>
         <LinkContainer to="/">
           <Navbar.Brand>Biolicious</Navbar.Brand>
         </LinkContainer>
@@ -69,29 +148,12 @@ function MenuBar({ navbarData }) {
                 return (
                   <LinkContainer
                     key={element.id}
-                    to={{
-                      pathname: `${url}/${element.name.toLowerCase()}`,
-                      state: {
-                        params: { categoryId: element.id, subcategoryId: 0 },
-                      },
-                    }}
+                    to={`${url}/${element.name.toLowerCase()}`}
                   >
                     <Nav.Link key={element.id} className={styles.fontSize15}>
                       {element.name}
                     </Nav.Link>
                   </LinkContainer>
-                  // <Link
-                  // key={element.id}
-                  // to={{
-                  //   pathname: `${url}/${element.name.toLowerCase()}`,
-                  //   state: {
-                  //     params: { categoryId: element.id, subcategoryId: 0 },
-                  //   },
-                  // }}
-                  //   className="nav-link"
-                  // >
-                  //   {element.name}
-                  // </Link>
                 );
               else
                 return (
@@ -103,25 +165,11 @@ function MenuBar({ navbarData }) {
                   >
                     {element.subcategories.map((subcategory) => {
                       return (
-                        // <LinkContainer
-                        //   key={subcategory.id}
-                        //   to={`${url}/${convertName(
-                        //     element.name
-                        //   )}/${convertName(subcategory.name)}`}
-                        // >
                         <LinkContainer
                           key={subcategory.id}
-                          to={{
-                            pathname: `${url}/${convertName(
-                              element.name
-                            )}/${convertName(subcategory.name)}`,
-                            state: {
-                              params: {
-                                categoryId: element.id,
-                                subcategoryId: subcategory.id,
-                              },
-                            },
-                          }}
+                          to={`${url}/${convertName(
+                            element.name
+                          )}/${convertName(subcategory.name)}`}
                         >
                           <NavDropdown.Item
                             key={subcategory.id}
@@ -130,24 +178,6 @@ function MenuBar({ navbarData }) {
                             {subcategory.name}
                           </NavDropdown.Item>
                         </LinkContainer>
-
-                        // <Link
-                        //   key={subcategory.id}
-                        // to={{
-                        //   pathname: `${url}/${convertName(
-                        //     element.name
-                        //   )}/${convertName(subcategory.name)}`,
-                        //   state: {
-                        //     params: {
-                        //       categoryId: element.id,
-                        //       subcategoryId: subcategory.id,
-                        //     },
-                        //   },
-                        // }}
-                        //   className="dropdown-item"
-                        // >
-                        //   {subcategory.name}
-                        // </Link>
                       );
                     })}
                   </NavDropdown>
@@ -227,10 +257,12 @@ function MenuBar({ navbarData }) {
           </LinkContainer>
         </Navbar.Collapse>
       </Navbar>
-
-      <Route path={`${path}/:name`}>
+      {/* <Route path={`${path}/:name`}>
         {path === "/shop" && <ProductsList />}
-      </Route>
+      </Route> */}
+      {categoryRoutes}
+      {subcategoryRoutes}
+      {/* {routes} */}
     </>
   );
 }

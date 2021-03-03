@@ -1,7 +1,6 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { axiosInstance } from "../api/axios";
-import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 
 import { MenuBar } from "../components/navbar/MenuBar";
@@ -9,7 +8,6 @@ import { MenuBar } from "../components/navbar/MenuBar";
 import styles from "./css/sign-up-page.module.scss";
 
 function SignupPage() {
-  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   const [firstName, setFirstName] = React.useState("");
@@ -61,14 +59,6 @@ function SignupPage() {
         console.log(response);
         if (response.status === 201) {
           history.push("/login");
-          enqueueSnackbar("Account succesfully created", {
-            variant: "succes",
-            anchorOrigin: {
-              vertical: "top",
-              horizontal: "center",
-            },
-            autoHideDuration: 3000,
-          });
         }
       })
       .catch((error) => {

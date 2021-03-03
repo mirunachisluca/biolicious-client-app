@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.scss";
 import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
-import { SnackbarProvider } from "notistack";
 import jwt_decode from "jwt-decode";
 
 import { Homepage } from "./pages/Homepage";
@@ -15,6 +14,7 @@ import { axiosInstance } from "./api/axios";
 import { UserContext } from "./context/context";
 import { ProfilePage } from "./pages/ProfilePage";
 import { OrdersPage } from "./pages/OrdersPage";
+import { NotFound } from "./pages/NotFound";
 
 function App() {
   const [user, setUser] = React.useState(null);
@@ -48,42 +48,43 @@ function App() {
   };
 
   return (
-    <SnackbarProvider>
-      <BrowserRouter>
-        <UserContext.Provider
-          value={{ user: user, login: login, logout: logout }}
-        >
-          <div className="App">
-            <Switch>
-              <Route exact path="/">
-                <Homepage />
-              </Route>
-              <Route path="/login">
-                <LoginPage />
-              </Route>
-              <Route path="/signup">
-                <SignupPage />
-              </Route>
-              <Route path="/shop">
-                <ShopPage />
-              </Route>
-              <Route path="/recipes">
-                <RecipesPage />
-              </Route>
-              <Route path="/shoppingCart">
-                <ShoppingCartPage />
-              </Route>
-              <Route path="/profile">
-                <ProfilePage />
-              </Route>
-              <Route path="/orders">
-                <OrdersPage />
-              </Route>
-            </Switch>
-          </div>
-        </UserContext.Provider>
-      </BrowserRouter>
-    </SnackbarProvider>
+    <BrowserRouter>
+      <UserContext.Provider
+        value={{ user: user, login: login, logout: logout }}
+      >
+        <div className="App">
+          <Switch>
+            <Route exact path="/">
+              <Homepage />
+            </Route>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <Route path="/signup">
+              <SignupPage />
+            </Route>
+            <Route path="/shop">
+              <ShopPage />
+            </Route>
+            <Route path="/recipes">
+              <RecipesPage />
+            </Route>
+            <Route path="/shoppingCart">
+              <ShoppingCartPage />
+            </Route>
+            <Route path="/profile">
+              <ProfilePage />
+            </Route>
+            <Route path="/orders">
+              <OrdersPage />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </div>
+      </UserContext.Provider>
+    </BrowserRouter>
   );
 }
 

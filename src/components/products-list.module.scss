@@ -3,9 +3,14 @@
   flex-direction: column;
 }
 
-.flexbox {
+.flexboxWithWrap {
   display: flex;
   flex-wrap: wrap;
+}
+
+.flexbox {
+  display: flex;
+  width: 100%;
 }
 
 .filtersDiv {
@@ -14,4 +19,16 @@
 
 .productsDiv {
   width: 73%;
+  justify-content: flex-end;
+}
+
+.productsList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  list-style-type: none;
+  padding: 0;
+}
+
+.sortButton {
+  margin-left: 10px;
 }
