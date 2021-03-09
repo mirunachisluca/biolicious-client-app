@@ -1,19 +1,18 @@
-import React, { useContext } from "react";
-import { Form, Button } from "react-bootstrap";
-import { MenuBar } from "../components/navbar/MenuBar";
+import React, { useContext } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 
-import { axiosInstance } from "../api/axios";
-import { UserContext } from "../context/context";
-
-import styles from "./css/login-page.module.scss";
-import { useHistory } from "react-router-dom";
+import { MenuBar } from '../components/navbar/MenuBar';
+import { axiosInstance } from '../api/axios';
+import { UserContext } from '../context/context';
+import styles from './css/login-page.module.scss';
 
 function LoginPage() {
   const { login } = useContext(UserContext);
   const history = useHistory();
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
   const emailInputHandler = (e) => {
     setEmail(e.target.value);
@@ -27,13 +26,13 @@ function LoginPage() {
     e.preventDefault();
 
     axiosInstance
-      .post("/accounts/login", {
-        email: email,
-        password: password,
+      .post('/accounts/login', {
+        email,
+        password
       })
       .then((response) => {
         login(response.data.token);
-        history.replace("/");
+        history.replace('/');
       })
       .catch((error) => {
         console.log(error);
@@ -75,7 +74,7 @@ function LoginPage() {
           </div>
 
           <Button variant="link" href="/signup" className={styles.linkButton}>
-            Don't have an account yet?
+            Don&apost have an account yet?
           </Button>
         </Form>
       </div>

@@ -1,8 +1,8 @@
-import React from "react";
-import { Button, Card } from "react-bootstrap";
-import { CartPlus } from "react-bootstrap-icons";
+import React from 'react';
+import { Button, Card } from 'react-bootstrap';
+import { CartPlus } from 'react-bootstrap-icons';
 
-import styles from "./product-card.module.scss";
+import styles from './product-card.module.scss';
 
 function ProductCard({ name, price }) {
   return (
@@ -13,7 +13,7 @@ function ProductCard({ name, price }) {
           src="../../product.jpg"
           className={styles.pointerCursor}
           onClick={() => {
-            alert("ok");
+            alert('ok');
           }}
         />
 
@@ -21,7 +21,7 @@ function ProductCard({ name, price }) {
           <Card.Title
             className={styles.pointerCursor}
             onClick={() => {
-              alert("ok");
+              alert('ok');
             }}
           >
             {name}
@@ -32,7 +32,7 @@ function ProductCard({ name, price }) {
             variant="dark"
             className={styles.addToCartButton}
             onClick={() => {
-              alert("CLICK");
+              alert('CLICK');
             }}
           >
             <CartPlus className={styles.cartIcon} />

@@ -1,18 +1,18 @@
-import React from "react";
-import { MenuBar } from "../components/navbar/MenuBar";
+import React from 'react';
+import { MenuBar } from '../components/navbar/MenuBar';
 
-import { axiosInstance } from "../api/axios";
+import { axiosInstance } from '../api/axios';
 
 function ShopPage() {
   const [categories, setCategories] = React.useState({
     isLoaded: false,
-    data: null,
+    data: null
   });
 
   React.useEffect(() => {
     setCategories({ isLoaded: false });
     axiosInstance
-      .get("/productCategories")
+      .get('/productCategories')
       .then((response) => {
         if (response.status === 200) {
           setCategories({ isLoaded: true, data: response.data });

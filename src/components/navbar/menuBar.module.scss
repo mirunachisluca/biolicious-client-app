@@ -19,6 +19,12 @@
   color: black;
   font-size: 26px;
   text-decoration: none;
+  border: 0;
+  background: transparent;
+}
+
+.icon:hover {
+  color: #0056b3;
 }
 
 .fixedNavbar {

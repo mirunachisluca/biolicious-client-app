@@ -1,9 +1,10 @@
-import styles from "./pagination.module.scss";
+import React from 'react';
+import styles from './pagination.module.scss';
 
-function Pagination({ pageSize, totalProducts, pageNumberHandler, active }) {
+function Pagination({ pageSize, totalProducts, pageNumberHandler }) {
   const pageNumbers = [];
 
-  for (let i = 1; i <= Math.ceil(totalProducts / pageSize); i++) {
+  for (let i = 1; i <= Math.ceil(totalProducts / pageSize); i += 1) {
     pageNumbers.push(i);
   }
 
@@ -14,12 +15,13 @@ function Pagination({ pageSize, totalProducts, pageNumberHandler, active }) {
           <ul className={`pagination ${styles.paginationList}`}>
             {pageNumbers.map((number) => (
               <li key={number} className={`page-item ${styles.pointerIcon}`}>
-                <a
+                <button
+                  type="button"
                   onClick={() => pageNumberHandler(number)}
                   className="page-link"
                 >
                   {number}
-                </a>
+                </button>
               </li>
             ))}
           </ul>

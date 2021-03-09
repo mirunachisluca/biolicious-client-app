@@ -1,119 +1,282 @@
-import React from "react";
-import { DropdownButton, Dropdown } from "react-bootstrap";
-import { useHistory, useLocation } from "react-router-dom";
+import React from 'react';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { Pagination } from "./Pagination";
-import { ProductCard } from "./ProductCard";
-import { axiosInstance } from "../api/axios";
-import styles from "./products-list.module.scss";
-import { BrandFilter } from "./filters/BrandFilter";
+import { Pagination } from './Pagination';
+import { ProductCard } from './ProductCard';
+import { axiosInstance } from '../api/axios';
+import styles from './products-list.module.scss';
+import { BrandFilter } from './filters/BrandFilter';
+import { convertName } from '../helpers/convertToUrl';
+import { parseQueryString } from '../helpers/parseQueryString';
+import { getUrlSerachParams } from '../helpers/getUrlSearchParams';
 
-const sorting = {
-  priceAsc: "Price: ascending",
-  priceDesc: "Price: descending",
-  alphabetical: "Sort by A-Z",
+const sorting = Object.freeze({
+  priceAsc: 'Price: ascending',
+  priceDesc: 'Price: descending',
+  alphabetical: 'Sort by A-Z'
+});
+
+const apiURL = '/products';
+
+const initialState = {
+  apiParams: {
+    brandId: 0,
+    sort: '',
+    pageIndex: 1,
+    pageSize: 4
+  },
+  urlParams: {
+    search: '',
+    brand: '',
+    sort: ''
+  },
+  dropdownValue: 'Sort by A-Z',
+  products: {
+    count: 0,
+    results: [],
+    status: 'IDLE'
+  },
+  brands: {
+    results: [],
+    status: 'IDLE'
+  }
 };
 
-const apiURL = "/products";
-//TOdo: useReducer : https://www.youtube.com/watch?v=o-nCM1857AQ&ab_channel=HarryWolff
+function getBrandsMap(brands) {
+  return brands.reduce(
+    (acc, cur) => ({ ...acc, [convertName(cur.name)]: cur.id }),
+    {}
+  );
+}
+
+function productsListReducer(state, action) {
+  switch (action.type) {
+    case 'FETCHED-PRODUCTS':
+      return {
+        ...state,
+        products: {
+          results: action.payload.data,
+          status: 'FETCHED',
+          count: action.payload.count
+        }
+      };
+    case 'FETCH-BRANDS':
+      return {
+        ...state,
+        brands: {
+          results: action.payload,
+          status: 'FETCHED'
+        }
+      };
+    case 'CHANGE-PAGE-INDEX':
+      return {
+        ...state,
+        apiParams: {
+          brandId: state.apiParams.brandId,
+          sort: state.apiParams.sort,
+          pageIndex: action.payload,
+          pageSize: state.apiParams.pageSize
+        }
+      };
+    case 'SORT-BY':
+      return {
+        ...state,
+        apiParams: {
+          brandId: state.apiParams.brandId,
+          sort: action.payload,
+          pageIndex: state.apiParams.pageIndex,
+          pageSize: state.apiParams.pageSize
+        },
+        urlParams: {
+          search: state.urlParams.search,
+          brand: state.urlParams.brand,
+          sort: action.payload
+        }
+      };
+    case 'FILTER-BY-BRAND':
+      return {
+        ...state,
+        apiParams: {
+          brandId: action.payload.brandId,
+          sort: state.apiParams.sort,
+          pageIndex: 1,
+          pageSize: state.apiParams.pageSize
+        },
+        urlParams: {
+          search: state.urlParams.search,
+          brand: action.payload.brandName,
+          sort: state.urlParams.sort
+        }
+      };
+    case 'SET-DROPDOWN':
+      return {
+        ...state,
+        dropdownValue: action.payload
+      };
+    case 'RESET-URL':
+      return {
+        ...state,
+        apiParams: {
+          brandId: 0,
+          sort: '',
+          pageIndex: state.apiParams.pageIndex,
+          pageSize: 4
+        },
+        urlParams: {
+          search: '',
+          brand: '',
+          sort: ''
+        },
+        dropdownValue: 'Sort by A-Z'
+      };
+    default:
+      return state;
+  }
+}
 
 function ProductsList({ categoryId, subcategoryId, name }) {
-  const [products, setProducts] = React.useState({
-    isLoaded: false,
-    data: null,
+  const [state, dispatch] = React.useReducer(productsListReducer, {
+    ...initialState,
+    categoryId,
+    subcategoryId
   });
 
-  const [pageIndex, setPageIndex] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(0);
-  const [totalProducts, setTotalProducts] = React.useState(0);
-
-  const [dropdownValue, setDropdownValue] = React.useState("Sort by A-Z");
-
   const history = useHistory();
-
-  const queryParams = useLocation().search;
-
-  const [apiParams, setApiParams] = React.useState(
-    function setInitialApiParams() {
-      if (subcategoryId === 0) {
-        return { categoryId, pageSize: 4, pageIndex: 1, sort: "" };
-      }
-      return {
-        categoryId,
-        subcategoryId,
-        pageSize: 4,
-        pageIndex: 1,
-        sort: "",
-      };
-    }
-  );
+  const queryString = useLocation().search;
+  const mappedBrands = React.useMemo(() => getBrandsMap(state.brands.results), [
+    state.brands.results
+  ]);
 
   React.useEffect(
-    function fetchInitialResults() {
-      console.log(apiParams);
-
+    function fetchProducts() {
       axiosInstance
-        .get(apiURL, { params: apiParams })
+        .get(apiURL, {
+          params: {
+            categoryId,
+            subcategoryId,
+            sort: state.apiParams.sort,
+            brandId: state.apiParams.brandId,
+            pageIndex: state.apiParams.pageIndex,
+            pageSize: state.apiParams.pageSize
+          }
+        })
         .then((response) => {
           if (response.status === 200) {
-            setProducts({ isLoaded: true, data: response.data });
-            setPageSize(response.data.pageSize);
-            setTotalProducts(response.data.count);
+            dispatch({ type: 'FETCHED-PRODUCTS', payload: response.data });
           }
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    [apiParams]
+    [
+      state.apiParams.sort,
+      state.apiParams.brandId,
+      categoryId,
+      subcategoryId,
+      state.apiParams.pageIndex,
+      state.apiParams.pageSize
+    ]
+  );
+
+  React.useEffect(
+    function fetchBrands() {
+      axiosInstance
+        .get('/productbrands/category', {
+          params: {
+            categoryId,
+            subcategoryId
+          }
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            dispatch({ type: 'FETCH-BRANDS', payload: response.data });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    [categoryId, subcategoryId]
   );
 
   React.useEffect(
     function queryParamsHandler() {
-      const newApiParams = { ...apiParams };
+      const queryParams = parseQueryString(queryString);
 
-      switch (queryParams) {
-        case "?sort=priceAsc":
-          newApiParams.sort = "priceAsc";
-          setDropdownValue(sorting["priceAsc"]);
-          break;
-        case "?sort=priceDesc":
-          newApiParams.sort = "priceDesc";
-          setDropdownValue(sorting["priceDesc"]);
-          break;
-        case "":
-          newApiParams.sort = "";
-          break;
+      if (queryString === '') {
+        dispatch({ type: 'RESET-URL' });
+      } else {
+        if (queryParams.sort) {
+          dispatch({ type: 'SORT-BY', payload: queryParams.sort });
+          dispatch({
+            type: 'SET-DROPDOWN',
+            payload:
+              queryParams.sort === ''
+                ? sorting.alphabetical
+                : sorting[queryParams.sort]
+          });
+        }
+
+        if (queryParams.brand) {
+          dispatch({
+            type: 'FILTER-BY-BRAND',
+            payload: {
+              brandId: mappedBrands[queryParams.brand],
+              brandName: queryParams.brand
+            }
+          });
+        }
       }
-
-      setApiParams(newApiParams);
     },
-    [queryParams]
+    [queryString, mappedBrands]
   );
 
   const pageNumberHandler = (pageNumber) => {
-    const newApiParams = { ...apiParams };
-    newApiParams.pageIndex = pageNumber;
+    dispatch({ type: 'CHANGE-PAGE-INDEX', payload: pageNumber });
+  };
 
-    setApiParams(newApiParams);
-    setPageIndex(pageNumber);
+  const brandHandler = (brandId, brandName) => {
+    const newUrlParams = { ...state.urlParams };
+
+    newUrlParams.brand = convertName(brandName);
+
+    dispatch({
+      type: 'FILTER-BY-BRAND',
+      payload: { brandId, brandName: convertName(brandName) }
+    });
+
+    const urlSearchParams = getUrlSerachParams(newUrlParams);
+
+    history.replace({ search: urlSearchParams.toString() });
   };
 
   const dropdownValueHandler = (text) => {
-    const urlParams = new URLSearchParams();
+    const newUrlParams = { ...state.urlParams };
 
     switch (text) {
-      case sorting["priceAsc"]:
-        urlParams.append("sort", "priceAsc");
+      case sorting.priceAsc:
+        dispatch({ type: 'SORT-BY', payload: 'priceAsc' });
+        newUrlParams.sort = 'priceAsc';
         break;
-      case sorting["priceDesc"]:
-        urlParams.append("sort", "priceDesc");
+      case sorting.priceDesc:
+        dispatch({ type: 'SORT-BY', payload: 'priceDesc' });
+        newUrlParams.sort = 'priceDesc';
+        break;
+      case sorting.alphabetical:
+        dispatch({ type: 'SORT-BY', payload: '' });
+        newUrlParams.sort = '';
+        break;
+      default:
         break;
     }
 
-    history.replace({ search: urlParams.toString() });
+    const urlSearchParams = getUrlSerachParams(newUrlParams);
 
-    setDropdownValue(text);
+    history.replace({ search: urlSearchParams.toString() });
+
+    dispatch({ type: 'SET-DROPDOWN', payload: text });
   };
 
   return (
@@ -127,13 +290,18 @@ function ProductsList({ categoryId, subcategoryId, name }) {
       <div className={styles.flexboxWithWrap}>
         <div className={styles.filtersDiv}>
           <h3>filter by:</h3>
-          <BrandFilter />
+          {state.brands.status === 'FETCHED' && (
+            <BrandFilter
+              brands={state.brands.results}
+              brandHandler={brandHandler}
+            />
+          )}
         </div>
 
         <div className={`${styles.flexboxWithWrap} ${styles.productsDiv}`}>
           <div className={`${styles.flexbox}`}>
             <DropdownButton
-              title={dropdownValue}
+              title={state.dropdownValue}
               variant="outline-secondary"
               size="sm"
               className={styles.sortButton}
@@ -141,51 +309,46 @@ function ProductsList({ categoryId, subcategoryId, name }) {
               <Dropdown.Item
                 onClick={(e) => dropdownValueHandler(e.target.textContent)}
               >
-                {sorting["alphabetical"]}
+                {sorting.alphabetical}
               </Dropdown.Item>
 
               <Dropdown.Item
                 onClick={(e) => dropdownValueHandler(e.target.textContent)}
               >
-                {sorting["priceAsc"]}
+                {sorting.priceAsc}
               </Dropdown.Item>
 
               <Dropdown.Item
                 onClick={(e) => dropdownValueHandler(e.target.textContent)}
               >
-                {sorting["priceDesc"]}
+                {sorting.priceDesc}
               </Dropdown.Item>
             </DropdownButton>
 
             <Pagination
-              pageSize={pageSize}
-              totalProducts={totalProducts}
+              pageSize={state.apiParams.pageSize}
+              totalProducts={state.products.count}
               pageNumberHandler={pageNumberHandler}
-              active={pageIndex}
             />
           </div>
 
-          <ul className={styles.productsList}>
-            {products.isLoaded &&
-              !!products.data &&
-              products.data.data.map((product) => {
-                return (
-                  <li key={product.id}>
-                    <ProductCard
-                      key={product.id}
-                      name={product.name}
-                      price={product.price}
-                    />
-                  </li>
-                );
-              })}
-          </ul>
+          <ol className={styles.productsList}>
+            {state.products.status === 'FETCHED' &&
+              state.products.results.map((product) => (
+                <li key={product.id}>
+                  <ProductCard
+                    key={product.id}
+                    name={product.name}
+                    price={product.price}
+                  />
+                </li>
+              ))}
+          </ol>
 
           <Pagination
-            pageSize={pageSize}
-            totalProducts={totalProducts}
+            pageSize={state.apiParams.pageSize}
+            totalProducts={state.products.count}
             pageNumberHandler={pageNumberHandler}
-            active={pageIndex}
           />
         </div>
       </div>
