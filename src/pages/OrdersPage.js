@@ -1,4 +1,6 @@
-import { MenuBar } from "../components/navbar/MenuBar";
+import React from 'react';
+
+import { MenuBar } from '../components/navbar/MenuBar';
 
 function OrdersPage() {
   return (

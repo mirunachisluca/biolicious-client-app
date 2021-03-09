@@ -1,22 +1,22 @@
-import React from "react";
-import { MenuBar } from "../components/navbar/MenuBar";
-import { axiosInstance } from "../api/axios";
+import React from 'react';
+import { MenuBar } from '../components/navbar/MenuBar';
+import { axiosInstance } from '../api/axios';
 
 function RecipesPage() {
   const [diets, setDiets] = React.useState({
     isLoaded: false,
-    data: null,
+    data: null
   });
 
   const [categories, setCategories] = React.useState({
     isLoaded: false,
-    data: null,
+    data: null
   });
 
   React.useEffect(() => {
     setDiets({ isLoaded: false });
     axiosInstance
-      .get("/diets")
+      .get('/diets')
       .then((response) => {
         if (response.status === 200) {
           setDiets({ isLoaded: true, data: response.data });
@@ -30,7 +30,7 @@ function RecipesPage() {
   React.useEffect(() => {
     setCategories({ isLoaded: false });
     axiosInstance
-      .get("/recipeCategories")
+      .get('/recipeCategories')
       .then((response) => {
         if (response.status === 200) {
           setCategories({ isLoaded: true, data: response.data });
@@ -42,15 +42,15 @@ function RecipesPage() {
   }, []);
 
   const dietsObject = {
-    id: "diets-menu-Id",
-    name: "Diets",
-    subcategories: diets.data,
+    id: 'diets-menu-Id',
+    name: 'Diets',
+    subcategories: diets.data
   };
 
   const categoriesObject = {
-    id: "categories-menu-Id",
-    name: "Categories",
-    subcategories: categories.data,
+    id: 'categories-menu-Id',
+    name: 'Categories',
+    subcategories: categories.data
   };
 
   const data = [dietsObject, categoriesObject];

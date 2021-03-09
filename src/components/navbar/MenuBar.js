@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  Form,
-  FormControl,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Dropdown
-} from 'react-bootstrap';
-import { Cart3, Search, PersonCircle } from 'react-bootstrap-icons';
+import { Nav, Navbar, NavDropdown, Dropdown } from 'react-bootstrap';
+import { Cart3, PersonCircle } from 'react-bootstrap-icons';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Route, useRouteMatch } from 'react-router-dom';
 
 import { UserContext } from '../../context/context';
-import { convertName } from '../../helpers/convertToUrl';
+import { convertToUrl } from '../../helpers/convertToUrl';
 import { ProductsList } from '../ProductsList';
 import styles from './menuBar.module.scss';
 
@@ -35,7 +28,6 @@ const CustomToggle = React.forwardRef(({ onClick }, ref) => (
 ));
 
 function MenuBar({ navbarData }) {
-  const useSearchBar = navbarData.length;
   const [show, setShow] = React.useState(false);
 
   const { url, path } = useRouteMatch();
@@ -51,7 +43,7 @@ function MenuBar({ navbarData }) {
     <Route
       key={category.id}
       exact
-      path={`${path}/${convertName(category.name)}`}
+      path={`${path}/${convertToUrl(category.name)}`}
     >
       {path === '/shop' && (
         <ProductsList
@@ -71,7 +63,7 @@ function MenuBar({ navbarData }) {
           <Route
             key={subcategory.id}
             exact
-            path={`${path}/${convertName(category.name)}/${convertName(
+            path={`${path}/${convertToUrl(category.name)}/${convertToUrl(
               subcategory.name
             )}`}
           >
@@ -123,7 +115,7 @@ function MenuBar({ navbarData }) {
                   {element.subcategories.map((subcategory) => (
                     <LinkContainer
                       key={subcategory.id}
-                      to={`${url}/${convertName(element.name)}/${convertName(
+                      to={`${url}/${convertToUrl(element.name)}/${convertToUrl(
                         subcategory.name
                       )}`}
                     >
@@ -139,17 +131,6 @@ function MenuBar({ navbarData }) {
               );
             })}
           </Nav>
-
-          {!!useSearchBar && (
-            <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className="mr-sm-2 font-weight-light"
-              />
-              <Search />
-            </Form>
-          )}
 
           <UserContext.Consumer>
             {({ user, logout }) => (

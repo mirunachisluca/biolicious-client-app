@@ -1,21 +1,21 @@
-import React from "react";
-import { Form, Button } from "react-bootstrap";
-import { axiosInstance } from "../api/axios";
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { axiosInstance } from '../api/axios';
+import { useHistory } from 'react-router-dom';
 
-import { MenuBar } from "../components/navbar/MenuBar";
+import { MenuBar } from '../components/navbar/MenuBar';
 
-import styles from "./css/sign-up-page.module.scss";
+import styles from './css/sign-up-page.module.scss';
 
 function SignupPage() {
   const history = useHistory();
 
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [username, setUsername] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPasswod] = React.useState("");
-  const [repeatPassword, setRepeatPassword] = React.useState("");
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [username, setUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPasswod] = React.useState('');
+  const [repeatPassword, setRepeatPassword] = React.useState('');
 
   // const classes = useStyles();
 
@@ -47,18 +47,18 @@ function SignupPage() {
     e.preventDefault();
 
     axiosInstance
-      .post("/accounts/register", {
-        firstName: firstName,
-        lastName: lastName,
-        username: username,
-        email: email,
-        password: password,
-        confirmedPassword: repeatPassword,
+      .post('/accounts/register', {
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+        confirmedPassword: repeatPassword
       })
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
-          history.push("/login");
+          history.push('/login');
         }
       })
       .catch((error) => {

@@ -1,10 +1,10 @@
-import React from "react";
-import { Jumbotron, Button } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import React from 'react';
+import { Jumbotron, Button } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
-import { MenuBar } from "../components/navbar/MenuBar";
+import { MenuBar } from '../components/navbar/MenuBar';
 
-import styles from "./css/home-page.module.scss";
+import styles from './css/home-page.module.scss';
 
 function Homepage() {
   return (

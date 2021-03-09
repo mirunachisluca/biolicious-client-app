@@ -1,5 +1,6 @@
 import React from 'react';
-import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Form, FormControl } from 'react-bootstrap';
+import { Search } from 'react-bootstrap-icons';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { Pagination } from './Pagination';
@@ -7,7 +8,7 @@ import { ProductCard } from './ProductCard';
 import { axiosInstance } from '../api/axios';
 import styles from './products-list.module.scss';
 import { BrandFilter } from './filters/BrandFilter';
-import { convertName } from '../helpers/convertToUrl';
+import { convertToUrl, convertFromUrl } from '../helpers/convertToUrl';
 import { parseQueryString } from '../helpers/parseQueryString';
 import { getUrlSerachParams } from '../helpers/getUrlSearchParams';
 
@@ -23,6 +24,7 @@ const initialState = {
   apiParams: {
     brandId: 0,
     sort: '',
+    search: '',
     pageIndex: 1,
     pageSize: 4
   },
@@ -40,12 +42,13 @@ const initialState = {
   brands: {
     results: [],
     status: 'IDLE'
-  }
+  },
+  searchString: ''
 };
 
 function getBrandsMap(brands) {
   return brands.reduce(
-    (acc, cur) => ({ ...acc, [convertName(cur.name)]: cur.id }),
+    (acc, cur) => ({ ...acc, [convertToUrl(cur.name)]: cur.id }),
     {}
   );
 }
@@ -114,6 +117,30 @@ function productsListReducer(state, action) {
         ...state,
         dropdownValue: action.payload
       };
+    case 'SEARCH-INPUT-CHANGE':
+      return {
+        ...state,
+        searchString: action.payload
+        // apiParams: {
+        //   brandId: state.apiParams.brandId,
+        //   sort: state.apiParams.sort,
+        //   search: action.payload,
+        //   pageIndex: state.apiParams.pageIndex,
+        //   pageSize: state.apiParams.pageSize
+        // }
+      };
+    case 'SEARCH':
+      return {
+        ...state,
+        apiParams: {
+          brandId: state.apiParams.brandId,
+          sort: state.apiParams.sort,
+          search: action.payload,
+          pageIndex: state.apiParams.pageIndex,
+          pageSize: state.apiParams.pageSize
+        },
+        searchString: action.payload
+      };
     case 'RESET-URL':
       return {
         ...state,
@@ -128,7 +155,8 @@ function productsListReducer(state, action) {
           brand: '',
           sort: ''
         },
-        dropdownValue: 'Sort by A-Z'
+        dropdownValue: 'Sort by A-Z',
+        searchString: ''
       };
     default:
       return state;
@@ -155,8 +183,9 @@ function ProductsList({ categoryId, subcategoryId, name }) {
           params: {
             categoryId,
             subcategoryId,
-            sort: state.apiParams.sort,
             brandId: state.apiParams.brandId,
+            sort: state.apiParams.sort,
+            search: state.apiParams.search,
             pageIndex: state.apiParams.pageIndex,
             pageSize: state.apiParams.pageSize
           }
@@ -171,10 +200,11 @@ function ProductsList({ categoryId, subcategoryId, name }) {
         });
     },
     [
-      state.apiParams.sort,
-      state.apiParams.brandId,
       categoryId,
       subcategoryId,
+      state.apiParams.brandId,
+      state.apiParams.sort,
+      state.apiParams.search,
       state.apiParams.pageIndex,
       state.apiParams.pageSize
     ]
@@ -228,6 +258,13 @@ function ProductsList({ categoryId, subcategoryId, name }) {
             }
           });
         }
+
+        if (queryParams.search) {
+          dispatch({
+            type: 'SEARCH',
+            payload: convertFromUrl(queryParams.search)
+          });
+        }
       }
     },
     [queryString, mappedBrands]
@@ -240,12 +277,26 @@ function ProductsList({ categoryId, subcategoryId, name }) {
   const brandHandler = (brandId, brandName) => {
     const newUrlParams = { ...state.urlParams };
 
-    newUrlParams.brand = convertName(brandName);
+    newUrlParams.brand = convertToUrl(brandName);
 
     dispatch({
       type: 'FILTER-BY-BRAND',
-      payload: { brandId, brandName: convertName(brandName) }
+      payload: { brandId, brandName: convertToUrl(brandName) }
     });
+
+    const urlSearchParams = getUrlSerachParams(newUrlParams);
+
+    history.replace({ search: urlSearchParams.toString() });
+  };
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+
+    dispatch({ type: 'SEARCH', payload: state.searchString });
+
+    const newUrlParams = { ...state.urlParams };
+
+    newUrlParams.search = convertToUrl(state.searchString);
 
     const urlSearchParams = getUrlSerachParams(newUrlParams);
 
@@ -290,6 +341,29 @@ function ProductsList({ categoryId, subcategoryId, name }) {
       <div className={styles.flexboxWithWrap}>
         <div className={styles.filtersDiv}>
           <h3>filter by:</h3>
+
+          <Form inline className={styles.justifyCenter}>
+            <FormControl
+              type="text"
+              placeholder="Search"
+              className={`${styles.input} mr-sm-2 font-weight-light `}
+              value={state.searchString}
+              onChange={(e) => {
+                dispatch({
+                  type: 'SEARCH-INPUT-CHANGE',
+                  payload: e.target.value
+                });
+              }}
+            />
+            <button
+              type="submit"
+              className={styles.searchButton}
+              onClick={searchHandler}
+            >
+              <Search />
+            </button>
+          </Form>
+
           {state.brands.status === 'FETCHED' && (
             <BrandFilter
               brands={state.brands.results}

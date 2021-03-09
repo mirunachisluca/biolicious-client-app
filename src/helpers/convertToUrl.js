@@ -1,4 +1,6 @@
-const convertName = (name) =>
+const convertToUrl = (name) =>
   name.toLowerCase().replace('&', '').replace(/\s\s/g, '-').replace(/\s/g, '-');
 
-export { convertName };
+const convertFromUrl = (name) => name.replace('-', ' ');
+
+export { convertToUrl, convertFromUrl };

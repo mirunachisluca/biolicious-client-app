@@ -1,6 +1,6 @@
-import { Button } from "react-bootstrap";
-import React from "react";
-import { MenuBar } from "../components/navbar/MenuBar";
+import { Button } from 'react-bootstrap';
+import React from 'react';
+import { MenuBar } from '../components/navbar/MenuBar';
 
 function ShoppingCartPage() {
   return (
