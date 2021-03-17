@@ -6,7 +6,6 @@ ul {
 .filterCard {
   margin: 7%;
   text-align: left;
-  position: inherit;
 }
 
 .filterItem {
@@ -16,4 +15,14 @@ ul {
   margin-bottom: 2%;
   padding: 2%;
   width: 90%;
+  background-color: transparent;
+}
+
+.selected {
+  font-weight: 500;
+}
+
+.clearIcon {
+  cursor: pointer;
+  float: right;
 }

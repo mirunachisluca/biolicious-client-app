@@ -65,6 +65,7 @@ function RecipesPage() {
             <MenuBar navbarData={data} />
             <h1> RECIPES</h1>
           </>
+          // eslint-disable-next-line indent
         )}
     </>
   );

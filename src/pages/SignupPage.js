@@ -1,10 +1,9 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { axiosInstance } from '../api/axios';
 import { useHistory } from 'react-router-dom';
 
+import { axiosInstance } from '../api/axios';
 import { MenuBar } from '../components/navbar/MenuBar';
-
 import styles from './css/sign-up-page.module.scss';
 
 function SignupPage() {

@@ -1,0 +1,28 @@
+.flexbox {
+  display: flex;
+}
+
+.productDiv {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 5%;
+}
+
+.pictureDiv {
+  width: 50%;
+}
+
+.productDetailsDiv {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.quantityInput {
+  width: 15%;
+  margin-right: 5%;
+}
+
+.inputsDiv {
+  justify-content: center;
+}

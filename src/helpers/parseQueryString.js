@@ -7,6 +7,7 @@ const parseQueryString = (string) =>
       return { key: kvp[0], value: kvp[1] };
     })
     .reduce((query, kvp) => {
+      // eslint-disable-next-line no-param-reassign
       query[kvp.key] = kvp.value;
       return query;
     }, {});

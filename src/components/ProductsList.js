@@ -26,7 +26,7 @@ const initialState = {
     sort: '',
     search: '',
     pageIndex: 1,
-    pageSize: 4
+    pageSize: 10
   },
   urlParams: {
     search: '',
@@ -88,6 +88,7 @@ function productsListReducer(state, action) {
         apiParams: {
           brandId: state.apiParams.brandId,
           sort: action.payload,
+          search: state.apiParams.search,
           pageIndex: state.apiParams.pageIndex,
           pageSize: state.apiParams.pageSize
         },
@@ -103,6 +104,7 @@ function productsListReducer(state, action) {
         apiParams: {
           brandId: action.payload.brandId,
           sort: state.apiParams.sort,
+          search: state.apiParams.search,
           pageIndex: 1,
           pageSize: state.apiParams.pageSize
         },
@@ -139,6 +141,11 @@ function productsListReducer(state, action) {
           pageIndex: state.apiParams.pageIndex,
           pageSize: state.apiParams.pageSize
         },
+        urlParams: {
+          search: action.payload,
+          brand: state.urlParams.brand,
+          sort: state.urlParams.sort
+        },
         searchString: action.payload
       };
     case 'RESET-URL':
@@ -148,7 +155,7 @@ function productsListReducer(state, action) {
           brandId: 0,
           sort: '',
           pageIndex: state.apiParams.pageIndex,
-          pageSize: 4
+          pageSize: 10
         },
         urlParams: {
           search: '',
@@ -157,6 +164,22 @@ function productsListReducer(state, action) {
         },
         dropdownValue: 'Sort by A-Z',
         searchString: ''
+      };
+    case 'DELETE-BRAND':
+      return {
+        ...state,
+        apiParams: {
+          brandId: 0,
+          sort: state.apiParams.sort,
+          search: state.apiParams.search,
+          pageIndex: state.apiParams.pageIndex,
+          pageSize: state.apiParams.pageSize
+        },
+        urlParams: {
+          search: state.urlParams.search,
+          brand: '',
+          sort: state.urlParams.sort
+        }
       };
     default:
       return state;
@@ -172,6 +195,8 @@ function ProductsList({ categoryId, subcategoryId, name }) {
 
   const history = useHistory();
   const queryString = useLocation().search;
+  // const { path } = useRouteMatch();
+
   const mappedBrands = React.useMemo(() => getBrandsMap(state.brands.results), [
     state.brands.results
   ]);
@@ -340,36 +365,40 @@ function ProductsList({ categoryId, subcategoryId, name }) {
 
       <div className={styles.flexboxWithWrap}>
         <div className={styles.filtersDiv}>
-          <h3>filter by:</h3>
+          <div className={styles.fixed}>
+            <h3>filter by:</h3>
 
-          <Form inline className={styles.justifyCenter}>
-            <FormControl
-              type="text"
-              placeholder="Search"
-              className={`${styles.input} mr-sm-2 font-weight-light `}
-              value={state.searchString}
-              onChange={(e) => {
-                dispatch({
-                  type: 'SEARCH-INPUT-CHANGE',
-                  payload: e.target.value
-                });
-              }}
-            />
-            <button
-              type="submit"
-              className={styles.searchButton}
-              onClick={searchHandler}
-            >
-              <Search />
-            </button>
-          </Form>
+            <Form inline className={styles.justifyCenter}>
+              <FormControl
+                type="text"
+                placeholder="Search"
+                className={`${styles.input} mr-sm-2 font-weight-light shadow`}
+                value={state.searchString}
+                onChange={(e) => {
+                  dispatch({
+                    type: 'SEARCH-INPUT-CHANGE',
+                    payload: e.target.value
+                  });
+                }}
+              />
+              <button
+                type="submit"
+                className={`${styles.searchButton}`}
+                onClick={searchHandler}
+              >
+                <Search />
+              </button>
+            </Form>
 
-          {state.brands.status === 'FETCHED' && (
-            <BrandFilter
-              brands={state.brands.results}
-              brandHandler={brandHandler}
-            />
-          )}
+            {state.brands.status === 'FETCHED' && (
+              <BrandFilter
+                brands={state.brands.results}
+                brandHandler={brandHandler}
+                activeButton={state.apiParams.brandId}
+                dispatch={dispatch}
+              />
+            )}
+          </div>
         </div>
 
         <div className={`${styles.flexboxWithWrap} ${styles.productsDiv}`}>
@@ -403,6 +432,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
               pageSize={state.apiParams.pageSize}
               totalProducts={state.products.count}
               pageNumberHandler={pageNumberHandler}
+              pageIndex={state.apiParams.pageIndex}
             />
           </div>
 
@@ -412,8 +442,11 @@ function ProductsList({ categoryId, subcategoryId, name }) {
                 <li key={product.id}>
                   <ProductCard
                     key={product.id}
+                    id={product.id}
                     name={product.name}
                     price={product.price}
+                    urlName={product.urlName}
+                    subcategory={product.productSubcategory}
                   />
                 </li>
               ))}
@@ -423,6 +456,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
             pageSize={state.apiParams.pageSize}
             totalProducts={state.products.count}
             pageNumberHandler={pageNumberHandler}
+            pageIndex={state.apiParams.pageIndex}
           />
         </div>
       </div>

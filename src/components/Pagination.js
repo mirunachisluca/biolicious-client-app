@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './pagination.module.scss';
 
-function Pagination({ pageSize, totalProducts, pageNumberHandler }) {
+function Pagination({ pageSize, totalProducts, pageNumberHandler, pageIndex }) {
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalProducts / pageSize); i += 1) {
@@ -18,7 +18,9 @@ function Pagination({ pageSize, totalProducts, pageNumberHandler }) {
                 <button
                   type="button"
                   onClick={() => pageNumberHandler(number)}
-                  className="page-link"
+                  className={`${styles.paginationButton} ${
+                    number === pageIndex ? styles.active : ''
+                  }`}
                 >
                   {number}
                 </button>

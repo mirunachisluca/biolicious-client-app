@@ -6,6 +6,7 @@ import { Route, useRouteMatch } from 'react-router-dom';
 
 import { UserContext } from '../../context/context';
 import { convertToUrl } from '../../helpers/convertToUrl';
+import { ProductPage } from '../ProductPage';
 import { ProductsList } from '../ProductsList';
 import styles from './menuBar.module.scss';
 
@@ -39,21 +40,40 @@ function MenuBar({ navbarData }) {
     setShow(false);
   };
 
-  const categoryRoutes = navbarData.map((category) => (
-    <Route
-      key={category.id}
-      exact
-      path={`${path}/${convertToUrl(category.name)}`}
-    >
-      {path === '/shop' && (
-        <ProductsList
-          categoryId={category.id}
-          subcategoryId={0}
-          name={category.name}
-        />
-      )}
-    </Route>
-  ));
+  const categoryRoutes = [];
+  navbarData.forEach((category) => {
+    const route = (
+      <Route
+        exact
+        key={category.id}
+        path={`${path}/${convertToUrl(category.name)}`}
+      >
+        {path === '/shop' && (
+          <ProductsList
+            key={`list-${category.id}`}
+            categoryId={category.id}
+            subcategoryId={0}
+            name={category.name}
+          />
+        )}
+      </Route>
+    );
+
+    categoryRoutes.push(route);
+    if (category.subcategories.length === 0) {
+      const parameterRoute = (
+        <Route
+          exact
+          key={`category-route-${category.id}`}
+          path={`${path}/${convertToUrl(category.name)}/:name`}
+        >
+          <ProductPage key={`product-${category.id}`} />
+        </Route>
+      );
+
+      categoryRoutes.push(parameterRoute);
+    }
+  });
 
   const subcategoryRoutes = [];
   navbarData.forEach((category) => {
@@ -61,8 +81,8 @@ function MenuBar({ navbarData }) {
       category.subcategories.forEach((subcategory) => {
         const route = (
           <Route
-            key={subcategory.id}
             exact
+            key={subcategory.id}
             path={`${path}/${convertToUrl(category.name)}/${convertToUrl(
               subcategory.name
             )}`}
@@ -76,7 +96,21 @@ function MenuBar({ navbarData }) {
             )}
           </Route>
         );
+
+        const parameterRoute = (
+          <Route
+            exact
+            key={`subcategory-route-${subcategory.id}`}
+            path={`${path}/${convertToUrl(category.name)}/${convertToUrl(
+              subcategory.name
+            )}/:name`}
+          >
+            <ProductPage />
+          </Route>
+        );
+
         subcategoryRoutes.push(route);
+        subcategoryRoutes.push(parameterRoute);
       });
     }
   });
