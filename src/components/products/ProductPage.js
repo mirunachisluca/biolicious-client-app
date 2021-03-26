@@ -2,9 +2,9 @@ import React from 'react';
 import { Figure, Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
-import { axiosInstance } from '../api/axios';
-import { getStock } from '../helpers/getStock';
-import styles from './product-page.module.scss';
+import { axiosInstance } from '../../api/axios';
+import { getStock } from '../../helpers/getStock';
+import styles from './ProductPage.module.scss';
 
 function ProductPage() {
   const { name } = useParams();

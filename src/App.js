@@ -9,12 +9,19 @@ import { ShopPage } from './pages/ShopPage';
 import { ShoppingCartPage } from './pages/ShoppingCartPage';
 import { SignupPage } from './pages/SignupPage';
 // import { UserContext } from "./context/context";
-import { UserProvider } from './context/context';
+import { UserProvider } from './context/UserContext';
 import { ProfilePage } from './pages/ProfilePage';
 import { OrdersPage } from './pages/OrdersPage';
 import { NotFound } from './pages/NotFound';
+import { ShoppingCartContext } from './context/ShoppingCartContext';
 
 function App() {
+  const { loadShoppingCart } = React.useContext(ShoppingCartContext);
+
+  React.useEffect(() => {
+    loadShoppingCart();
+  }, [loadShoppingCart]);
+
   return (
     <BrowserRouter>
       <UserProvider>

@@ -3,6 +3,7 @@ import { Jumbotron, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import { MenuBar } from '../components/navbar/MenuBar';
+// import { ShoppingCartContext } from '../context/ShoppingCartContext';
 
 import styles from './css/home-page.module.scss';
 
@@ -10,6 +11,10 @@ function Homepage() {
   return (
     <>
       <MenuBar navbarData={[]} />
+
+      {/* <ShoppingCartContext.Consumer>
+        {({ loadShoppingCart }) => loadShoppingCart()}
+      </ShoppingCartContext.Consumer> */}
 
       <div>
         <Jumbotron className={styles.shopBackground}>

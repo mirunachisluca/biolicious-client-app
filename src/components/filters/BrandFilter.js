@@ -2,20 +2,16 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { X } from 'react-bootstrap-icons';
 
-import styles from './filters.module.scss';
+import styles from './Filters.module.scss';
 
-function BrandFilter({ brands, brandHandler, activeButton, dispatch }) {
-  function deleteBrand() {
-    dispatch({ type: 'DELETE-BRAND' });
-  }
-
+function BrandFilter({ brands, brandHandler, activeButton, handler }) {
   return (
     <>
       <Card className={`${styles.filterCard} shadow`}>
         <Card.Body>
           <Card.Title>
             brands
-            <X className={`${styles.clearIcon}`} onClick={deleteBrand} />
+            <X className={`${styles.clearIcon}`} onClick={() => handler()} />
           </Card.Title>
           <ul>
             {brands.map((brand) => (

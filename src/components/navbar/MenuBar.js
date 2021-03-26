@@ -4,11 +4,11 @@ import { Cart3, PersonCircle } from 'react-bootstrap-icons';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Route, useRouteMatch } from 'react-router-dom';
 
-import { UserContext } from '../../context/context';
+import { UserContext } from '../../context/UserContext';
 import { convertToUrl } from '../../helpers/convertToUrl';
-import { ProductPage } from '../ProductPage';
-import { ProductsList } from '../ProductsList';
-import styles from './menuBar.module.scss';
+import { ProductPage } from '../products/ProductPage';
+import { ProductsList } from '../products/ProductsList';
+import styles from './MenuBar.module.scss';
 
 // 404 pt /:name cand nu e category
 

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { MenuBar } from '../components/navbar/MenuBar';
 import { axiosInstance } from '../api/axios';
-import { UserContext } from '../context/context';
+import { UserContext } from '../context/UserContext';
 import styles from './css/login-page.module.scss';
 
 function LoginPage() {

@@ -4,10 +4,13 @@ import { CartPlus } from 'react-bootstrap-icons';
 import { useRouteMatch } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import styles from './product-card.module.scss';
+import styles from './ProductCard.module.scss';
+import { ShoppingCartContext } from '../../context/ShoppingCartContext';
 
 function ProductCard({ id, name, price, urlName, subcategory }) {
   const { path } = useRouteMatch();
+  const { addItemToCart } = React.useContext(ShoppingCartContext);
+
   let url = path;
 
   if (subcategory != null && !path.includes(subcategory.toLowerCase())) {
@@ -27,25 +30,24 @@ function ProductCard({ id, name, price, urlName, subcategory }) {
 
         <Card.Body>
           <LinkContainer key={id} to={`${url}/${urlName}`}>
-            <Card.Title
-              className={styles.pointerCursor}
-              onClick={() => {
-                // alert('ok');
-                // <LinkContainer to="/shop/:name">
-                //   <ProductPage />
-                // </LinkContainer>;
-              }}
-            >
-              {name}
-            </Card.Title>
+            <Card.Title className={styles.pointerCursor}>{name}</Card.Title>
           </LinkContainer>
 
           <Card.Text>{price}</Card.Text>
+
           <Button
             variant="dark"
             className={styles.addToCartButton}
             onClick={() => {
-              // alert('CLICK');
+              addItemToCart({
+                id,
+                name,
+                price,
+                quantity: 1,
+                pictureUrl: '',
+                brand: '',
+                category: ''
+              });
             }}
           >
             <CartPlus className={styles.cartIcon} />

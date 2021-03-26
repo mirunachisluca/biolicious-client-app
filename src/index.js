@@ -5,10 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ShoppingCartProvider } from './context/ShoppingCartContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ShoppingCartProvider>
+      <App />
+    </ShoppingCartProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

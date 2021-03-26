@@ -1,16 +1,17 @@
 import React from 'react';
 import { DropdownButton, Dropdown, Form, FormControl } from 'react-bootstrap';
-import { Search } from 'react-bootstrap-icons';
+import { Search, X } from 'react-bootstrap-icons';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { Pagination } from './Pagination';
+import { Pagination } from '../Pagination';
 import { ProductCard } from './ProductCard';
-import { axiosInstance } from '../api/axios';
-import styles from './products-list.module.scss';
-import { BrandFilter } from './filters/BrandFilter';
-import { convertToUrl, convertFromUrl } from '../helpers/convertToUrl';
-import { parseQueryString } from '../helpers/parseQueryString';
-import { getUrlSerachParams } from '../helpers/getUrlSearchParams';
+import { axiosInstance } from '../../api/axios';
+import { BrandFilter } from '../filters/BrandFilter';
+import { convertToUrl, convertFromUrl } from '../../helpers/convertToUrl';
+import { parseQueryString } from '../../helpers/parseQueryString';
+import { getUrlSerachParams } from '../../helpers/getUrlSearchParams';
+import { initialState, productsListReducer } from './ProductsListReducer';
+import styles from './ProductsList.module.scss';
 
 const sorting = Object.freeze({
   priceAsc: 'Price: ascending',
@@ -20,170 +21,11 @@ const sorting = Object.freeze({
 
 const apiURL = '/products';
 
-const initialState = {
-  apiParams: {
-    brandId: 0,
-    sort: '',
-    search: '',
-    pageIndex: 1,
-    pageSize: 10
-  },
-  urlParams: {
-    search: '',
-    brand: '',
-    sort: ''
-  },
-  dropdownValue: 'Sort by A-Z',
-  products: {
-    count: 0,
-    results: [],
-    status: 'IDLE'
-  },
-  brands: {
-    results: [],
-    status: 'IDLE'
-  },
-  searchString: ''
-};
-
 function getBrandsMap(brands) {
   return brands.reduce(
     (acc, cur) => ({ ...acc, [convertToUrl(cur.name)]: cur.id }),
     {}
   );
-}
-
-function productsListReducer(state, action) {
-  switch (action.type) {
-    case 'FETCHED-PRODUCTS':
-      return {
-        ...state,
-        products: {
-          results: action.payload.data,
-          status: 'FETCHED',
-          count: action.payload.count
-        }
-      };
-    case 'FETCH-BRANDS':
-      return {
-        ...state,
-        brands: {
-          results: action.payload,
-          status: 'FETCHED'
-        }
-      };
-    case 'CHANGE-PAGE-INDEX':
-      return {
-        ...state,
-        apiParams: {
-          brandId: state.apiParams.brandId,
-          sort: state.apiParams.sort,
-          pageIndex: action.payload,
-          pageSize: state.apiParams.pageSize
-        }
-      };
-    case 'SORT-BY':
-      return {
-        ...state,
-        apiParams: {
-          brandId: state.apiParams.brandId,
-          sort: action.payload,
-          search: state.apiParams.search,
-          pageIndex: state.apiParams.pageIndex,
-          pageSize: state.apiParams.pageSize
-        },
-        urlParams: {
-          search: state.urlParams.search,
-          brand: state.urlParams.brand,
-          sort: action.payload
-        }
-      };
-    case 'FILTER-BY-BRAND':
-      return {
-        ...state,
-        apiParams: {
-          brandId: action.payload.brandId,
-          sort: state.apiParams.sort,
-          search: state.apiParams.search,
-          pageIndex: 1,
-          pageSize: state.apiParams.pageSize
-        },
-        urlParams: {
-          search: state.urlParams.search,
-          brand: action.payload.brandName,
-          sort: state.urlParams.sort
-        }
-      };
-    case 'SET-DROPDOWN':
-      return {
-        ...state,
-        dropdownValue: action.payload
-      };
-    case 'SEARCH-INPUT-CHANGE':
-      return {
-        ...state,
-        searchString: action.payload
-        // apiParams: {
-        //   brandId: state.apiParams.brandId,
-        //   sort: state.apiParams.sort,
-        //   search: action.payload,
-        //   pageIndex: state.apiParams.pageIndex,
-        //   pageSize: state.apiParams.pageSize
-        // }
-      };
-    case 'SEARCH':
-      return {
-        ...state,
-        apiParams: {
-          brandId: state.apiParams.brandId,
-          sort: state.apiParams.sort,
-          search: action.payload,
-          pageIndex: state.apiParams.pageIndex,
-          pageSize: state.apiParams.pageSize
-        },
-        urlParams: {
-          search: action.payload,
-          brand: state.urlParams.brand,
-          sort: state.urlParams.sort
-        },
-        searchString: action.payload
-      };
-    case 'RESET-URL':
-      return {
-        ...state,
-        apiParams: {
-          brandId: 0,
-          sort: '',
-          pageIndex: state.apiParams.pageIndex,
-          pageSize: 10
-        },
-        urlParams: {
-          search: '',
-          brand: '',
-          sort: ''
-        },
-        dropdownValue: 'Sort by A-Z',
-        searchString: ''
-      };
-    case 'DELETE-BRAND':
-      return {
-        ...state,
-        apiParams: {
-          brandId: 0,
-          sort: state.apiParams.sort,
-          search: state.apiParams.search,
-          pageIndex: state.apiParams.pageIndex,
-          pageSize: state.apiParams.pageSize
-        },
-        urlParams: {
-          search: state.urlParams.search,
-          brand: '',
-          sort: state.urlParams.sort
-        }
-      };
-    default:
-      return state;
-  }
 }
 
 function ProductsList({ categoryId, subcategoryId, name }) {
@@ -195,7 +37,6 @@ function ProductsList({ categoryId, subcategoryId, name }) {
 
   const history = useHistory();
   const queryString = useLocation().search;
-  // const { path } = useRouteMatch();
 
   const mappedBrands = React.useMemo(() => getBrandsMap(state.brands.results), [
     state.brands.results
@@ -317,7 +158,9 @@ function ProductsList({ categoryId, subcategoryId, name }) {
   const searchHandler = (e) => {
     e.preventDefault();
 
-    dispatch({ type: 'SEARCH', payload: state.searchString });
+    if (state.searchString) {
+      dispatch({ type: 'SEARCH', payload: state.searchString });
+    }
 
     const newUrlParams = { ...state.urlParams };
 
@@ -355,6 +198,30 @@ function ProductsList({ categoryId, subcategoryId, name }) {
     dispatch({ type: 'SET-DROPDOWN', payload: text });
   };
 
+  const clearBrandsHandler = () => {
+    const newUrlParams = { ...state.urlParams };
+
+    newUrlParams.brand = '';
+
+    dispatch({ type: 'DELETE-BRAND' });
+
+    const urlSearchParams = getUrlSerachParams(newUrlParams);
+
+    history.replace({ search: urlSearchParams.toString() });
+  };
+
+  const clearSearchHandler = () => {
+    dispatch({ type: 'CLEAR-SEARCH' });
+
+    const newUrlParams = { ...state.urlParams };
+
+    newUrlParams.search = '';
+
+    const urlSearchParams = getUrlSerachParams(newUrlParams);
+
+    history.replace({ search: urlSearchParams.toString() });
+  };
+
   return (
     <div className={styles.flexboxColumn}>
       <div>
@@ -381,13 +248,25 @@ function ProductsList({ categoryId, subcategoryId, name }) {
                   });
                 }}
               />
-              <button
-                type="submit"
-                className={`${styles.searchButton}`}
-                onClick={searchHandler}
-              >
-                <Search />
-              </button>
+              {!state.searchActive && (
+                <button
+                  type="submit"
+                  className={`${styles.searchButton}`}
+                  onClick={searchHandler}
+                >
+                  <Search />
+                </button>
+              )}
+
+              {state.searchActive && (
+                <button
+                  type="submit"
+                  className={`${styles.searchButton}`}
+                  onClick={clearSearchHandler}
+                >
+                  <X className={`${styles.clearButton}`} />
+                </button>
+              )}
             </Form>
 
             {state.brands.status === 'FETCHED' && (
@@ -395,7 +274,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
                 brands={state.brands.results}
                 brandHandler={brandHandler}
                 activeButton={state.apiParams.brandId}
-                dispatch={dispatch}
+                handler={clearBrandsHandler}
               />
             )}
           </div>
