@@ -1,27 +1,37 @@
 import React from 'react';
-import { X } from 'react-bootstrap-icons';
+import { Trash } from 'react-bootstrap-icons';
+import { ShoppingCartContext } from '../../context/ShoppingCartContext';
+import {
+  calculatePriceWithTwoDecimals,
+  calculateTotal
+} from '../../helpers/pricesCalculator';
+import {
+  removeItem,
+  updateQuantity
+} from '../../store/shoppingCart/shoppingCartActions';
 
 import styles from './ShoppingCartItem.module.scss';
 
 function ShoppingCartItem({ item }) {
   const [quantity, setQuantity] = React.useState(item.quantity);
-  const initialPrice = item.price;
   const [price, setPrice] = React.useState(item.price);
 
-  function quantityInputHandler(e) {
-    const inputQuantity = parseInt(e.target.value, 10);
-    if (inputQuantity <= 0) setQuantity(1);
-    else setQuantity(inputQuantity);
+  const { dispatch } = React.useContext(ShoppingCartContext);
 
-    // if (inputQuantity.isNaN()) setQuantity(1);
+  function quantityInputHandler(e) {
+    let inputQuantity = parseInt(e.target.value, 10);
+    if (inputQuantity <= 0) {
+      inputQuantity = 1;
+    }
+    setQuantity(inputQuantity);
+
+    dispatch(updateQuantity(parseInt(e.target.id, 10), inputQuantity));
   }
 
   React.useEffect(() => {
-    const newPrice = (Math.round(quantity * initialPrice * 100) / 100).toFixed(
-      2
-    );
+    const newPrice = calculateTotal(item.price, quantity);
     setPrice(newPrice);
-  }, [quantity, initialPrice]);
+  }, [quantity, item.price]);
 
   return (
     <>
@@ -31,17 +41,25 @@ function ShoppingCartItem({ item }) {
           <p className={`${styles.productTitle}`}>{item.name}</p>
         </td>
 
+        <td>{calculatePriceWithTwoDecimals(item.price)}</td>
+
         <td>
           <input
             type="number"
+            id={item.id}
             value={quantity}
             onChange={quantityInputHandler}
             className={`${styles.quantityInput}`}
           />
         </td>
+
         <td>{price}</td>
+
         <td>
-          <X />
+          <Trash
+            className={styles.deleteIcon}
+            onClick={() => dispatch(removeItem(item.id))}
+          />
         </td>
       </tr>
     </>

@@ -1,3 +1,17 @@
+import {
+  CHANGE_PAGE_INDEX,
+  CLEAR_SEARCH,
+  DELETE_BRAND_FILTER,
+  FETCH_BRANDS,
+  FETCH_PRODUCTS,
+  FILTER_BY_BRAND,
+  RESET_URL,
+  SEARCH,
+  SEARCH_INPUT_CHANGE,
+  SET_DROPDOWN,
+  SORT_BY
+} from './productsListActionTypes';
+
 const initialState = {
   apiParams: {
     brandId: 0,
@@ -27,7 +41,7 @@ const initialState = {
 
 function productsListReducer(state, action) {
   switch (action.type) {
-    case 'FETCHED-PRODUCTS':
+    case FETCH_PRODUCTS:
       return {
         ...state,
         products: {
@@ -36,7 +50,7 @@ function productsListReducer(state, action) {
           count: action.payload.count
         }
       };
-    case 'FETCH-BRANDS':
+    case FETCH_BRANDS:
       return {
         ...state,
         brands: {
@@ -44,7 +58,7 @@ function productsListReducer(state, action) {
           status: 'FETCHED'
         }
       };
-    case 'CHANGE-PAGE-INDEX':
+    case CHANGE_PAGE_INDEX:
       return {
         ...state,
         apiParams: {
@@ -52,7 +66,7 @@ function productsListReducer(state, action) {
           pageIndex: action.payload
         }
       };
-    case 'SORT-BY':
+    case SORT_BY:
       return {
         ...state,
         apiParams: {
@@ -64,7 +78,7 @@ function productsListReducer(state, action) {
           sort: action.payload
         }
       };
-    case 'FILTER-BY-BRAND':
+    case FILTER_BY_BRAND:
       return {
         ...state,
         apiParams: {
@@ -77,17 +91,17 @@ function productsListReducer(state, action) {
           brand: action.payload.brandName
         }
       };
-    case 'SET-DROPDOWN':
+    case SET_DROPDOWN:
       return {
         ...state,
         dropdownValue: action.payload
       };
-    case 'SEARCH-INPUT-CHANGE':
+    case SEARCH_INPUT_CHANGE:
       return {
         ...state,
         searchString: action.payload
       };
-    case 'SEARCH':
+    case SEARCH:
       return {
         ...state,
         apiParams: {
@@ -101,7 +115,7 @@ function productsListReducer(state, action) {
         searchString: action.payload,
         searchActive: true
       };
-    case 'RESET-URL':
+    case RESET_URL:
       return {
         ...state,
         apiParams: {
@@ -118,7 +132,7 @@ function productsListReducer(state, action) {
         dropdownValue: 'Sort by A-Z',
         searchString: ''
       };
-    case 'DELETE-BRAND':
+    case DELETE_BRAND_FILTER:
       return {
         ...state,
         apiParams: {
@@ -130,7 +144,7 @@ function productsListReducer(state, action) {
           brand: ''
         }
       };
-    case 'CLEAR-SEARCH':
+    case CLEAR_SEARCH:
       return {
         ...state,
         apiParams: {

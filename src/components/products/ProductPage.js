@@ -3,11 +3,14 @@ import { Figure, Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import { axiosInstance } from '../../api/axios';
+import { ShoppingCartContext } from '../../context/ShoppingCartContext';
 import { getStock } from '../../helpers/getStock';
+import { addItemToCart } from '../../store/shoppingCart/shoppingCartActions';
 import styles from './ProductPage.module.scss';
 
 function ProductPage() {
   const { name } = useParams();
+  const { dispatch } = React.useContext(ShoppingCartContext);
 
   const [product, setProduct] = React.useState({
     result: null,
@@ -23,7 +26,6 @@ function ProductPage() {
         .get('/products/byName', { params: { urlName: name } })
         .then((response) => {
           if (response.status === 200) {
-            console.log(response.data);
             setProduct({ result: response.data, status: 'FETCHED' });
           }
         })
@@ -84,7 +86,25 @@ function ProductPage() {
                 className={`${styles.quantityInput}`}
               />
 
-              <Button variant="outline-secondary">Add to cart</Button>
+              <Button
+                variant="outline-secondary"
+                onClick={() => {
+                  console.log(product);
+                  dispatch(
+                    addItemToCart({
+                      id: product.result.id,
+                      name: product.result.name,
+                      price: product.result.price,
+                      quantity,
+                      pictureUrl: product.result.pictureUrl,
+                      brand: product.result.productBrand,
+                      category: product.result.productCategory
+                    })
+                  );
+                }}
+              >
+                Add to cart
+              </Button>
 
               {/* <button type="button" onClick={quantityHandler}>
                 +

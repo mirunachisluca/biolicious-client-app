@@ -3,15 +3,30 @@ import { DropdownButton, Dropdown, Form, FormControl } from 'react-bootstrap';
 import { Search, X } from 'react-bootstrap-icons';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { Pagination } from '../Pagination';
+import { Pagination } from '../pagination/Pagination';
 import { ProductCard } from './ProductCard';
 import { axiosInstance } from '../../api/axios';
 import { BrandFilter } from '../filters/BrandFilter';
 import { convertToUrl, convertFromUrl } from '../../helpers/convertToUrl';
 import { parseQueryString } from '../../helpers/parseQueryString';
 import { getUrlSerachParams } from '../../helpers/getUrlSearchParams';
-import { initialState, productsListReducer } from './ProductsListReducer';
 import styles from './ProductsList.module.scss';
+import {
+  productsListReducer,
+  initialState
+} from '../../store/products/productsListReducer';
+import {
+  CHANGE_PAGE_INDEX,
+  CLEAR_SEARCH,
+  DELETE_BRAND_FILTER,
+  FETCH_BRANDS,
+  FETCH_PRODUCTS,
+  FILTER_BY_BRAND,
+  RESET_URL,
+  SEARCH,
+  SET_DROPDOWN,
+  SORT_BY
+} from '../../store/products/productsListActionTypes';
 
 const sorting = Object.freeze({
   priceAsc: 'Price: ascending',
@@ -58,7 +73,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
         })
         .then((response) => {
           if (response.status === 200) {
-            dispatch({ type: 'FETCHED-PRODUCTS', payload: response.data });
+            dispatch({ type: FETCH_PRODUCTS, payload: response.data });
           }
         })
         .catch((error) => {
@@ -87,7 +102,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
         })
         .then((response) => {
           if (response.status === 200) {
-            dispatch({ type: 'FETCH-BRANDS', payload: response.data });
+            dispatch({ type: FETCH_BRANDS, payload: response.data });
           }
         })
         .catch((error) => {
@@ -102,12 +117,12 @@ function ProductsList({ categoryId, subcategoryId, name }) {
       const queryParams = parseQueryString(queryString);
 
       if (queryString === '') {
-        dispatch({ type: 'RESET-URL' });
+        dispatch({ type: RESET_URL });
       } else {
         if (queryParams.sort) {
-          dispatch({ type: 'SORT-BY', payload: queryParams.sort });
+          dispatch({ type: SORT_BY, payload: queryParams.sort });
           dispatch({
-            type: 'SET-DROPDOWN',
+            type: SET_DROPDOWN,
             payload:
               queryParams.sort === ''
                 ? sorting.alphabetical
@@ -117,7 +132,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
 
         if (queryParams.brand) {
           dispatch({
-            type: 'FILTER-BY-BRAND',
+            type: FILTER_BY_BRAND,
             payload: {
               brandId: mappedBrands[queryParams.brand],
               brandName: queryParams.brand
@@ -127,7 +142,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
 
         if (queryParams.search) {
           dispatch({
-            type: 'SEARCH',
+            type: SEARCH,
             payload: convertFromUrl(queryParams.search)
           });
         }
@@ -137,7 +152,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
   );
 
   const pageNumberHandler = (pageNumber) => {
-    dispatch({ type: 'CHANGE-PAGE-INDEX', payload: pageNumber });
+    dispatch({ type: CHANGE_PAGE_INDEX, payload: pageNumber });
   };
 
   const brandHandler = (brandId, brandName) => {
@@ -146,7 +161,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
     newUrlParams.brand = convertToUrl(brandName);
 
     dispatch({
-      type: 'FILTER-BY-BRAND',
+      type: FILTER_BY_BRAND,
       payload: { brandId, brandName: convertToUrl(brandName) }
     });
 
@@ -159,7 +174,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
     e.preventDefault();
 
     if (state.searchString) {
-      dispatch({ type: 'SEARCH', payload: state.searchString });
+      dispatch({ type: SEARCH, payload: state.searchString });
     }
 
     const newUrlParams = { ...state.urlParams };
@@ -176,15 +191,15 @@ function ProductsList({ categoryId, subcategoryId, name }) {
 
     switch (text) {
       case sorting.priceAsc:
-        dispatch({ type: 'SORT-BY', payload: 'priceAsc' });
+        dispatch({ type: SORT_BY, payload: 'priceAsc' });
         newUrlParams.sort = 'priceAsc';
         break;
       case sorting.priceDesc:
-        dispatch({ type: 'SORT-BY', payload: 'priceDesc' });
+        dispatch({ type: SORT_BY, payload: 'priceDesc' });
         newUrlParams.sort = 'priceDesc';
         break;
       case sorting.alphabetical:
-        dispatch({ type: 'SORT-BY', payload: '' });
+        dispatch({ type: SORT_BY, payload: '' });
         newUrlParams.sort = '';
         break;
       default:
@@ -195,7 +210,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
 
     history.replace({ search: urlSearchParams.toString() });
 
-    dispatch({ type: 'SET-DROPDOWN', payload: text });
+    dispatch({ type: SET_DROPDOWN, payload: text });
   };
 
   const clearBrandsHandler = () => {
@@ -203,7 +218,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
 
     newUrlParams.brand = '';
 
-    dispatch({ type: 'DELETE-BRAND' });
+    dispatch({ type: DELETE_BRAND_FILTER });
 
     const urlSearchParams = getUrlSerachParams(newUrlParams);
 
@@ -211,7 +226,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
   };
 
   const clearSearchHandler = () => {
-    dispatch({ type: 'CLEAR-SEARCH' });
+    dispatch({ type: CLEAR_SEARCH });
 
     const newUrlParams = { ...state.urlParams };
 

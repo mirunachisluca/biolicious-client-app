@@ -10,30 +10,24 @@ import styles from './css/ShoppingCartPage.module.scss';
 function ShoppingCartPage() {
   const { items } = React.useContext(ShoppingCartContext);
 
-  console.log(items);
-
   return (
     <>
       <MenuBar navbarData={[]} />
       <h1>SHOPPING CART</h1>
-      {/* <ol className={`${styles.cartItems}`}>
-        {items.map((item) => (
-          <ShoppingCartItem id={item.id} item={item} />
-        ))}
-      </ol> */}
 
       <Table className={`${styles.table}`}>
         <thead>
           <tr>
-            <th>Product</th>
-            <th>Quantity</th>
+            <th>Products</th>
             <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {items.map((item) => (
-            <ShoppingCartItem id={item.id} item={item} />
+            <ShoppingCartItem key={item.id} item={item} />
           ))}
         </tbody>
       </Table>

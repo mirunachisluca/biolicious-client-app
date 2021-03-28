@@ -6,10 +6,12 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 import styles from './ProductCard.module.scss';
 import { ShoppingCartContext } from '../../context/ShoppingCartContext';
+import { addItemToCart } from '../../store/shoppingCart/shoppingCartActions';
+import { calculatePriceWithTwoDecimals } from '../../helpers/pricesCalculator';
 
 function ProductCard({ id, name, price, urlName, subcategory }) {
   const { path } = useRouteMatch();
-  const { addItemToCart } = React.useContext(ShoppingCartContext);
+  const { dispatch } = React.useContext(ShoppingCartContext);
 
   let url = path;
 
@@ -33,21 +35,23 @@ function ProductCard({ id, name, price, urlName, subcategory }) {
             <Card.Title className={styles.pointerCursor}>{name}</Card.Title>
           </LinkContainer>
 
-          <Card.Text>{price}</Card.Text>
+          <Card.Text>{calculatePriceWithTwoDecimals(price)}</Card.Text>
 
           <Button
             variant="dark"
             className={styles.addToCartButton}
             onClick={() => {
-              addItemToCart({
-                id,
-                name,
-                price,
-                quantity: 1,
-                pictureUrl: '',
-                brand: '',
-                category: ''
-              });
+              dispatch(
+                addItemToCart({
+                  id,
+                  name,
+                  price,
+                  quantity: 1,
+                  pictureUrl: '',
+                  brand: '',
+                  category: ''
+                })
+              );
             }}
           >
             <CartPlus className={styles.cartIcon} />
