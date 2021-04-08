@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trash } from 'react-bootstrap-icons';
+import { Trash, TrashFill } from 'react-bootstrap-icons';
 import { ShoppingCartContext } from '../../context/ShoppingCartContext';
 import {
   calculatePriceWithTwoDecimals,
@@ -15,6 +15,7 @@ import styles from './ShoppingCartItem.module.scss';
 function ShoppingCartItem({ item }) {
   const [quantity, setQuantity] = React.useState(item.quantity);
   const [price, setPrice] = React.useState(item.price);
+  const [isIconHovered, setIsIconHovered] = React.useState(false);
 
   const { dispatch } = React.useContext(ShoppingCartContext);
 
@@ -33,6 +34,13 @@ function ShoppingCartItem({ item }) {
     setPrice(newPrice);
   }, [quantity, item.price]);
 
+  function trashIconHover() {
+    setIsIconHovered(true);
+  }
+
+  function trashIconNotHover() {
+    setIsIconHovered(false);
+  }
   return (
     <>
       <tr key={item.id}>
@@ -41,7 +49,7 @@ function ShoppingCartItem({ item }) {
           <p className={`${styles.productTitle}`}>{item.name}</p>
         </td>
 
-        <td>{calculatePriceWithTwoDecimals(item.price)}</td>
+        <td>{`${calculatePriceWithTwoDecimals(item.price)} €`}</td>
 
         <td>
           <input
@@ -53,13 +61,19 @@ function ShoppingCartItem({ item }) {
           />
         </td>
 
-        <td>{price}</td>
+        <td>{`${price} €`}</td>
 
         <td>
-          <Trash
-            className={styles.deleteIcon}
-            onClick={() => dispatch(removeItem(item.id))}
-          />
+          <div onMouseEnter={trashIconHover} onMouseLeave={trashIconNotHover}>
+            {isIconHovered ? (
+              <TrashFill
+                className={styles.deleteIcon}
+                onClick={() => dispatch(removeItem(item.id))}
+              />
+            ) : (
+              <Trash className={styles.deleteIcon} />
+            )}
+          </div>
         </td>
       </tr>
     </>

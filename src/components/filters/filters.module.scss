@@ -9,17 +9,16 @@ ul {
 }
 
 .filterItem {
-  cursor: pointer;
-  border: 1px solid #c5c9ce;
-  border-radius: 15px;
+  // border: 1px solid #c5c9ce;
   margin-bottom: 2%;
   padding: 2%;
   width: 90%;
-  background-color: transparent;
 }
 
 .selected {
   font-weight: 500;
+  color: white;
+  background-color: black;
 }
 
 .clearIcon {

@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
 import jwtDecode from 'jwt-decode';
+import UUID from 'react-uuid';
 
 import { axiosInstance } from '../api/axios';
 
@@ -16,15 +17,45 @@ function UserProvider({ children }) {
   const login = React.useCallback((token) => {
     const decodedToken = jwtDecode(token);
 
-    const currentUser = {
-      displayName: decodedToken.given_name
-    };
-
     localStorage.setItem('token', token);
 
     axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
 
-    setUser(currentUser);
+    let cartId = 0;
+    axiosInstance
+      .get('/shoppingCart/cartId', {
+        params: { userEmail: decodedToken.email }
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          cartId = response.data;
+        } else if (response.status === 204) {
+          cartId = UUID();
+
+          axiosInstance
+            .post('/shoppingcart/updateCartId', {
+              userEmail: decodedToken.email,
+              cartId
+            })
+            .then((newResponse) => {
+              if (newResponse.status === 200) {
+                console.log('AM SETAT CART ID');
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+        localStorage.setItem('cartId', cartId);
+
+        const currentUser = {
+          displayName: decodedToken.given_name,
+          cartId
+        };
+
+        setUser(currentUser);
+      })
+      .catch((error) => console.log(error));
   }, []);
 
   React.useEffect(() => {
@@ -36,6 +67,7 @@ function UserProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('cartId');
     setUser(null);
 
     delete axiosInstance.defaults.headers.Authorization;

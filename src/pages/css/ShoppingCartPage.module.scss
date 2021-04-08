@@ -1,12 +1,37 @@
+.flex {
+  display: flex;
+}
+
 .cartItems {
   list-style-type: none;
 }
 
 .table {
-  width: 80%;
-  margin: auto;
+  width: 70%;
+  margin-left: 5%;
+  margin-right: 5%;
+  font-size: 15px;
 }
 
 .table td {
   vertical-align: middle;
+}
+
+.priceCard {
+  width: 30%;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.alignLeft {
+  text-align: left;
+}
+
+.checkoutButton {
+  position: fixed;
+  margin-top: 15%;
+  margin-left: 1.5%;
+  font-family: 'Bembo';
 }

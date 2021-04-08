@@ -1,14 +1,23 @@
 import React from 'react';
 import { Nav, Navbar, NavDropdown, Dropdown } from 'react-bootstrap';
 import { Cart3, PersonCircle } from 'react-bootstrap-icons';
+import { useLocation } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Route, useRouteMatch } from 'react-router-dom';
+import { MenuBarContext } from '../../context/MenuBarContext';
 
 import { UserContext } from '../../context/UserContext';
 import { convertToUrl } from '../../helpers/convertToUrl';
-import { ProductPage } from '../products/ProductPage';
-import { ProductsList } from '../products/ProductsList';
 import styles from './MenuBar.module.scss';
+import {
+  HOMEPAGE_ROUTE,
+  LOGIN_PAGE_ROUTE,
+  ORDERS_PAGE_ROUTE,
+  PROFILE_PAGE_ROUTE,
+  RECIPES_PAGE_ROUTE,
+  SHOPPING_CART_PAGE_ROUTE,
+  SHOP_PAGE_ROUTE,
+  SIGNUP_PAGE_ROUTE
+} from '../../routes/pageRoutes';
 
 // 404 pt /:name cand nu e category
 
@@ -31,7 +40,26 @@ const CustomToggle = React.forwardRef(({ onClick }, ref) => (
 function MenuBar({ navbarData }) {
   const [show, setShow] = React.useState(false);
 
-  const { url, path } = useRouteMatch();
+  const { dispatch, shopData, recipesData } = React.useContext(MenuBarContext);
+
+  const { pathname } = useLocation();
+
+  React.useEffect(
+    function setMenuBarData() {
+      if (pathname.includes('/shop') && !pathname.includes('shopping')) {
+        if (shopData.data) {
+          dispatch({ type: 'SET_ACTIVE_DATA', payload: shopData.data });
+        }
+      } else if (pathname.includes('/recipes')) {
+        if (recipesData.data) {
+          dispatch({ type: 'SET_ACTIVE_DATA', payload: recipesData.data });
+        }
+      } else {
+        dispatch({ type: 'RESET_ACTIVE_DATA' });
+      }
+    },
+    [dispatch, pathname, shopData.data, recipesData.data]
+  );
 
   const showDropdown = () => {
     setShow(!show);
@@ -39,81 +67,6 @@ function MenuBar({ navbarData }) {
   const hideDropdown = () => {
     setShow(false);
   };
-
-  const categoryRoutes = [];
-  navbarData.forEach((category) => {
-    const route = (
-      <Route
-        exact
-        key={category.id}
-        path={`${path}/${convertToUrl(category.name)}`}
-      >
-        {path === '/shop' && (
-          <ProductsList
-            key={`list-${category.id}`}
-            categoryId={category.id}
-            subcategoryId={0}
-            name={category.name}
-          />
-        )}
-      </Route>
-    );
-
-    categoryRoutes.push(route);
-    if (category.subcategories.length === 0) {
-      const parameterRoute = (
-        <Route
-          exact
-          key={`category-route-${category.id}`}
-          path={`${path}/${convertToUrl(category.name)}/:name`}
-        >
-          <ProductPage key={`product-${category.id}`} />
-        </Route>
-      );
-
-      categoryRoutes.push(parameterRoute);
-    }
-  });
-
-  const subcategoryRoutes = [];
-  navbarData.forEach((category) => {
-    if (!(category.subcategories.length === 0)) {
-      category.subcategories.forEach((subcategory) => {
-        const route = (
-          <Route
-            exact
-            key={subcategory.id}
-            path={`${path}/${convertToUrl(category.name)}/${convertToUrl(
-              subcategory.name
-            )}`}
-          >
-            {path === '/shop' && (
-              <ProductsList
-                categoryId={category.id}
-                subcategoryId={subcategory.id}
-                name={subcategory.name}
-              />
-            )}
-          </Route>
-        );
-
-        const parameterRoute = (
-          <Route
-            exact
-            key={`subcategory-route-${subcategory.id}`}
-            path={`${path}/${convertToUrl(category.name)}/${convertToUrl(
-              subcategory.name
-            )}/:name`}
-          >
-            <ProductPage />
-          </Route>
-        );
-
-        subcategoryRoutes.push(route);
-        subcategoryRoutes.push(parameterRoute);
-      });
-    }
-  });
 
   return (
     <>
@@ -131,7 +84,11 @@ function MenuBar({ navbarData }) {
                 return (
                   <LinkContainer
                     key={element.id}
-                    to={`${url}/${element.name.toLowerCase()}`}
+                    to={`${
+                      pathname.includes('/shop')
+                        ? SHOP_PAGE_ROUTE
+                        : RECIPES_PAGE_ROUTE
+                    }/${element.name.toLowerCase()}`}
                   >
                     <Nav.Link key={element.id} className={styles.fontSize15}>
                       {element.name}
@@ -149,7 +106,11 @@ function MenuBar({ navbarData }) {
                   {element.subcategories.map((subcategory) => (
                     <LinkContainer
                       key={subcategory.id}
-                      to={`${url}/${convertToUrl(element.name)}/${convertToUrl(
+                      to={`${
+                        pathname.includes('/shop')
+                          ? SHOP_PAGE_ROUTE
+                          : RECIPES_PAGE_ROUTE
+                      }/${convertToUrl(element.name)}/${convertToUrl(
                         subcategory.name
                       )}`}
                     >
@@ -180,11 +141,11 @@ function MenuBar({ navbarData }) {
                   />
                   {!user && (
                     <Dropdown.Menu align="right">
-                      <LinkContainer to="/login">
+                      <LinkContainer to={LOGIN_PAGE_ROUTE}>
                         <Dropdown.Item eventKey="1">Login</Dropdown.Item>
                       </LinkContainer>
 
-                      <LinkContainer to="/signup">
+                      <LinkContainer to={SIGNUP_PAGE_ROUTE}>
                         <Dropdown.Item eventKey="2">Sign up</Dropdown.Item>
                       </LinkContainer>
                     </Dropdown.Menu>
@@ -198,17 +159,17 @@ function MenuBar({ navbarData }) {
 
                       <Dropdown.Divider />
 
-                      <LinkContainer to="/profile">
+                      <LinkContainer to={PROFILE_PAGE_ROUTE}>
                         <Dropdown.Item eventKey="1">My profile</Dropdown.Item>
                       </LinkContainer>
 
-                      <LinkContainer to="/orders">
+                      <LinkContainer to={ORDERS_PAGE_ROUTE}>
                         <Dropdown.Item eventKey="2">Orders</Dropdown.Item>
                       </LinkContainer>
 
                       <Dropdown.Divider />
 
-                      <LinkContainer to="/">
+                      <LinkContainer to={HOMEPAGE_ROUTE}>
                         <Dropdown.Item eventKey="3" onClick={logout}>
                           Logout
                         </Dropdown.Item>
@@ -220,16 +181,13 @@ function MenuBar({ navbarData }) {
             )}
           </UserContext.Consumer>
 
-          <LinkContainer to="/shoppingCart">
+          <LinkContainer to={SHOPPING_CART_PAGE_ROUTE}>
             <a className={styles.icon} href="/shoppingCart">
               <Cart3 className="ml-3 mr-2 mb-2" />
             </a>
           </LinkContainer>
         </Navbar.Collapse>
       </Navbar>
-
-      {categoryRoutes}
-      {subcategoryRoutes}
     </>
   );
 }

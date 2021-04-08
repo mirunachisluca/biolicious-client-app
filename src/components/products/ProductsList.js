@@ -24,6 +24,7 @@ import {
   FILTER_BY_BRAND,
   RESET_URL,
   SEARCH,
+  SEARCH_INPUT_CHANGE,
   SET_DROPDOWN,
   SORT_BY
 } from '../../store/products/productsListActionTypes';
@@ -241,14 +242,19 @@ function ProductsList({ categoryId, subcategoryId, name }) {
     <div className={styles.flexboxColumn}>
       <div>
         <br />
-        <h3>{name}</h3>
+        <h3 className="uppercase-bembo">{name}</h3>
         <br />
       </div>
+
+      {/* <Breadcrumb>
+        <Breadcrumb.Item>Shop</Breadcrumb.Item>
+        <Breadcrumb.Item></Breadcrumb.Item>
+      </Breadcrumb> */}
 
       <div className={styles.flexboxWithWrap}>
         <div className={styles.filtersDiv}>
           <div className={styles.fixed}>
-            <h3>filter by:</h3>
+            <h5 className="uppercase-bembo">filter by:</h5>
 
             <Form inline className={styles.justifyCenter}>
               <FormControl
@@ -258,7 +264,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
                 value={state.searchString}
                 onChange={(e) => {
                   dispatch({
-                    type: 'SEARCH-INPUT-CHANGE',
+                    type: SEARCH_INPUT_CHANGE,
                     payload: e.target.value
                   });
                 }}
@@ -299,24 +305,27 @@ function ProductsList({ categoryId, subcategoryId, name }) {
           <div className={`${styles.flexbox}`}>
             <DropdownButton
               title={state.dropdownValue}
-              variant="outline-secondary"
-              size="sm"
+              variant="dropdown-outline-black"
+              size="xs"
               className={styles.sortButton}
             >
               <Dropdown.Item
                 onClick={(e) => dropdownValueHandler(e.target.textContent)}
+                className="dropdown-filter"
               >
                 {sorting.alphabetical}
               </Dropdown.Item>
 
               <Dropdown.Item
                 onClick={(e) => dropdownValueHandler(e.target.textContent)}
+                className="dropdown-filter"
               >
                 {sorting.priceAsc}
               </Dropdown.Item>
 
               <Dropdown.Item
                 onClick={(e) => dropdownValueHandler(e.target.textContent)}
+                className="dropdown-filter"
               >
                 {sorting.priceDesc}
               </Dropdown.Item>
@@ -334,14 +343,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
             {state.products.status === 'FETCHED' &&
               state.products.results.map((product) => (
                 <li key={product.id}>
-                  <ProductCard
-                    key={product.id}
-                    id={product.id}
-                    name={product.name}
-                    price={product.price}
-                    urlName={product.urlName}
-                    subcategory={product.productSubcategory}
-                  />
+                  <ProductCard key={product.id} product={product} />
                 </li>
               ))}
           </ol>

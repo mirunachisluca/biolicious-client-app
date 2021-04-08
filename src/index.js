@@ -3,15 +3,25 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.scss';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
+import { UserProvider } from './context/UserContext';
+import { MenuBarProvider } from './context/MenuBarContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ShoppingCartProvider>
-      <App />
-    </ShoppingCartProvider>
+    <BrowserRouter>
+      <MenuBarProvider>
+        <UserProvider>
+          <ShoppingCartProvider>
+            <App />
+          </ShoppingCartProvider>
+        </UserProvider>
+      </MenuBarProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

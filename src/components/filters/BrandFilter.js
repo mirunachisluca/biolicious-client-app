@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { X } from 'react-bootstrap-icons';
 
 import styles from './Filters.module.scss';
@@ -9,14 +9,14 @@ function BrandFilter({ brands, brandHandler, activeButton, handler }) {
     <>
       <Card className={`${styles.filterCard} shadow`}>
         <Card.Body>
-          <Card.Title>
+          <Card.Title className="title">
             brands
             <X className={`${styles.clearIcon}`} onClick={() => handler()} />
           </Card.Title>
           <ul>
             {brands.map((brand) => (
-              <button
-                type="button"
+              <Button
+                variant="outline-black"
                 key={brand.id}
                 onClick={() => {
                   brandHandler(brand.id, brand.name);
@@ -26,7 +26,7 @@ function BrandFilter({ brands, brandHandler, activeButton, handler }) {
                 }`}
               >
                 {brand.name}
-              </button>
+              </Button>
             ))}
           </ul>
         </Card.Body>

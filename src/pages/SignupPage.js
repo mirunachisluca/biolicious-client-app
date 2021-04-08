@@ -3,7 +3,6 @@ import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 import { axiosInstance } from '../api/axios';
-import { MenuBar } from '../components/navbar/MenuBar';
 import styles from './css/sign-up-page.module.scss';
 
 function SignupPage() {
@@ -15,8 +14,6 @@ function SignupPage() {
   const [email, setEmail] = React.useState('');
   const [password, setPasswod] = React.useState('');
   const [repeatPassword, setRepeatPassword] = React.useState('');
-
-  // const classes = useStyles();
 
   const firstNameInputHandler = (e) => {
     setFirstName(e.target.value);
@@ -67,8 +64,6 @@ function SignupPage() {
 
   return (
     <>
-      <MenuBar navbarData={[]} />
-
       <h2>Create your account now</h2>
 
       <div className={`${styles.flexbox} mt-5`}>

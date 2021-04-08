@@ -2,20 +2,11 @@ import React from 'react';
 import { Jumbotron, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import { MenuBar } from '../components/navbar/MenuBar';
-// import { ShoppingCartContext } from '../context/ShoppingCartContext';
-
 import styles from './css/home-page.module.scss';
 
 function Homepage() {
   return (
     <>
-      <MenuBar navbarData={[]} />
-
-      {/* <ShoppingCartContext.Consumer>
-        {({ loadShoppingCart }) => loadShoppingCart()}
-      </ShoppingCartContext.Consumer> */}
-
       <div>
         <Jumbotron className={styles.shopBackground}>
           <div className={styles.textRectangle}>
@@ -24,7 +15,7 @@ function Homepage() {
             <p>Buy fresh groceries from our local producers</p>
 
             <p>
-              <LinkContainer to="/shop">
+              <LinkContainer key="shop-button" to="/shop">
                 <Button variant="outline-light">Go to shop</Button>
               </LinkContainer>
             </p>
@@ -41,7 +32,7 @@ function Homepage() {
             </p>
 
             <p>
-              <LinkContainer to="/recipes">
+              <LinkContainer key="recipes-button" to="/recipes">
                 <Button variant="outline-light">Go to recipes</Button>
               </LinkContainer>
             </p>

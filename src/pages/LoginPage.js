@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
-import { MenuBar } from '../components/navbar/MenuBar';
 import { axiosInstance } from '../api/axios';
 import { UserContext } from '../context/UserContext';
 import styles from './css/login-page.module.scss';
@@ -41,8 +40,6 @@ function LoginPage() {
 
   return (
     <>
-      <MenuBar navbarData={[]} />
-
       <h2>Login</h2>
 
       <div className={`${styles.flexbox} mt-5`}>

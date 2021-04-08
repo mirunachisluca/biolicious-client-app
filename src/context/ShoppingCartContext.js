@@ -6,6 +6,7 @@ import {
   shoppingCartReducer
 } from '../store/shoppingCart/shoppingCartReducer';
 import { loadCart } from '../store/shoppingCart/shoppingCartActions';
+import { UserContext } from './UserContext';
 
 const ShoppingCartContext = createContext({
   items: []
@@ -15,28 +16,29 @@ export { ShoppingCartContext };
 
 function ShoppingCartProvider({ children }) {
   const [state, dispatch] = React.useReducer(shoppingCartReducer, initialState);
+  const { user } = React.useContext(UserContext);
 
-  const loadShoppingCart = React.useCallback(() => {
-    let shoppingCartId = localStorage.getItem('cartId');
+  React.useEffect(() => {
+    let cartId = localStorage.getItem('cartId');
 
-    if (shoppingCartId === null) {
-      shoppingCartId = UUID();
-      localStorage.setItem('cartId', shoppingCartId);
-    } else {
-      axiosInstance
-        .get(`/shoppingCart/${shoppingCartId}`)
-        .then((response) => {
-          if (response.status === 200) {
-            // dispatch({ type: 'LOAD_CART', payload: response.data });
-
-            dispatch(loadCart(response.data));
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (user) {
+      cartId = user.cartId;
+    } else if (cartId === null) {
+      cartId = UUID();
+      localStorage.setItem('cartId', cartId);
     }
-  }, []);
+
+    axiosInstance
+      .get(`/shoppingCart/${cartId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch(loadCart(response.data));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [user]);
 
   React.useEffect(
     function updateCart() {
@@ -44,11 +46,7 @@ function ShoppingCartProvider({ children }) {
         const shoppingCart = { id: state.shoppingCartId, items: state.items };
         axiosInstance
           .post('shoppingCart/update/', shoppingCart)
-          .then((response) => {
-            if (response.status === 200) {
-              console.log('item added to cart');
-            }
-          })
+          .then()
           .catch((error) => {
             console.log(error);
           });
@@ -61,7 +59,6 @@ function ShoppingCartProvider({ children }) {
     <ShoppingCartContext.Provider
       value={{
         items: state.items,
-        loadShoppingCart,
         dispatch
       }}
     >

@@ -4,11 +4,6 @@
   border: 0;
 }
 
-.addToCartButton {
-  border-radius: 50%;
-  float: right;
-}
-
 .cartIcon {
   font-size: 20px;
   margin-bottom: 2px;
@@ -16,4 +11,51 @@
 
 .pointerCursor {
   cursor: pointer;
+}
+
+.titleDiv {
+  height: 2rem;
+  position: relative;
+  margin-bottom: 12%;
+}
+
+.title {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 17px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.title:hover {
+  font-weight: 600;
+}
+
+.weight {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+.priceDiv {
+  height: 2.5rem;
+  position: relative;
+}
+
+.price {
+  font-size: 20px;
+  position: absolute;
+  left: 0;
+}
+
+.addToCartButton {
+  display: inline-flex;
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  text-transform: uppercase;
 }

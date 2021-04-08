@@ -1,0 +1,4 @@
+export const SET_ACTIVE_DATA = 'SET_ACTIVE_DATA';
+export const SET_SHOP_DATA = 'SET_SHOP_DATA';
+export const SET_RECIPES_DATA = 'SET_RECIPES_DATA';
+export const RESET_ACTIVE_DATA = 'RESET_ACTIVE_DATA';

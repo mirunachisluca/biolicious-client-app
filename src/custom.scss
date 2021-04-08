@@ -5,11 +5,50 @@
 /* change the primary theme color to red */
 
 $theme-colors: (
-  secondary: #808588
+  // secondary: #808588
+  black: black
 );
 
 $dropdown-link-active-bg: rgb(197, 137, 197);
 
+$btn-font-size-xs: 1rem * 0.78;
+
 /* -------end customization-------- */
 /* finally, import Bootstrap to set the changes! */
 @import '~bootstrap';
+
+.btn-xs {
+  @include button-size(
+    $btn-padding-y-sm,
+    $btn-padding-x-sm,
+    $btn-font-size-xs,
+    $btn-line-height-sm,
+    $btn-border-radius-sm
+  );
+}
+
+.btn {
+  border-radius: 0;
+  font-family: 'Avenir', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.btn-dropdown-outline-black {
+  @include button-outline-variant(black);
+  font-family: 'bembo';
+  text-transform: uppercase;
+}
+
+.dropdown-filter {
+  font-family: 'bembo';
+  text-transform: uppercase;
+  font-size: $btn-font-size-xs;
+}
+
+.uppercase-bembo {
+  font-family: 'bembo';
+  text-transform: uppercase;
+}

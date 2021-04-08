@@ -69,7 +69,7 @@ function ProductPage() {
             <p>{product.result.description}</p>
 
             <div>
-              <h4>{`${product.result.price}€`}</h4>
+              <h4>{`${product.result.price} €`}</h4>
               <p>{product.result.weight}</p>
             </div>
 
@@ -87,7 +87,7 @@ function ProductPage() {
               />
 
               <Button
-                variant="outline-secondary"
+                variant="outline-black"
                 onClick={() => {
                   console.log(product);
                   dispatch(
