@@ -1,0 +1,34 @@
+.dietButtonsDiv {
+}
+
+.categoryButtonsDiv {
+}
+
+.button {
+  margin: 1%;
+}
+
+.flexbox {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filtersDiv {
+  width: 25%;
+}
+
+.recipesDiv {
+  width: 73%;
+  justify-content: flex-end;
+}
+
+.fixed {
+  // position: fixed;
+  // width: 25%;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

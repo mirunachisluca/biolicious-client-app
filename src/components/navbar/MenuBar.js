@@ -40,7 +40,7 @@ const CustomToggle = React.forwardRef(({ onClick }, ref) => (
 function MenuBar({ navbarData }) {
   const [show, setShow] = React.useState(false);
 
-  const { dispatch, shopData, recipesData } = React.useContext(MenuBarContext);
+  const { dispatch, shopData } = React.useContext(MenuBarContext);
 
   const { pathname } = useLocation();
 
@@ -50,15 +50,11 @@ function MenuBar({ navbarData }) {
         if (shopData.data) {
           dispatch({ type: 'SET_ACTIVE_DATA', payload: shopData.data });
         }
-      } else if (pathname.includes('/recipes')) {
-        if (recipesData.data) {
-          dispatch({ type: 'SET_ACTIVE_DATA', payload: recipesData.data });
-        }
       } else {
         dispatch({ type: 'RESET_ACTIVE_DATA' });
       }
     },
-    [dispatch, pathname, shopData.data, recipesData.data]
+    [dispatch, pathname, shopData.data]
   );
 
   const showDropdown = () => {
@@ -68,12 +64,28 @@ function MenuBar({ navbarData }) {
     setShow(false);
   };
 
+  function getCurrentPage(path) {
+    let pagePath = path.slice(1);
+    pagePath = pagePath.split('/', 1);
+    return pagePath[0];
+  }
+
   return (
     <>
       <Navbar bg="light" expand="lg" className={styles.fixedNavbar}>
-        <LinkContainer to="/">
-          <Navbar.Brand>Biolicious</Navbar.Brand>
+        <LinkContainer to={HOMEPAGE_ROUTE}>
+          <img
+            src="../../../logo-title.png"
+            alt="logo"
+            className="logo-image"
+          />
         </LinkContainer>
+
+        {getCurrentPage(pathname) === 'shop' && (
+          <LinkContainer to={`/${getCurrentPage(pathname)}`}>
+            <Navbar.Brand>{getCurrentPage(pathname)}</Navbar.Brand>
+          </LinkContainer>
+        )}
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
@@ -169,7 +181,7 @@ function MenuBar({ navbarData }) {
 
                       <Dropdown.Divider />
 
-                      <LinkContainer to={HOMEPAGE_ROUTE}>
+                      <LinkContainer to={LOGIN_PAGE_ROUTE}>
                         <Dropdown.Item eventKey="3" onClick={logout}>
                           Logout
                         </Dropdown.Item>

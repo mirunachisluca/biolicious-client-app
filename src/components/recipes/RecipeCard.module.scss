@@ -1,0 +1,22 @@
+.grid {
+  display: grid;
+  grid-template-columns: 25% 75%;
+}
+
+.descriptionBody {
+  text-align: justify;
+}
+
+.recipeTitle {
+  text-align: left;
+  padding: 1.5rem 0 0 1.5rem;
+  text-transform: uppercase;
+}
+
+.recipeTitle:hover {
+  font-weight: 600;
+}
+
+.pointerCursor {
+  cursor: pointer;
+}

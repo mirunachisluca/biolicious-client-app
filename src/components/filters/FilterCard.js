@@ -4,28 +4,38 @@ import { X } from 'react-bootstrap-icons';
 
 import styles from './Filters.module.scss';
 
-function BrandFilter({ brands, brandHandler, activeButton, handler }) {
+function FilterCard({
+  filterName,
+  data,
+  dataHandler,
+  activeButton,
+  clearHandler
+}) {
   return (
     <>
       <Card className={`${styles.filterCard} shadow`}>
         <Card.Body>
           <Card.Title className="title">
-            brands
-            <X className={`${styles.clearIcon}`} onClick={() => handler()} />
+            {filterName}
+            <X
+              className={`${styles.clearIcon}`}
+              onClick={() => clearHandler()}
+            />
           </Card.Title>
-          <ul>
-            {brands.map((brand) => (
+
+          <ul className={styles.list}>
+            {data.map((item) => (
               <Button
                 variant="outline-black"
-                key={brand.id}
+                key={item.id}
                 onClick={() => {
-                  brandHandler(brand.id, brand.name);
+                  dataHandler(item.id, item.name);
                 }}
                 className={`${styles.filterItem} ${
-                  activeButton === brand.id ? styles.selected : ''
+                  activeButton === item.id ? styles.selected : ''
                 }`}
               >
-                {brand.name}
+                {item.name}
               </Button>
             ))}
           </ul>
@@ -35,4 +45,4 @@ function BrandFilter({ brands, brandHandler, activeButton, handler }) {
   );
 }
 
-export { BrandFilter };
+export { FilterCard };

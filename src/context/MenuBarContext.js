@@ -1,7 +1,8 @@
 import React from 'react';
 import { axiosInstance } from '../api/axios';
 import {
-  SET_RECIPES_DATA,
+  SET_CATEGORIES_DATA,
+  SET_DIETS_DATA,
   SET_SHOP_DATA
 } from '../store/menuBar/menuBarActionTypes';
 import { initialState, menuBarReducer } from '../store/menuBar/menuBarReducer';
@@ -26,22 +27,12 @@ function MenuBarProvider({ children }) {
       });
   }, []);
 
-  const [diets, setDiets] = React.useState({
-    status: 'PENDING',
-    data: null
-  });
-
-  const [categories, setCategories] = React.useState({
-    status: 'PENDING',
-    data: null
-  });
-
   React.useEffect(() => {
     axiosInstance
       .get('/diets')
       .then((response) => {
         if (response.status === 200) {
-          setDiets({ status: 'FETCHED', data: response.data });
+          dispatch({ type: SET_DIETS_DATA, payload: response.data });
         }
       })
       .catch((error) => {
@@ -54,7 +45,7 @@ function MenuBarProvider({ children }) {
       .get('/recipeCategories')
       .then((response) => {
         if (response.status === 200) {
-          setCategories({ status: 'FETCHED', data: response.data });
+          dispatch({ type: SET_CATEGORIES_DATA, payload: response.data });
         }
       })
       .catch((error) => {
@@ -62,39 +53,13 @@ function MenuBarProvider({ children }) {
       });
   }, []);
 
-  React.useEffect(() => {
-    let dietsObject = {
-      id: 'diets-menu-Id',
-      name: 'Diets'
-    };
-
-    let categoriesObject = {
-      id: 'categories-menu-Id',
-      name: 'Categories'
-    };
-
-    if (diets.status === 'FETCHED' && categories.status === 'FETCHED') {
-      dietsObject = {
-        ...dietsObject,
-        subcategories: diets.data
-      };
-
-      categoriesObject = {
-        ...categoriesObject,
-        subcategories: diets.data
-      };
-
-      const data = [dietsObject, categoriesObject];
-      dispatch({ type: SET_RECIPES_DATA, payload: data });
-    }
-  }, [categories.data, categories.status, diets.data, diets.status]);
-
   return (
     <MenuBarContext.Provider
       value={{
         activeData: state.activeData,
         shopData: state.shopData,
-        recipesData: state.recipesData,
+        diets: state.diets,
+        categories: state.categories,
         dispatch
       }}
     >

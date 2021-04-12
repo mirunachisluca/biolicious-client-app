@@ -1,14 +1,16 @@
 import {
   SET_ACTIVE_DATA,
   RESET_ACTIVE_DATA,
-  SET_RECIPES_DATA,
-  SET_SHOP_DATA
+  SET_SHOP_DATA,
+  SET_DIETS_DATA,
+  SET_CATEGORIES_DATA
 } from './menuBarActionTypes';
 
 const initialState = {
   activeData: [],
   shopData: { status: 'PENDING', data: [] },
-  recipesData: { status: 'PENDING', data: [] }
+  diets: { status: 'PENDING', data: [] },
+  categories: { status: 'PENDING', data: [] }
 };
 
 function menuBarReducer(state, action) {
@@ -23,15 +25,20 @@ function menuBarReducer(state, action) {
         ...state,
         activeData: []
       };
-    case SET_RECIPES_DATA:
-      return {
-        ...state,
-        recipesData: { status: 'FETCHED', data: action.payload }
-      };
     case SET_SHOP_DATA:
       return {
         ...state,
         shopData: { status: 'FETCHED', data: action.payload }
+      };
+    case SET_DIETS_DATA:
+      return {
+        ...state,
+        diets: { status: 'FETCHED', data: action.payload }
+      };
+    case SET_CATEGORIES_DATA:
+      return {
+        ...state,
+        categories: { status: 'FETCHED', data: action.payload }
       };
     default:
       return state;

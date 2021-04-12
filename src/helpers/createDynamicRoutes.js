@@ -2,8 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { ProductPage } from '../components/products/ProductPage';
 import { ProductsList } from '../components/products/ProductsList';
-import { RecipesList } from '../components/recipes/RecipesList';
-import { RECIPES_PAGE_ROUTE, SHOP_PAGE_ROUTE } from '../routes/pageRoutes';
+import { SHOP_PAGE_ROUTE } from '../routes/pageRoutes';
 import { convertToUrl } from './convertToUrl';
 
 export function createCategoryRoutes(path, navbarData) {
@@ -16,18 +15,14 @@ export function createCategoryRoutes(path, navbarData) {
         key={category.id}
         path={`${path}/${convertToUrl(category.name)}`}
       >
-        {path === SHOP_PAGE_ROUTE && (
-          <>
-            <ProductsList
-              key={`list-${category.id}`}
-              categoryId={category.id}
-              subcategoryId={0}
-              name={category.name}
-            />
-          </>
-        )}
-
-        {path === RECIPES_PAGE_ROUTE && <RecipesList key={category.id} />}
+        <>
+          <ProductsList
+            key={`list-${category.id}`}
+            categoryId={category.id}
+            subcategoryId={0}
+            name={category.name}
+          />
+        </>
       </Route>
     );
 
@@ -40,11 +35,7 @@ export function createCategoryRoutes(path, navbarData) {
           key={`category-route-${category.id}`}
           path={`${path}/${convertToUrl(category.name)}/:name`}
         >
-          {path === SHOP_PAGE_ROUTE && (
-            <ProductPage key={`product-${category.id}`} />
-          )}
-
-          {path === RECIPES_PAGE_ROUTE && <h3>RECIPE</h3>}
+          <ProductPage key={`product-${category.id}`} />
         </Route>
       );
 
@@ -69,17 +60,11 @@ export function createSubcategoryRoutes(path, navbarData) {
               subcategory.name
             )}`}
           >
-            {path === SHOP_PAGE_ROUTE && (
-              <ProductsList
-                categoryId={category.id}
-                subcategoryId={subcategory.id}
-                name={subcategory.name}
-              />
-            )}
-
-            {path === RECIPES_PAGE_ROUTE && (
-              <RecipesList key={subcategory.id} />
-            )}
+            <ProductsList
+              categoryId={category.id}
+              subcategoryId={subcategory.id}
+              name={subcategory.name}
+            />
           </Route>
         );
 
@@ -91,8 +76,7 @@ export function createSubcategoryRoutes(path, navbarData) {
               subcategory.name
             )}/:name`}
           >
-            {path === SHOP_PAGE_ROUTE && <ProductPage />}
-            {path === RECIPES_PAGE_ROUTE && <h3>RECIPE</h3>}
+            <ProductPage />
           </Route>
         );
 

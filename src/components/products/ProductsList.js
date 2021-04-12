@@ -6,7 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '../pagination/Pagination';
 import { ProductCard } from './ProductCard';
 import { axiosInstance } from '../../api/axios';
-import { BrandFilter } from '../filters/BrandFilter';
+import { FilterCard } from '../filters/FilterCard';
 import { convertToUrl, convertFromUrl } from '../../helpers/convertToUrl';
 import { parseQueryString } from '../../helpers/parseQueryString';
 import { getUrlSerachParams } from '../../helpers/getUrlSearchParams';
@@ -28,6 +28,7 @@ import {
   SET_DROPDOWN,
   SORT_BY
 } from '../../store/products/productsListActionTypes';
+import { createNameIdMap } from '../../helpers/createNameIdMap';
 
 const sorting = Object.freeze({
   priceAsc: 'Price: ascending',
@@ -36,13 +37,6 @@ const sorting = Object.freeze({
 });
 
 const apiURL = '/products';
-
-function getBrandsMap(brands) {
-  return brands.reduce(
-    (acc, cur) => ({ ...acc, [convertToUrl(cur.name)]: cur.id }),
-    {}
-  );
-}
 
 function ProductsList({ categoryId, subcategoryId, name }) {
   const [state, dispatch] = React.useReducer(productsListReducer, {
@@ -54,9 +48,10 @@ function ProductsList({ categoryId, subcategoryId, name }) {
   const history = useHistory();
   const queryString = useLocation().search;
 
-  const mappedBrands = React.useMemo(() => getBrandsMap(state.brands.results), [
-    state.brands.results
-  ]);
+  const mappedBrands = React.useMemo(
+    () => createNameIdMap(state.brands.results),
+    [state.brands.results]
+  );
 
   React.useEffect(
     function fetchProducts() {
@@ -291,11 +286,12 @@ function ProductsList({ categoryId, subcategoryId, name }) {
             </Form>
 
             {state.brands.status === 'FETCHED' && (
-              <BrandFilter
-                brands={state.brands.results}
-                brandHandler={brandHandler}
+              <FilterCard
+                filterName="brands"
+                data={state.brands.results}
+                dataHandler={brandHandler}
                 activeButton={state.apiParams.brandId}
-                handler={clearBrandsHandler}
+                clearHandler={clearBrandsHandler}
               />
             )}
           </div>

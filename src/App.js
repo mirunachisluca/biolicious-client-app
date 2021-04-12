@@ -15,7 +15,7 @@ import { MenuBar } from './components/navbar/MenuBar';
 import {
   createCategoryRoutes,
   createSubcategoryRoutes
-} from './helpers/createShopRoutes';
+} from './helpers/createDynamicRoutes';
 import { MenuBarContext } from './context/MenuBarContext';
 import {
   HOMEPAGE_ROUTE,
@@ -27,31 +27,17 @@ import {
   SHOP_PAGE_ROUTE,
   SIGNUP_PAGE_ROUTE
 } from './routes/pageRoutes';
+import { RecipePage } from './components/recipes/RecipePage';
 
 function App() {
-  const { activeData, shopData, recipesData } = React.useContext(
-    MenuBarContext
-  );
+  const { activeData, shopData } = React.useContext(MenuBarContext);
 
   let categoryRoutes = null;
   let subcategoryRoutes = null;
-  let recipeCategoryRoutes = null;
-  let recipeSubcategoryRoutes = null;
 
   if (shopData.status === 'FETCHED') {
     categoryRoutes = createCategoryRoutes(SHOP_PAGE_ROUTE, shopData.data);
     subcategoryRoutes = createSubcategoryRoutes(SHOP_PAGE_ROUTE, shopData.data);
-  }
-
-  if (recipesData.status === 'FETCHED') {
-    recipeCategoryRoutes = createCategoryRoutes(
-      RECIPES_PAGE_ROUTE,
-      recipesData.data
-    );
-    recipeSubcategoryRoutes = createSubcategoryRoutes(
-      RECIPES_PAGE_ROUTE,
-      recipesData.data
-    );
   }
 
   return (
@@ -76,10 +62,12 @@ function App() {
           <ShopPage />
         </Route>
 
-        {recipeCategoryRoutes}
-        {recipeSubcategoryRoutes}
         <Route exact path={RECIPES_PAGE_ROUTE}>
           <RecipesPage />
+        </Route>
+
+        <Route exact path={`${RECIPES_PAGE_ROUTE}/:name`}>
+          <RecipePage />
         </Route>
 
         <Route path={SHOPPING_CART_PAGE_ROUTE}>
@@ -94,7 +82,7 @@ function App() {
           <OrdersPage />
         </Route>
 
-        <Route>
+        <Route exact path="*">
           <NotFound />
         </Route>
       </Switch>

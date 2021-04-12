@@ -1,0 +1,42 @@
+.card {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  margin: 1% 0% 1% 0%;
+  border-radius: 0;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  align-items: center;
+  text-align: center;
+}
+
+.productDetails {
+  text-align: justify;
+  margin-left: 4%;
+}
+
+.body {
+  padding: 0;
+  margin: 0;
+}
+
+.quantityInput {
+  width: 20%;
+  text-align: center;
+}
+
+.itemTitle {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.price {
+  font-size: 18px;
+}

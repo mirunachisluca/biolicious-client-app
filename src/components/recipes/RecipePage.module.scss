@@ -1,0 +1,26 @@
+.recipePage {
+  padding: 1% 8% 1% 8%;
+}
+
+.pictureWithDescription {
+  display: grid;
+  grid-template-columns: 60% 40%;
+}
+
+.recipePicture {
+  padding: 0 5% 0 5%;
+}
+
+.recipeDescription {
+  padding: 0 5% 0 5%;
+  text-align: justify;
+}
+
+.ingredientsAndSteps {
+  display: grid;
+  grid-template-columns: 60% 40%;
+}
+
+.recipeStep {
+  text-align: justify;
+}
