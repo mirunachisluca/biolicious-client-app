@@ -8,8 +8,7 @@ import styles from './ItemSummaryCard.module.scss';
 
 function ItemSummaryCard({ item }) {
   const [quantity, setQuantity] = React.useState(1);
-  //   const [price, setPrice] = React.useState();
-
+  const [price, setPrice] = React.useState(item.productPrice);
   const { dispatch } = React.useContext(ShoppingCartContext);
 
   function quantityInputHandler(e) {
@@ -20,10 +19,10 @@ function ItemSummaryCard({ item }) {
     setQuantity(inputQuantity);
   }
 
-  //   React.useEffect(() => {
-  //     const newPrice = calculateTotal(item.price, quantity);
-  //     setPrice(newPrice);
-  //   }, [quantity, item.price]);
+  React.useEffect(() => {
+    const newPrice = calculateTotal(item.productPrice, quantity);
+    setPrice(newPrice);
+  }, [quantity, item.productPrice]);
 
   return (
     <>
@@ -46,7 +45,7 @@ function ItemSummaryCard({ item }) {
           </div>
 
           <Card.Body className={styles.body}>
-            <p className={styles.price}>{`${item.productPrice}€`}</p>
+            <p className={styles.price}>{`${price}€`}</p>
             <Button
               variant="outline-black"
               className={styles.uppercase}

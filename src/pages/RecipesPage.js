@@ -3,19 +3,25 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { axiosInstance } from '../api/axios';
 
 import { FilterCard } from '../components/filters/FilterCard';
+import { SearchBar } from '../components/filters/SearchBar';
+import { Pagination } from '../components/pagination/Pagination';
 import { RecipeCard } from '../components/recipes/RecipeCard';
 import { MenuBarContext } from '../context/MenuBarContext';
-import { convertToUrl } from '../helpers/convertToUrl';
+import { convertFromUrl, convertToUrl } from '../helpers/convertToUrl';
 import { createNameIdMap } from '../helpers/createNameIdMap';
 import { getUrlSerachParams } from '../helpers/getUrlSearchParams';
 import { parseQueryString } from '../helpers/parseQueryString';
 import {
+  CHANGE_PAGE_INDEX,
+  CLEAR_SEARCH,
   DELETE_CATEGORY_FILTER,
   DELETE_DIET_FILTER,
   FETCH_RECIPES,
   FILTER_BY_CATEGORY,
   FILTER_BY_DIET,
-  RESET_URL
+  RESET_URL,
+  SEARCH,
+  SEARCH_INPUT_CHANGE
 } from '../store/recipes/recipesListActions';
 import {
   initialState,
@@ -48,7 +54,9 @@ function RecipesPage() {
         .get(apiUrl, {
           params: {
             dietId: state.apiParams.dietId,
-            categoryId: state.apiParams.categoryId
+            categoryId: state.apiParams.categoryId,
+            pageIndex: state.apiParams.pageIndex,
+            search: state.apiParams.search
           }
         })
         .then((response) => {
@@ -60,7 +68,12 @@ function RecipesPage() {
           console.log(error);
         });
     },
-    [state.apiParams.dietId, state.apiParams.categoryId]
+    [
+      state.apiParams.dietId,
+      state.apiParams.categoryId,
+      state.apiParams.search,
+      state.apiParams.pageIndex
+    ]
   );
 
   React.useEffect(
@@ -87,6 +100,13 @@ function RecipesPage() {
               dietId: mappedDiets[queryParams.diet],
               dietName: queryParams.diet
             }
+          });
+        }
+
+        if (queryParams.search) {
+          dispatch({
+            type: SEARCH,
+            payload: convertFromUrl(queryParams.search)
           });
         }
       }
@@ -148,46 +168,62 @@ function RecipesPage() {
     history.replace({ search: urlSearchParams.toString() });
   };
 
+  const pageNumberHandler = (pageNumber) => {
+    dispatch({ type: CHANGE_PAGE_INDEX, payload: pageNumber });
+  };
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+
+    if (state.searchString) {
+      dispatch({ type: SEARCH, payload: state.searchString });
+    }
+
+    const newUrlParams = { ...state.urlParams };
+
+    newUrlParams.search = convertToUrl(state.searchString);
+
+    const urlSearchParams = getUrlSerachParams(newUrlParams);
+
+    history.replace({ search: urlSearchParams.toString() });
+  };
+
+  const clearSearchHandler = () => {
+    dispatch({ type: CLEAR_SEARCH });
+
+    const newUrlParams = { ...state.urlParams };
+
+    newUrlParams.search = '';
+
+    const urlSearchParams = getUrlSerachParams(newUrlParams);
+
+    history.replace({ search: urlSearchParams.toString() });
+  };
+
+  const onChange = (e) => {
+    dispatch({
+      type: SEARCH_INPUT_CHANGE,
+      payload: e.target.value
+    });
+  };
+
   return (
     <>
       <br />
       <h3 className="uppercase-bembo">Recipes</h3>
       <br />
 
-      {/* <div className={styles.dietButtonsDiv}>
-        {diets.status === 'FETCHED' &&
-          diets.data.map((diet) => (
-            <LinkContainer
-              key={diet.id}
-              to={`${DIETS_PAGE_ROUTE}/${convertToUrl(diet.name)}`}
-            >
-              <Button key={`diet-${diet.id}`} className={styles.button}>
-                {diet.name}
-              </Button>
-            </LinkContainer>
-          ))}
-      </div>
-
-      <h3 className="uppercase-bembo">Categories</h3>
-
-      <div className={styles.categoryButtonsDiv}>
-        {categories.status === 'FETCHED' &&
-          categories.data.map((category) => (
-            <LinkContainer
-              key={category.id}
-              to={`${CATEGORIES_PAGE_ROUTE}/${convertToUrl(category.name)}`}
-            >
-              <Button key={`category-${category.id}`} className={styles.button}>
-                {category.name}
-              </Button>
-            </LinkContainer>
-          ))}
-      </div> */}
-
       <div className={styles.flexbox}>
         <div className={styles.filtersDiv}>
           <div className={styles.fixed}>
             <h5 className="uppercase-bembo">filter by:</h5>
+
+            <SearchBar
+              state={state}
+              onChange={onChange}
+              searchHandler={searchHandler}
+              clearSearchHandler={clearSearchHandler}
+            />
 
             {categories.status === 'FETCHED' && (
               <FilterCard
@@ -212,6 +248,13 @@ function RecipesPage() {
         </div>
 
         <div className={styles.recipesDiv}>
+          <Pagination
+            pageSize={state.apiParams.pageSize}
+            totalProducts={state.recipes.count}
+            pageNumberHandler={pageNumberHandler}
+            pageIndex={state.apiParams.pageIndex}
+          />
+
           <ol className={styles.list}>
             {state.recipes.status === 'FETCHED' &&
               state.recipes.results.map((recipe) => (
@@ -224,6 +267,13 @@ function RecipesPage() {
                 </li>
               ))}
           </ol>
+
+          <Pagination
+            pageSize={state.apiParams.pageSize}
+            totalProducts={state.recipes.count}
+            pageNumberHandler={pageNumberHandler}
+            pageIndex={state.apiParams.pageIndex}
+          />
         </div>
       </div>
     </>

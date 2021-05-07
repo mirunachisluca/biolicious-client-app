@@ -8,9 +8,9 @@ function RecipeItemsSummary({ show, handleClose, items }) {
       size="lg"
       show={show}
       onHide={handleClose}
+      animation={false}
       backdrop="static"
-      keyboard={false}
-      className="modal-dialog-scrollable"
+      scrollable
     >
       <Modal.Header closeButton>
         <Modal.Title>Summary</Modal.Title>

@@ -6,7 +6,8 @@
 
 $theme-colors: (
   // secondary: #808588
-  black: black
+  black: black,
+  white: white
 );
 
 $dropdown-link-active-bg: rgb(197, 137, 197);
@@ -42,6 +43,15 @@ $btn-font-size-xs: 1rem * 0.78;
   text-transform: uppercase;
 }
 
+.btn-dropdown-simple {
+  @include button-outline-variant(white);
+  border-color: #ced4da;
+}
+
+.btn-no-margin {
+  color: black;
+}
+
 .dropdown-filter {
   font-family: 'bembo';
   text-transform: uppercase;
@@ -58,4 +68,8 @@ $btn-font-size-xs: 1rem * 0.78;
   margin-bottom: 0.5rem;
   margin-right: 0.5rem;
   cursor: pointer;
+}
+
+.form-control {
+  margin-bottom: 1%;
 }

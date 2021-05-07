@@ -1,0 +1,17 @@
+.grid {
+  display: grid;
+  padding: 2% 2% 1% 2%;
+  grid-template-columns: 20% 80%;
+}
+
+.searchInput {
+  width: 50%;
+  margin-right: 2%;
+  display: inline-flex;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  padding: 2% 0 0 0;
+}

@@ -10,7 +10,6 @@ function SignupPage() {
 
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
-  const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPasswod] = React.useState('');
   const [repeatPassword, setRepeatPassword] = React.useState('');
@@ -21,10 +20,6 @@ function SignupPage() {
 
   const lastNameInputHandler = (e) => {
     setLastName(e.target.value);
-  };
-
-  const usernameInputHandler = (e) => {
-    setUsername(e.target.value);
   };
 
   const emailInputHandler = (e) => {
@@ -46,7 +41,6 @@ function SignupPage() {
       .post('/accounts/register', {
         firstName,
         lastName,
-        username,
         email,
         password,
         confirmedPassword: repeatPassword
@@ -87,16 +81,6 @@ function SignupPage() {
                   placeholder="Last name"
                   value={lastName}
                   onChange={lastNameInputHandler}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formUserName">
-                <Form.Label>Username</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Username"
-                  value={username}
-                  onChange={usernameInputHandler}
                 />
               </Form.Group>
             </div>

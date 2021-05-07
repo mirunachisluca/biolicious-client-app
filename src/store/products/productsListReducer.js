@@ -18,7 +18,7 @@ const initialState = {
     sort: '',
     search: '',
     pageIndex: 1,
-    pageSize: 10
+    pageSize: 16
   },
   urlParams: {
     search: '',
@@ -122,7 +122,7 @@ function productsListReducer(state, action) {
           brandId: 0,
           sort: '',
           pageIndex: state.apiParams.pageIndex,
-          pageSize: 10
+          pageSize: 16
         },
         urlParams: {
           search: '',
@@ -147,14 +147,8 @@ function productsListReducer(state, action) {
     case CLEAR_SEARCH:
       return {
         ...state,
-        apiParams: {
-          ...state.apiParams,
-          search: ''
-        },
-        urlParams: {
-          ...state.urlParams,
-          search: ''
-        },
+        apiParams: { ...state.apiParams, search: '' },
+        urlParams: { ...state.urlParams, search: '' },
         searchString: '',
         searchActive: false
       };

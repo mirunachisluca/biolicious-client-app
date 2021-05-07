@@ -1,6 +1,5 @@
 import React from 'react';
-import { DropdownButton, Dropdown, Form, FormControl } from 'react-bootstrap';
-import { Search, X } from 'react-bootstrap-icons';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { Pagination } from '../pagination/Pagination';
@@ -29,6 +28,7 @@ import {
   SORT_BY
 } from '../../store/products/productsListActionTypes';
 import { createNameIdMap } from '../../helpers/createNameIdMap';
+import { SearchBar } from '../filters/SearchBar';
 
 const sorting = Object.freeze({
   priceAsc: 'Price: ascending',
@@ -233,6 +233,13 @@ function ProductsList({ categoryId, subcategoryId, name }) {
     history.replace({ search: urlSearchParams.toString() });
   };
 
+  const onChange = (e) => {
+    dispatch({
+      type: SEARCH_INPUT_CHANGE,
+      payload: e.target.value
+    });
+  };
+
   return (
     <div className={styles.flexboxColumn}>
       <div>
@@ -241,49 +248,17 @@ function ProductsList({ categoryId, subcategoryId, name }) {
         <br />
       </div>
 
-      {/* <Breadcrumb>
-        <Breadcrumb.Item>Shop</Breadcrumb.Item>
-        <Breadcrumb.Item></Breadcrumb.Item>
-      </Breadcrumb> */}
-
       <div className={styles.flexboxWithWrap}>
         <div className={styles.filtersDiv}>
           <div className={styles.fixed}>
             <h5 className="uppercase-bembo">filter by:</h5>
 
-            <Form inline className={styles.justifyCenter}>
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className={`${styles.input} mr-sm-2 font-weight-light shadow`}
-                value={state.searchString}
-                onChange={(e) => {
-                  dispatch({
-                    type: SEARCH_INPUT_CHANGE,
-                    payload: e.target.value
-                  });
-                }}
-              />
-              {!state.searchActive && (
-                <button
-                  type="submit"
-                  className={`${styles.searchButton}`}
-                  onClick={searchHandler}
-                >
-                  <Search />
-                </button>
-              )}
-
-              {state.searchActive && (
-                <button
-                  type="submit"
-                  className={`${styles.searchButton}`}
-                  onClick={clearSearchHandler}
-                >
-                  <X className={`${styles.clearButton}`} />
-                </button>
-              )}
-            </Form>
+            <SearchBar
+              state={state}
+              onChange={onChange}
+              searchHandler={searchHandler}
+              clearSearchHandler={clearSearchHandler}
+            />
 
             {state.brands.status === 'FETCHED' && (
               <FilterCard

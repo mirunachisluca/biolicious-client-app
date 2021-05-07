@@ -18,6 +18,8 @@ import {
 } from './helpers/createDynamicRoutes';
 import { MenuBarContext } from './context/MenuBarContext';
 import {
+  ADMIN_PAGE,
+  EDIT_PROFILE_PAGE_ROUTE,
   HOMEPAGE_ROUTE,
   LOGIN_PAGE_ROUTE,
   ORDERS_PAGE_ROUTE,
@@ -28,6 +30,8 @@ import {
   SIGNUP_PAGE_ROUTE
 } from './routes/pageRoutes';
 import { RecipePage } from './components/recipes/RecipePage';
+import { AdminPage } from './pages/AdminPage';
+import { EditProfilePage } from './pages/EditProfilePage';
 
 function App() {
   const { activeData, shopData } = React.useContext(MenuBarContext);
@@ -74,12 +78,20 @@ function App() {
           <ShoppingCartPage />
         </Route>
 
-        <Route path={PROFILE_PAGE_ROUTE}>
+        <Route exact path={PROFILE_PAGE_ROUTE}>
           <ProfilePage />
+        </Route>
+
+        <Route exact path={EDIT_PROFILE_PAGE_ROUTE}>
+          <EditProfilePage />
         </Route>
 
         <Route path={ORDERS_PAGE_ROUTE}>
           <OrdersPage />
+        </Route>
+
+        <Route exact path={ADMIN_PAGE}>
+          <AdminPage />
         </Route>
 
         <Route exact path="*">

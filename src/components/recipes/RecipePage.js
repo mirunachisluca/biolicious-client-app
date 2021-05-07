@@ -79,10 +79,11 @@ function RecipePage() {
             <div className={styles.ingredientsAndSteps}>
               <div>
                 <h3>Steps</h3>
+                <br />
                 <ol>
                   {recipe.result.recipeSteps.map((step) => (
-                    <li key={step.id}>
-                      <p key={step.id} className={styles.recipeStep}>
+                    <li key={step}>
+                      <p key={step} className={styles.recipeStep}>
                         {step}
                       </p>
                     </li>

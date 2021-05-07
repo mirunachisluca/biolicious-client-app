@@ -33,10 +33,9 @@ function UserProvider({ children }) {
           cartId = UUID();
 
           axiosInstance
-            .post('/shoppingcart/updateCartId', {
-              userEmail: decodedToken.email,
-              cartId
-            })
+            .post(
+              `/shoppingcart/updateCartId?userEmail=${decodedToken.email}&cartId=${cartId}`
+            )
             .then((newResponse) => {
               if (newResponse.status === 200) {
                 console.log('AM SETAT CART ID');
@@ -50,7 +49,8 @@ function UserProvider({ children }) {
 
         const currentUser = {
           displayName: decodedToken.given_name,
-          cartId
+          cartId,
+          role: decodedToken.role
         };
 
         setUser(currentUser);

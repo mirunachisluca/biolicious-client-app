@@ -71,7 +71,7 @@ function LoginPage() {
           </div>
 
           <Button variant="link" href="/signup" className={styles.linkButton}>
-            Don&apost have an account yet?
+            Don&apos;t have an account yet?
           </Button>
         </Form>
       </div>

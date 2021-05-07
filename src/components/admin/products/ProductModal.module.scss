@@ -1,0 +1,36 @@
+.inlineDisplay {
+  display: inline-flex;
+}
+
+.scrollableMenu {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
+}
+
+.smallInput {
+  width: 90%;
+}
+
+.dropdownInput {
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.grid3Cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.grid4Cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.grid2Cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

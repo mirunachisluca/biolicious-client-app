@@ -1,0 +1,37 @@
+.grid {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  padding: 3% 10% 3% 10%;
+  font-family: 'bembo';
+}
+
+.bodyGrid {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+
+.alignLeft {
+  text-align: left;
+}
+
+.detailsHeadings {
+  padding-left: 18%;
+  color: rgb(86, 86, 86);
+}
+
+.detailsValues {
+  padding-right: 18%;
+}
+
+.title {
+  margin-top: 5%;
+}
+
+.addressCard {
+  margin-left: 5%;
+}
+
+.icon {
+  align-self: center;
+  margin-top: 2%;
+}
