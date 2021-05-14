@@ -1,18 +1,17 @@
 import React from 'react';
-
 import { Modal } from 'react-bootstrap';
 
 import { axiosInstance } from '../../../api/axios';
-import { EditNameModal } from '../common/EditNameModal';
-import { ConfirmationModal } from '../common/ConfirmationModal';
-import { API_PRODUCT_BRANDS_ROUTE } from '../../../routes/apiRoutes';
-import { NewInputForm } from '../common/NewInputForm';
-import { ListItemWithActions } from '../common/ListItemWithActions';
-import { BrandsContext } from '../../../context/BrandsContext';
+import { MenuBarContext } from '../../../context/MenuBarContext';
 import { useModal } from '../../../customHooks/useModal';
+import { API_DIETS_ROUTE } from '../../../routes/apiRoutes';
+import { ConfirmationModal } from '../common/ConfirmationModal';
+import { EditNameModal } from '../common/EditNameModal';
+import { ListItemWithActions } from '../common/ListItemWithActions';
+import { NewInputForm } from '../common/NewInputForm';
 
-function BrandsModal({ visible, show, close }) {
-  const { brands, fetchBrands, setSortValue } = React.useContext(BrandsContext);
+function DietsModal({ visible, show, close }) {
+  const { diets, fetchRecipeDiets } = React.useContext(MenuBarContext);
 
   const {
     selectedItem,
@@ -25,30 +24,28 @@ function BrandsModal({ visible, show, close }) {
     hideConfirmationModalHandler
   } = useModal(show, close);
 
-  React.useEffect(() => setSortValue('latest'), []);
-
-  const addBrandHandler = (brand) => {
+  const addDietHandler = (diet) => {
     axiosInstance
-      .post(API_PRODUCT_BRANDS_ROUTE, { name: brand })
-      .then(() => fetchBrands())
+      .post(API_DIETS_ROUTE, { name: diet })
+      .then(() => fetchRecipeDiets())
       .catch((error) => console.log(error));
   };
 
-  const editBrandHandler = () => {
+  const editDietHandler = () => {
     axiosInstance
-      .put(API_PRODUCT_BRANDS_ROUTE, selectedItem)
+      .put(API_DIETS_ROUTE, selectedItem)
       .then(() => {
-        fetchBrands();
+        fetchRecipeDiets();
         hideEditModalHandler();
       })
       .catch((error) => console.log(error));
   };
 
-  const deleteBrandHandler = () => {
+  const deleteDietHandler = () => {
     axiosInstance
-      .delete(`${API_PRODUCT_BRANDS_ROUTE}/${selectedItem.id}`)
+      .delete(`${API_DIETS_ROUTE}/${selectedItem.id}`)
       .then(() => {
-        fetchBrands();
+        fetchRecipeDiets();
         hideConfirmationModalHandler();
       })
       .catch((error) => console.log(error));
@@ -58,20 +55,20 @@ function BrandsModal({ visible, show, close }) {
     <>
       <Modal show={visible} onHide={close} animation={false} scrollable>
         <Modal.Header closeButton>
-          <Modal.Title>Brands</Modal.Title>
+          <Modal.Title>Diets</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <NewInputForm placeholder="Brand name" addHandler={addBrandHandler} />
+          <NewInputForm placeholder="Diet name" addHandler={addDietHandler} />
 
           <br />
 
-          {brands.status === 'FETCHED' ? (
+          {diets.status === 'FETCHED' ? (
             <ol className="list-style-none">
-              {brands.result.map((brand) => (
+              {diets.data.map((diet) => (
                 <ListItemWithActions
-                  key={brand.id}
-                  item={brand}
+                  key={diet.id}
+                  item={diet}
                   displayEditModalHandler={displayEditModalHandler}
                   displayConfirmationModalHandler={
                     displayConfirmationModalHandler
@@ -80,7 +77,7 @@ function BrandsModal({ visible, show, close }) {
               ))}
             </ol>
           ) : (
-            <p>Loading...</p>
+            <p>Loading</p>
           )}
         </Modal.Body>
       </Modal>
@@ -88,7 +85,7 @@ function BrandsModal({ visible, show, close }) {
       <EditNameModal
         show={displayEditModal}
         close={hideEditModalHandler}
-        save={editBrandHandler}
+        save={editDietHandler}
         text={selectedItem.name}
         textChange={selectedItemHandler}
       />
@@ -96,11 +93,11 @@ function BrandsModal({ visible, show, close }) {
       <ConfirmationModal
         show={displayConfirmationModal}
         close={hideConfirmationModalHandler}
-        yesActionHandler={deleteBrandHandler}
+        yesActionHandler={deleteDietHandler}
         noActionHandler={hideConfirmationModalHandler}
       />
     </>
   );
 }
 
-export { BrandsModal };
+export { DietsModal };

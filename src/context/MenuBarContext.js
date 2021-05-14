@@ -1,6 +1,11 @@
 import React from 'react';
 import { axiosInstance } from '../api/axios';
 import {
+  API_DIETS_ROUTE,
+  API_PRODUCT_CATEGORIES_ROUTE,
+  API_RECIPE_CATEGORIES_ROUTE
+} from '../routes/apiRoutes';
+import {
   SET_CATEGORIES_DATA,
   SET_DIETS_DATA,
   SET_SHOP_DATA
@@ -13,10 +18,13 @@ export { MenuBarContext };
 
 function MenuBarProvider({ children }) {
   const [state, dispatch] = React.useReducer(menuBarReducer, initialState);
+  const [productCategoriesSort, setProductCategoriesSort] = React.useState('');
 
-  React.useEffect(() => {
+  function fetchProductCategories() {
     axiosInstance
-      .get('/productCategories')
+      .get(API_PRODUCT_CATEGORIES_ROUTE, {
+        params: { sort: productCategoriesSort }
+      })
       .then((response) => {
         if (response.status === 200) {
           dispatch({ type: SET_SHOP_DATA, payload: response.data });
@@ -25,11 +33,11 @@ function MenuBarProvider({ children }) {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }
 
-  React.useEffect(() => {
+  function fetchRecipeDiets() {
     axiosInstance
-      .get('/diets')
+      .get(API_DIETS_ROUTE)
       .then((response) => {
         if (response.status === 200) {
           dispatch({ type: SET_DIETS_DATA, payload: response.data });
@@ -38,11 +46,11 @@ function MenuBarProvider({ children }) {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }
 
-  React.useEffect(() => {
+  function fetchRecipeCategories() {
     axiosInstance
-      .get('/recipeCategories')
+      .get(API_RECIPE_CATEGORIES_ROUTE)
       .then((response) => {
         if (response.status === 200) {
           dispatch({ type: SET_CATEGORIES_DATA, payload: response.data });
@@ -51,7 +59,13 @@ function MenuBarProvider({ children }) {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }
+
+  React.useEffect(() => fetchProductCategories(), [productCategoriesSort]);
+
+  React.useEffect(() => fetchRecipeDiets(), []);
+
+  React.useEffect(() => fetchRecipeCategories(), []);
 
   return (
     <MenuBarContext.Provider
@@ -60,7 +74,11 @@ function MenuBarProvider({ children }) {
         shopData: state.shopData,
         diets: state.diets,
         categories: state.categories,
-        dispatch
+        dispatch,
+        fetchProductCategories,
+        fetchRecipeDiets,
+        fetchRecipeCategories,
+        setProductCategoriesSort
       }}
     >
       {children}

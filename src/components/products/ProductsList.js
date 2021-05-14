@@ -1,5 +1,5 @@
 import React from 'react';
-import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Spinner } from 'react-bootstrap';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { Pagination } from '../pagination/Pagination';
@@ -21,6 +21,7 @@ import {
   FETCH_BRANDS,
   FETCH_PRODUCTS,
   FILTER_BY_BRAND,
+  LOADING_PRODUCTS,
   RESET_URL,
   SEARCH,
   SEARCH_INPUT_CHANGE,
@@ -55,6 +56,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
 
   React.useEffect(
     function fetchProducts() {
+      dispatch({ type: LOADING_PRODUCTS });
       axiosInstance
         .get(apiURL, {
           params: {
@@ -310,14 +312,27 @@ function ProductsList({ categoryId, subcategoryId, name }) {
             />
           </div>
 
-          <ol className={styles.productsList}>
-            {state.products.status === 'FETCHED' &&
-              state.products.results.map((product) => (
-                <li key={product.id}>
-                  <ProductCard key={product.id} product={product} />
-                </li>
-              ))}
-          </ol>
+          {state.products.status === 'FETCHED' ? (
+            <>
+              {state.products.results.length === 0 && (
+                <div className={styles.centered}>
+                  <p>No results matched your search</p>
+                </div>
+              )}
+
+              <ol className={styles.productsList}>
+                {state.products.results.map((product) => (
+                  <li key={product.id}>
+                    <ProductCard key={product.id} product={product} />
+                  </li>
+                ))}
+              </ol>
+            </>
+          ) : (
+            <div className={styles.centered}>
+              <Spinner animation="border" />
+            </div>
+          )}
 
           <Pagination
             pageSize={state.apiParams.pageSize}

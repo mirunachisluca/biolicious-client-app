@@ -10,6 +10,8 @@ import reportWebVitals from './reportWebVitals';
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import { UserProvider } from './context/UserContext';
 import { MenuBarProvider } from './context/MenuBarContext';
+import { BrandsProvider } from './context/BrandsContext';
+import { ProductsProvider } from './context/ProductsContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,7 +19,11 @@ ReactDOM.render(
       <MenuBarProvider>
         <UserProvider>
           <ShoppingCartProvider>
-            <App />
+            <BrandsProvider>
+              <ProductsProvider>
+                <App />
+              </ProductsProvider>
+            </BrandsProvider>
           </ShoppingCartProvider>
         </UserProvider>
       </MenuBarProvider>

@@ -1,4 +1,5 @@
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
+export const LOADING_PRODUCTS = 'LOADING_PRODUCTS';
 export const FETCH_BRANDS = 'FETCH_BRANDS';
 export const CHANGE_PAGE_INDEX = 'CHANGE_PAGE_INDEX';
 export const SORT_BY = 'SORT_BY';

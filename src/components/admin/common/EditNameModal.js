@@ -7,9 +7,8 @@ function EditNameModal({ show, close, save, text, textChange }) {
       <Modal.Header>
         <Modal.Title>Edit</Modal.Title>
       </Modal.Header>
-
-      <Modal.Body>
-        <Form>
+      <Form>
+        <Modal.Body>
           <FormControl
             type="text"
             placeholder="Name"
@@ -18,17 +17,31 @@ function EditNameModal({ show, close, save, text, textChange }) {
               textChange(e.target.value);
             }}
           />
-        </Form>
-      </Modal.Body>
+        </Modal.Body>
 
-      <Modal.Footer>
-        <Button variant="outline-black" onClick={close}>
-          Cancel
-        </Button>
-        <Button variant="outline-black" onClick={save}>
-          Save
-        </Button>
-      </Modal.Footer>
+        <Modal.Footer>
+          <Button
+            variant="black"
+            onClick={(e) => {
+              e.preventDefault();
+              close();
+            }}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant="outline-black"
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              save();
+            }}
+          >
+            Save
+          </Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 }

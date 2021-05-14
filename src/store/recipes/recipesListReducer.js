@@ -6,6 +6,7 @@ import {
   FETCH_RECIPES,
   FILTER_BY_CATEGORY,
   FILTER_BY_DIET,
+  LOADING_RECIPES,
   RESET_URL,
   SEARCH,
   SEARCH_INPUT_CHANGE
@@ -31,6 +32,8 @@ const initialState = {
 
 function recipesListReducer(state, action) {
   switch (action.type) {
+    case LOADING_RECIPES:
+      return { ...state, recipes: { ...state.recipes, status: 'LOADING' } };
     case FETCH_RECIPES: {
       return {
         ...state,

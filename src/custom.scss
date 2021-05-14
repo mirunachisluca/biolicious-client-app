@@ -73,3 +73,19 @@ $btn-font-size-xs: 1rem * 0.78;
 .form-control {
   margin-bottom: 1%;
 }
+
+.no-list-style {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list-style-none {
+  list-style: none;
+}
+
+.search-input {
+  width: 50%;
+  margin-right: 2%;
+  display: inline-flex;
+}

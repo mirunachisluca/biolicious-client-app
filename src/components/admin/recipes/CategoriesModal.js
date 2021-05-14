@@ -1,18 +1,18 @@
 import React from 'react';
-
 import { Modal } from 'react-bootstrap';
 
 import { axiosInstance } from '../../../api/axios';
-import { EditNameModal } from '../common/EditNameModal';
-import { ConfirmationModal } from '../common/ConfirmationModal';
-import { API_PRODUCT_BRANDS_ROUTE } from '../../../routes/apiRoutes';
-import { NewInputForm } from '../common/NewInputForm';
-import { ListItemWithActions } from '../common/ListItemWithActions';
-import { BrandsContext } from '../../../context/BrandsContext';
+import { MenuBarContext } from '../../../context/MenuBarContext';
 import { useModal } from '../../../customHooks/useModal';
+import { API_RECIPE_CATEGORIES_ROUTE } from '../../../routes/apiRoutes';
+import { ConfirmationModal } from '../common/ConfirmationModal';
+import { EditNameModal } from '../common/EditNameModal';
+import { ListItemWithActions } from '../common/ListItemWithActions';
+import { NewInputForm } from '../common/NewInputForm';
 
-function BrandsModal({ visible, show, close }) {
-  const { brands, fetchBrands, setSortValue } = React.useContext(BrandsContext);
+function CategoriesModal({ visible, show, close }) {
+  const { categories, fetchRecipeCategories } =
+    React.useContext(MenuBarContext);
 
   const {
     selectedItem,
@@ -25,30 +25,28 @@ function BrandsModal({ visible, show, close }) {
     hideConfirmationModalHandler
   } = useModal(show, close);
 
-  React.useEffect(() => setSortValue('latest'), []);
-
-  const addBrandHandler = (brand) => {
+  const addCategoryHandler = (category) => {
     axiosInstance
-      .post(API_PRODUCT_BRANDS_ROUTE, { name: brand })
-      .then(() => fetchBrands())
+      .post(API_RECIPE_CATEGORIES_ROUTE, { name: category })
+      .then(() => fetchRecipeCategories())
       .catch((error) => console.log(error));
   };
 
-  const editBrandHandler = () => {
+  const editCategoryHandler = () => {
     axiosInstance
-      .put(API_PRODUCT_BRANDS_ROUTE, selectedItem)
+      .put(API_RECIPE_CATEGORIES_ROUTE, selectedItem)
       .then(() => {
-        fetchBrands();
+        fetchRecipeCategories();
         hideEditModalHandler();
       })
       .catch((error) => console.log(error));
   };
 
-  const deleteBrandHandler = () => {
+  const deleteCategoryHandler = () => {
     axiosInstance
-      .delete(`${API_PRODUCT_BRANDS_ROUTE}/${selectedItem.id}`)
+      .delete(`${API_RECIPE_CATEGORIES_ROUTE}/${selectedItem.id}`)
       .then(() => {
-        fetchBrands();
+        fetchRecipeCategories();
         hideConfirmationModalHandler();
       })
       .catch((error) => console.log(error));
@@ -58,20 +56,23 @@ function BrandsModal({ visible, show, close }) {
     <>
       <Modal show={visible} onHide={close} animation={false} scrollable>
         <Modal.Header closeButton>
-          <Modal.Title>Brands</Modal.Title>
+          <Modal.Title>Categories</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <NewInputForm placeholder="Brand name" addHandler={addBrandHandler} />
+          <NewInputForm
+            placeholder="Category name"
+            addHandler={addCategoryHandler}
+          />
 
           <br />
 
-          {brands.status === 'FETCHED' ? (
+          {categories.status === 'FETCHED' ? (
             <ol className="list-style-none">
-              {brands.result.map((brand) => (
+              {categories.data.map((category) => (
                 <ListItemWithActions
-                  key={brand.id}
-                  item={brand}
+                  key={category.id}
+                  item={category}
                   displayEditModalHandler={displayEditModalHandler}
                   displayConfirmationModalHandler={
                     displayConfirmationModalHandler
@@ -80,7 +81,7 @@ function BrandsModal({ visible, show, close }) {
               ))}
             </ol>
           ) : (
-            <p>Loading...</p>
+            <p>Loading</p>
           )}
         </Modal.Body>
       </Modal>
@@ -88,7 +89,7 @@ function BrandsModal({ visible, show, close }) {
       <EditNameModal
         show={displayEditModal}
         close={hideEditModalHandler}
-        save={editBrandHandler}
+        save={editCategoryHandler}
         text={selectedItem.name}
         textChange={selectedItemHandler}
       />
@@ -96,11 +97,11 @@ function BrandsModal({ visible, show, close }) {
       <ConfirmationModal
         show={displayConfirmationModal}
         close={hideConfirmationModalHandler}
-        yesActionHandler={deleteBrandHandler}
+        yesActionHandler={deleteCategoryHandler}
         noActionHandler={hideConfirmationModalHandler}
       />
     </>
   );
 }
 
-export { BrandsModal };
+export { CategoriesModal };

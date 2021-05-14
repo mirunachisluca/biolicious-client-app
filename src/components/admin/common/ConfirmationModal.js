@@ -7,10 +7,24 @@ function ConfirmationModal({ show, close, yesActionHandler, noActionHandler }) {
       <Modal.Header closeButton />
       <Modal.Body>Are you sure you want to delete this item?</Modal.Body>
       <Modal.Footer>
-        <Button variant="outline-black" onClick={noActionHandler}>
+        <Button
+          variant="black"
+          onClick={(e) => {
+            e.preventDefault();
+            noActionHandler();
+          }}
+        >
           No
         </Button>
-        <Button variant="outline-black" onClick={yesActionHandler}>
+
+        <Button
+          variant="outline-black"
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+            yesActionHandler();
+          }}
+        >
           Yes
         </Button>
       </Modal.Footer>

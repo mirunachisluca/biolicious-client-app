@@ -1,108 +1,148 @@
 import React from 'react';
-import { Button, ButtonGroup, Form } from 'react-bootstrap';
+import { Button, ButtonGroup, Form, Spinner } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
-import { axiosInstance } from '../../../api/axios';
+
+import { ProductsContext } from '../../../context/ProductsContext';
 import {
-  CLOSE_BRANDS_MODAL,
-  CLOSE_CATEGORIES_MODAL,
-  CLOSE_PRODUCT_MODAL,
-  SHOW_BRANDS_MODAL,
-  SHOW_CATEGORIES_MODAL,
-  SHOW_PRODUCT_MODAL
+  closeBrandsModal,
+  closeCategoriesModal,
+  closeProductModal,
+  showBrandsModal,
+  showCategoriesModal,
+  showProductModal
 } from '../../../store/admin/productsTabActions';
 import {
   initialState,
   productsTabReducer
 } from '../../../store/admin/productsTabReducer';
 import { initialProduct } from '../../../store/products/productReducer';
+import { Pagination } from '../../pagination/Pagination';
 import { BrandsModal } from './BrandsModal';
 import { CategoriesModal } from './CategoriesModal';
+import { ProductListItem } from './ProductListItem';
 import { ProductModal } from './ProductModal';
 
 import styles from './ProductsTab.module.scss';
 
 function ProductsTab() {
   const [state, dispatch] = React.useReducer(productsTabReducer, initialState);
-  const [brands, setBrands] = React.useState({
-    status: 'PENDING',
-    result: null
-  });
+  const { products, apiParams, setApiParams } =
+    React.useContext(ProductsContext);
 
-  React.useEffect(function fetchBrands() {
-    axiosInstance
-      .get('/productBrands')
-      .then((response) => {
-        if (response.status === 200) {
-          setBrands({ status: 'FETCHED', result: response.data });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  const [searchInput, setSearchInput] = React.useState('');
+
+  const pageHandler = (pageIndex) => {
+    setApiParams({ ...apiParams, pageIndex });
+  };
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+    setApiParams({ ...apiParams, search: searchInput });
+    console.log(searchInput);
+  };
+
+  const showBrandsModalHandler = () => dispatch(showBrandsModal);
+  const hideBrandsModalHandler = () => dispatch(closeBrandsModal);
 
   return (
     <>
-      <div className={styles.grid}>
-        <div>
-          <ButtonGroup vertical>
-            <Button
-              variant="outline-black"
-              onClick={() => dispatch({ type: SHOW_PRODUCT_MODAL })}
-            >
-              Add Product
-            </Button>
+      <br />
 
-            <Button
-              variant="outline-black"
-              onClick={() => dispatch({ type: SHOW_BRANDS_MODAL })}
-            >
-              Edit Brands
-            </Button>
+      <ButtonGroup>
+        <Button
+          variant="outline-black"
+          onClick={() => dispatch(showProductModal)}
+        >
+          Add Product
+        </Button>
 
-            <Button
-              variant="outline-black"
-              onClick={() => dispatch({ type: SHOW_CATEGORIES_MODAL })}
-            >
-              Edit Categories
-            </Button>
-          </ButtonGroup>
+        <Button
+          variant="outline-black"
+          onClick={() => dispatch(showBrandsModal)}
+        >
+          Edit Brands
+        </Button>
+
+        <Button
+          variant="outline-black"
+          onClick={() => dispatch(showCategoriesModal)}
+        >
+          Edit Categories
+        </Button>
+      </ButtonGroup>
+
+      <br />
+      <br />
+
+      <Form>
+        <Form.Group>
+          <Form.Control
+            type="text"
+            className="search-input"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onClick={() => setSearchInput('')}
+          />
+
+          <Button type="submit" variant="no-margin" onClick={searchHandler}>
+            <Search />
+          </Button>
+        </Form.Group>
+      </Form>
+
+      {products.status === 'FETCHED' ? (
+        <div className={styles.flexboxColumn}>
+          <Pagination
+            pageSize={products.result.pageSize}
+            totalProducts={products.result.count}
+            pageNumberHandler={pageHandler}
+            pageIndex={products.result.pageIndex}
+          />
+
+          {products.result.data.length === 0 && (
+            <p>No results matched your search</p>
+          )}
+
+          <ul className={`${styles.productGrid} no-list-style`}>
+            {products.result.data.map((product) => (
+              <li key={product.id}>
+                <ProductListItem product={product} />
+              </li>
+            ))}
+          </ul>
         </div>
+      ) : (
+        <>
+          <br />
+          <br />
+          <br />
+          <Spinner animation="border" />
+        </>
+      )}
 
-        <div>
-          <Form>
-            <Form.Group>
-              <Form.Control type="text" className={styles.searchInput} />
-              <Search />
-            </Form.Group>
-          </Form>
-
-          <div className={styles.productGrid}>
-            <p>product 1</p>
-            <p>product 2</p>
-          </div>
-        </div>
-      </div>
-
-      {brands.status === 'FETCHED' && (
+      {state.showProductModal && (
         <ProductModal
           product={initialProduct}
-          show={state.showProductModal}
-          close={() => dispatch({ type: CLOSE_PRODUCT_MODAL })}
-          brands={brands.result}
+          show={true}
+          close={() => dispatch(closeProductModal)}
         />
       )}
 
-      <CategoriesModal
-        show={state.showCategoriesModal}
-        close={() => dispatch({ type: CLOSE_CATEGORIES_MODAL })}
-      />
+      {state.showCategoriesModal && (
+        <CategoriesModal
+          show={true}
+          close={() => dispatch(closeCategoriesModal)}
+          dispatch={dispatch}
+        />
+      )}
 
-      <BrandsModal
-        show={state.showBrandsModal}
-        close={() => dispatch({ type: CLOSE_BRANDS_MODAL })}
-        dispatch={dispatch}
-      />
+      {state.showBrandsModal && (
+        <BrandsModal
+          visible={true}
+          show={showBrandsModalHandler}
+          close={hideBrandsModalHandler}
+        />
+      )}
     </>
   );
 }

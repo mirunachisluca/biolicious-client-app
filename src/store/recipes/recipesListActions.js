@@ -1,4 +1,5 @@
 export const FETCH_RECIPES = 'FETCH_RECIPES';
+export const LOADING_RECIPES = 'LOADING_RECIPES';
 export const FILTER_BY_DIET = 'FILTER_BY_DIET';
 export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY';
 export const RESET_URL = 'RESET_URL';

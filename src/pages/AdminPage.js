@@ -4,6 +4,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import { axiosInstance } from '../api/axios';
 import { LoginModal } from '../components/admin/LoginModal';
 import { ProductsTab } from '../components/admin/products/ProductsTab';
+import { RecipesTab } from '../components/admin/recipes/RecipesTab';
 import { UserContext } from '../context/UserContext';
 
 function AdminPage() {
@@ -34,7 +35,6 @@ function AdminPage() {
 
   return (
     <>
-      <br />
       <LoginModal
         show={show}
         loginHandler={loginHandler}
@@ -54,7 +54,7 @@ function AdminPage() {
             </Tab>
 
             <Tab eventKey="recipes" title="Recipes">
-              <p>Address</p>
+              <RecipesTab />
             </Tab>
 
             <Tab eventKey="users" title="Users">

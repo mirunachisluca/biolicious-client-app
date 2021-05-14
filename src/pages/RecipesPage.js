@@ -1,4 +1,5 @@
 import React from 'react';
+import { Spinner } from 'react-bootstrap';
 import { useHistory, useLocation } from 'react-router-dom';
 import { axiosInstance } from '../api/axios';
 
@@ -44,9 +45,10 @@ function RecipesPage() {
     [categories.data]
   );
 
-  const mappedDiets = React.useMemo(() => createNameIdMap(diets.data), [
-    diets.data
-  ]);
+  const mappedDiets = React.useMemo(
+    () => createNameIdMap(diets.data),
+    [diets.data]
+  );
 
   React.useEffect(
     function fetchRecipes() {
@@ -255,9 +257,9 @@ function RecipesPage() {
             pageIndex={state.apiParams.pageIndex}
           />
 
-          <ol className={styles.list}>
-            {state.recipes.status === 'FETCHED' &&
-              state.recipes.results.map((recipe) => (
+          {state.recipes.status === 'FETCHED' ? (
+            <ol className={styles.list}>
+              {state.recipes.results.map((recipe) => (
                 <li key={recipe.id}>
                   <RecipeCard
                     key={recipe.id}
@@ -266,7 +268,15 @@ function RecipesPage() {
                   />
                 </li>
               ))}
-          </ol>
+            </ol>
+          ) : (
+            <Spinner animation="border" className={styles.centered} />
+          )}
+
+          {state.recipes.status === 'FETCHED' &&
+            state.recipes.results.length === 0 && (
+              <p className={styles.centered}>No results matched your search</p>
+            )}
 
           <Pagination
             pageSize={state.apiParams.pageSize}

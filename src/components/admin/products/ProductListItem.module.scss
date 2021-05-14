@@ -1,0 +1,25 @@
+.grid {
+  display: grid;
+  grid-template-columns: 42% 58%;
+}
+
+.bodyGrid {
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
+
+.card {
+  margin: 5px;
+}
+
+.cardBody {
+  padding: 0.8rem 0 0.8rem 0;
+}
+
+.font {
+  font-size: 14px;
+}
+
+.noMargin {
+  margin-bottom: 0;
+}
