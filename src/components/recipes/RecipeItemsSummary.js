@@ -5,7 +5,6 @@ import { ItemSummaryCard } from './ItemSummaryCard';
 function RecipeItemsSummary({ show, handleClose, items }) {
   return (
     <Modal
-      size="lg"
       show={show}
       onHide={handleClose}
       animation={false}

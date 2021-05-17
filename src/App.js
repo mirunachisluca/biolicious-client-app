@@ -19,6 +19,7 @@ import {
 import { MenuBarContext } from './context/MenuBarContext';
 import {
   ADMIN_PAGE,
+  CHECKOUT_PAGE_ROUTE,
   EDIT_PROFILE_PAGE_ROUTE,
   HOMEPAGE_ROUTE,
   LOGIN_PAGE_ROUTE,
@@ -32,6 +33,7 @@ import {
 import { RecipePage } from './components/recipes/RecipePage';
 import { AdminPage } from './pages/AdminPage';
 import { EditProfilePage } from './pages/EditProfilePage';
+import { CheckoutPage } from './pages/CheckoutPage';
 
 function App() {
   const { activeData, shopData } = React.useContext(MenuBarContext);
@@ -76,6 +78,10 @@ function App() {
 
         <Route path={SHOPPING_CART_PAGE_ROUTE}>
           <ShoppingCartPage />
+        </Route>
+
+        <Route path={CHECKOUT_PAGE_ROUTE}>
+          <CheckoutPage />
         </Route>
 
         <Route exact path={PROFILE_PAGE_ROUTE}>

@@ -12,7 +12,7 @@ import { BrandsContext } from '../../../context/BrandsContext';
 import { useModal } from '../../../customHooks/useModal';
 
 function BrandsModal({ visible, show, close }) {
-  const { brands, fetchBrands, setSortValue } = React.useContext(BrandsContext);
+  const { brands, fetchBrands } = React.useContext(BrandsContext);
 
   const {
     selectedItem,
@@ -24,8 +24,6 @@ function BrandsModal({ visible, show, close }) {
     hideEditModalHandler,
     hideConfirmationModalHandler
   } = useModal(show, close);
-
-  React.useEffect(() => setSortValue('latest'), []);
 
   const addBrandHandler = (brand) => {
     axiosInstance

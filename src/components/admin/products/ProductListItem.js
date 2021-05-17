@@ -43,12 +43,12 @@ function ProductListItem({ product }) {
     <>
       <Card className={`shadow ${styles.card}`}>
         <div className={styles.grid}>
-          <Card.Img src="../../../product.jpg" height="100%" />
+          <Card.Img src={product.pictureUrl} height="100%" />
 
           <Card.Body className={styles.cardBody}>
             <div className={styles.bodyGrid}>
               <div>
-                <p className={`${styles.font} ${styles.noMargin}`}>
+                <p className={`${styles.font} font-weight-bold`}>
                   {product.name}
                 </p>
 

@@ -9,11 +9,11 @@ function BrandsProvider({ children }) {
     status: 'PENDING',
     result: null
   });
-  const [sortValue, setSortValue] = React.useState('nameAsc');
+  const [brandsSortValue, setBrandsSortValue] = React.useState('nameAsc');
 
   function fetchBrands() {
     axiosInstance
-      .get(API_PRODUCT_BRANDS_ROUTE, { params: { sort: sortValue } })
+      .get(API_PRODUCT_BRANDS_ROUTE, { params: { sort: brandsSortValue } })
       .then((response) => {
         if (response.status === 200) {
           setBrands({ status: 'FETCHED', result: response.data });
@@ -24,10 +24,10 @@ function BrandsProvider({ children }) {
       });
   }
 
-  React.useEffect(() => fetchBrands(), [sortValue]);
+  React.useEffect(() => fetchBrands(), [brandsSortValue]);
 
   return (
-    <BrandsContext.Provider value={{ brands, fetchBrands, setSortValue }}>
+    <BrandsContext.Provider value={{ brands, fetchBrands, setBrandsSortValue }}>
       {children}
     </BrandsContext.Provider>
   );

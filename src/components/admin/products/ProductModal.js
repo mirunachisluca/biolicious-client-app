@@ -11,8 +11,6 @@ import {
   ToggleButtonGroup
 } from 'react-bootstrap';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import { axiosInstance } from '../../../api/axios';
 import { BrandsContext } from '../../../context/BrandsContext';
 import { MenuBarContext } from '../../../context/MenuBarContext';
@@ -43,7 +41,7 @@ function mapProduct(product) {
     weight: product.weight,
     price: product.price,
     discount: product.discount,
-    pictureUrl: product.pictureUrl,
+    pictureUrl: product.pictureUrl.substring(24, product.pictureUrl.lentgh),
     productBrandId: product.productBrandId,
     productCategoryId: product.productCategoryId,
     productSubcategoryId:
@@ -74,15 +72,9 @@ function ProductModal({ product, show, close }) {
 
   const [productCategory, setCategory] = React.useState(null);
 
-  const { shopData, setProductCategoriesSort } =
-    React.useContext(MenuBarContext);
-  const { brands, setSortValue } = React.useContext(BrandsContext);
+  const { shopData } = React.useContext(MenuBarContext);
+  const { brands } = React.useContext(BrandsContext);
   const { fetchProducts } = React.useContext(ProductsContext);
-
-  React.useEffect(() => {
-    setSortValue('nameAsc');
-    setProductCategoriesSort('nameAsc');
-  }, []);
 
   React.useEffect(
     function displaySubcategoryDropdown() {
@@ -129,11 +121,10 @@ function ProductModal({ product, show, close }) {
             setSelectedBrand({ id: 0, name: 'Brand' });
             setSelectedCategory({ id: 0, name: 'Category' });
             setSelectedSubcategory({ id: 0, name: 'Subcategory' });
+            fetchProducts();
           }
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => console.log(error));
     } else {
       axiosInstance
         .put(API_PRODUCTS_ROUTE, mapProduct(state))
@@ -141,7 +132,6 @@ function ProductModal({ product, show, close }) {
           if (response.status === 204) {
             fetchProducts();
             close();
-            console.log('ceau');
           }
         })
         .catch((error) => console.log(error));

@@ -6,31 +6,27 @@ import { calculatePriceWithTwoDecimals } from '../../helpers/pricesCalculator';
 import styles from './ShoppingCartTotal.module.scss';
 
 function ShoppingCartTotal() {
-  const { items } = React.useContext(ShoppingCartContext);
-  let total = 0;
-
-  items.forEach((item) => {
-    total += item.quantity * item.price;
-  });
+  const { calculateTotal, calculateSavedAmount } =
+    React.useContext(ShoppingCartContext);
 
   return (
     <>
       <Card className={`${styles.card} shadow`}>
         <Card.Title>Subtotal</Card.Title>
         <Card.Body>
-          <table className={`${styles.subtotalTable}`}>
-            <tbody>
-              <tr>
-                <th>Shipping:</th>
-                <td>next step</td>
-              </tr>
+          <div className={styles.grid}>
+            <p className="font-weight-bold">Shipping:</p>
+            <p>next step</p>
 
-              <tr>
-                <th>Subtotal:</th>
-                <td>{`${calculatePriceWithTwoDecimals(total)} €`}</td>
-              </tr>
-            </tbody>
-          </table>
+            <p className="font-weight-bold">Saved amount:</p>
+            <p>
+              {' '}
+              {`${calculatePriceWithTwoDecimals(calculateSavedAmount())} €`}
+            </p>
+
+            <p className="font-weight-bold">Subtotal:</p>
+            <p>{`${calculatePriceWithTwoDecimals(calculateTotal())} €`}</p>
+          </div>
         </Card.Body>
       </Card>
     </>

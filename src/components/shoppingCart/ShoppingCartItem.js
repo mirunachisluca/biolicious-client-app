@@ -1,5 +1,7 @@
 import React from 'react';
 import { Trash, TrashFill } from 'react-bootstrap-icons';
+import ImageFadeIn from 'react-image-fade-in';
+
 import { ShoppingCartContext } from '../../context/ShoppingCartContext';
 import {
   calculatePriceWithTwoDecimals,
@@ -15,6 +17,9 @@ import styles from './ShoppingCartItem.module.scss';
 function ShoppingCartItem({ item }) {
   const [quantity, setQuantity] = React.useState(item.quantity);
   const [price, setPrice] = React.useState(item.price);
+  const [discountPrice] = React.useState(
+    item.price - (item.discount * item.price) / 100
+  );
   const [isIconHovered, setIsIconHovered] = React.useState(false);
 
   const { dispatch } = React.useContext(ShoppingCartContext);
@@ -30,9 +35,9 @@ function ShoppingCartItem({ item }) {
   }
 
   React.useEffect(() => {
-    const newPrice = calculateTotal(item.price, quantity);
+    const newPrice = calculateTotal(discountPrice, quantity);
     setPrice(newPrice);
-  }, [quantity, item.price]);
+  }, [quantity]);
 
   function trashIconHover() {
     setIsIconHovered(true);
@@ -45,11 +50,21 @@ function ShoppingCartItem({ item }) {
     <>
       <tr key={item.id}>
         <td className={`${styles.productColumn}`}>
-          <img src="../../product.jpg" alt="" width="30%" />
-          <p className={`${styles.productTitle}`}>{item.name}</p>
+          <ImageFadeIn src={item.pictureUrl} alt="product" width="30%" />
+
+          <p className={`${styles.productTitle}`}>
+            {`${item.name} ${item.weight}`}
+          </p>
         </td>
 
-        <td>{`${calculatePriceWithTwoDecimals(item.price)} €`}</td>
+        <td>
+          <p className={item.discount !== 0 && 'crossed'}>
+            {`${calculatePriceWithTwoDecimals(item.price)} €`}
+          </p>
+          {item.discount !== 0 && (
+            <p>{`${calculatePriceWithTwoDecimals(discountPrice)} €`}</p>
+          )}
+        </td>
 
         <td>
           <input

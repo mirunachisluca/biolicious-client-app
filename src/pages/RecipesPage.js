@@ -265,6 +265,7 @@ function RecipesPage() {
                     key={recipe.id}
                     name={recipe.name}
                     description={recipe.description}
+                    image={recipe.pictureUrl}
                   />
                 </li>
               ))}

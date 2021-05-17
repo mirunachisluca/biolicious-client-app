@@ -2,39 +2,38 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { PersonCircle } from 'react-bootstrap-icons';
 import { LinkContainer } from 'react-router-bootstrap';
-import { axiosInstance } from '../api/axios';
-import { UserContext } from '../context/UserContext';
-import { GET_USER_DETAILS_ROUTE } from '../routes/apiRoutes';
+import { UserDetailsContext } from '../context/UserDetailsContext';
 import { EDIT_PROFILE_PAGE_ROUTE } from '../routes/pageRoutes';
 
 import styles from './css/ProfilePage.module.scss';
 
 function ProfilePage() {
-  const [userDetails, setUserDetails] = React.useState({
-    status: 'IDLE',
-    result: null
-  });
+  // const [userDetails, setUserDetails] = React.useState({
+  //   status: 'IDLE',
+  //   result: null
+  // });
 
-  const { user } = React.useContext(UserContext);
+  // const { user } = React.useContext(UserContext);
 
-  React.useEffect(
-    function fetchUserDetails() {
-      if (user) {
-        axiosInstance
-          .get(GET_USER_DETAILS_ROUTE)
-          .then((response) => {
-            if (response.status === 200) {
-              console.log(response.data);
-              setUserDetails({ status: 'FETCHED', result: response.data });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    },
-    [user]
-  );
+  // React.useEffect(
+  //   function fetchUserDetails() {
+  //     if (user) {
+  //       axiosInstance
+  //         .get(GET_USER_DETAILS_ROUTE)
+  //         .then((response) => {
+  //           if (response.status === 200) {
+  //             setUserDetails({ status: 'FETCHED', result: response.data });
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           console.log(error);
+  //         });
+  //     }
+  //   },
+  //   [user]
+  // );
+
+  const { userDetails } = React.useContext(UserDetailsContext);
 
   return (
     <>

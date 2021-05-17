@@ -1,5 +1,8 @@
 import React from 'react';
 import { Button, Card } from 'react-bootstrap';
+import ImageFadeIn from 'react-image-fade-in';
+import { toast } from 'react-toastify';
+
 import { ShoppingCartContext } from '../../context/ShoppingCartContext';
 import { calculateTotal } from '../../helpers/pricesCalculator';
 import { addItemToCart } from '../../store/shoppingCart/shoppingCartActions';
@@ -27,7 +30,7 @@ function ItemSummaryCard({ item }) {
   return (
     <>
       <Card className={`${styles.card} shadow`}>
-        <img src="../../../product.jpg" width="100%" alt="product" />
+        <ImageFadeIn src={item.pictureUrl} width="100%" alt="product" />
 
         <div className={styles.grid}>
           <div className={styles.productDetails}>
@@ -55,12 +58,15 @@ function ItemSummaryCard({ item }) {
                     id: item.productId,
                     name: item.productName,
                     price: item.productPrice,
+                    discount: item.discount,
+                    weight: item.weight,
                     quantity,
                     pictureUrl: item.pictureUrl,
                     brand: item.productBrand,
                     category: item.productCategory
                   })
                 );
+                toast.success('Item added to cart');
               }}
             >
               Add

@@ -49,15 +49,15 @@ function AdminPage() {
             fill
             className="uppercase-bembo"
           >
-            <Tab eventKey="products" title="Products">
+            <Tab eventKey="products" title="Products" className="text-dark">
               <ProductsTab />
             </Tab>
 
-            <Tab eventKey="recipes" title="Recipes">
+            <Tab eventKey="recipes" title="Recipes" className="text-dark">
               <RecipesTab />
             </Tab>
 
-            <Tab eventKey="users" title="Users">
+            <Tab eventKey="users" title="Users" className="text-dark">
               <p>???</p>
             </Tab>
           </Tabs>

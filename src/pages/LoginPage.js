@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { axiosInstance } from '../api/axios';
 import { UserContext } from '../context/UserContext';
@@ -30,11 +31,13 @@ function LoginPage() {
         password
       })
       .then((response) => {
-        login(response.data.token);
-        history.replace('/');
+        if (response.status === 200) {
+          login(response.data.token);
+          history.replace('/');
+        }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        toast.error('Wrong email or password');
       });
   };
 
@@ -75,6 +78,18 @@ function LoginPage() {
           </Button>
         </Form>
       </div>
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 }

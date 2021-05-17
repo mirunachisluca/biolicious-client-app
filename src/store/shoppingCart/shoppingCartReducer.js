@@ -2,11 +2,13 @@ import {
   ADD_ITEM,
   LOAD_CART,
   REMOVE_ITEM,
+  SET_CART_STATUS,
   UPDATE_ITEM_QUANTITY
 } from './shoppingCartActions';
 
 const initialState = {
   shoppingCartId: null,
+  status: 'PENDING',
   items: []
 };
 
@@ -18,6 +20,8 @@ function shoppingCartReducer(state, action) {
         shoppingCartId: action.payload.id,
         items: action.payload.items
       };
+    case SET_CART_STATUS:
+      return { ...state, status: action.payload };
     case ADD_ITEM: {
       const currentItem = state.items.find((x) => x.id === action.payload.id);
       if (currentItem) {

@@ -1,7 +1,12 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
+import { MenuBarContext } from '../context/MenuBarContext';
 
 function ShopPage() {
+  const { setProductCategoriesSort } = React.useContext(MenuBarContext);
+
+  React.useEffect(() => setProductCategoriesSort(''), []);
+
   return (
     <>
       <br />

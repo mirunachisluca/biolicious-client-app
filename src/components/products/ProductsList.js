@@ -1,6 +1,7 @@
 import React from 'react';
 import { DropdownButton, Dropdown, Spinner } from 'react-bootstrap';
 import { useHistory, useLocation } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { Pagination } from '../pagination/Pagination';
 import { ProductCard } from './ProductCard';
@@ -342,6 +343,18 @@ function ProductsList({ categoryId, subcategoryId, name }) {
           />
         </div>
       </div>
+
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

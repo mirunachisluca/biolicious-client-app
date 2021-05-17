@@ -1,10 +1,13 @@
 import React from 'react';
-import { Figure, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import ImageFadeIn from 'react-image-fade-in';
 import { useParams } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 import { axiosInstance } from '../../api/axios';
 import { ShoppingCartContext } from '../../context/ShoppingCartContext';
 import { getStock } from '../../helpers/getStock';
+import { calculatePriceWithTwoDecimals } from '../../helpers/pricesCalculator';
 import { addItemToCart } from '../../store/shoppingCart/shoppingCartActions';
 import styles from './ProductPage.module.scss';
 
@@ -34,19 +37,10 @@ function ProductPage() {
     [name]
   );
 
-  // function quantityHandler(e) {
-  //   e.preventDefault();
-  //   if (e.target.innerHTML === '-') {
-  //     if (quantity > 1) setQuantity(quantity - 1);
-  //   } else if (e.target.innerHTML === '+') setQuantity(quantity + 1);
-  // }
-
   function quantityInputHandler(e) {
     const inputQuantity = parseInt(e.target.value, 10);
     if (inputQuantity <= 0) setQuantity(1);
     else setQuantity(inputQuantity);
-
-    // if (inputQuantity.isNaN()) setQuantity(1);
   }
 
   return (
@@ -54,13 +48,12 @@ function ProductPage() {
       {product.status === 'FETCHED' && (
         <div className={`${styles.flexbox} ${styles.productDiv}`}>
           <div className={`${styles.pictureDiv}`}>
-            <Figure>
-              <Figure.Image
-                width={600}
-                height={500}
-                src="../../../product.jpg"
-              />
-            </Figure>
+            <ImageFadeIn
+              width={600}
+              height={500}
+              src={product.result.pictureUrl}
+              opacityTransition={3}
+            />
           </div>
 
           <div className={`${styles.productDetailsDiv}`}>
@@ -69,16 +62,24 @@ function ProductPage() {
             <p>{product.result.description}</p>
 
             <div>
-              <h4>{`${product.result.price} €`}</h4>
+              <h4 className={product.result.discount !== 0 && 'crossed'}>
+                {`${calculatePriceWithTwoDecimals(product.result.price)} € `}
+              </h4>
+
+              {product.result.discount !== 0 && (
+                <h4>
+                  {`${calculatePriceWithTwoDecimals(
+                    product.result.price -
+                      (product.result.discount * product.result.price) / 100
+                  )} €`}
+                </h4>
+              )}
               <p>{product.result.weight}</p>
             </div>
 
             <p>{getStock(product.result.stock)}</p>
 
             <div className={`${styles.flexbox} ${styles.inputsDiv}`}>
-              {/* <button type="button" onClick={quantityHandler}>
-                -
-              </button> */}
               <input
                 type="number"
                 value={quantity}
@@ -89,30 +90,41 @@ function ProductPage() {
               <Button
                 variant="outline-black"
                 onClick={() => {
-                  console.log(product);
                   dispatch(
                     addItemToCart({
                       id: product.result.id,
                       name: product.result.name,
                       price: product.result.price,
+                      discount: product.result.discount,
+                      weight: product.result.weight,
                       quantity,
                       pictureUrl: product.result.pictureUrl,
                       brand: product.result.productBrand,
-                      category: product.result.productCategory
+                      category: product.result.productCategory,
+                      subcategory: product.result.productSubcategory
                     })
                   );
+                  toast.success('Item added to cart');
                 }}
               >
                 Add to cart
               </Button>
-
-              {/* <button type="button" onClick={quantityHandler}>
-                +
-              </button> */}
             </div>
           </div>
         </div>
       )}
+
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 }

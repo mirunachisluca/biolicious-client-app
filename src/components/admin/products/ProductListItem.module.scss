@@ -6,6 +6,9 @@
 .bodyGrid {
   display: grid;
   grid-template-columns: 80% 20%;
+  height: 100%;
+  text-align: center;
+  align-items: center;
 }
 
 .card {

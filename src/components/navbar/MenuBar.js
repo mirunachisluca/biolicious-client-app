@@ -40,12 +40,9 @@ const CustomToggle = React.forwardRef(({ onClick }, ref) => (
 function MenuBar({ navbarData }) {
   const [show, setShow] = React.useState(false);
 
-  const { dispatch, shopData, setProductCategoriesSort } =
-    React.useContext(MenuBarContext);
+  const { dispatch, shopData } = React.useContext(MenuBarContext);
 
   const { pathname } = useLocation();
-
-  React.useEffect(() => setProductCategoriesSort(''), []);
 
   React.useEffect(
     function setMenuBarData() {

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { useHistory, useParams } from 'react-router-dom';
+import ImageFadeIn from 'react-image-fade-in';
+import { useParams } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+
 import { axiosInstance } from '../../api/axios';
 import { API_RECIPES_ROUTE } from '../../routes/apiRoutes';
 import { IngredientsCard } from './IngredientsCard';
@@ -10,7 +13,6 @@ import styles from './RecipePage.module.scss';
 
 function RecipePage() {
   const { name } = useParams();
-  const history = useHistory();
 
   const [recipe, setRecipe] = React.useState({
     status: 'PENDING',
@@ -30,7 +32,6 @@ function RecipePage() {
         })
         .catch((error) => {
           console.log(error);
-          // history.push('/*');
         });
     },
     [name]
@@ -48,11 +49,12 @@ function RecipePage() {
             <br />
 
             <div className={styles.pictureWithDescription}>
-              <img
-                src="../../../pancakes.jpg"
+              <ImageFadeIn
+                src={recipe.result.pictureUrl}
                 alt="recipe"
                 width="100%"
                 className={styles.recipePicture}
+                opacityTransition={3}
               />
 
               <div className={styles.recipeDescription}>
@@ -103,6 +105,18 @@ function RecipePage() {
           />
         </>
       )}
+
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 }

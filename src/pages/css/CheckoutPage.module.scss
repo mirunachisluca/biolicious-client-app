@@ -1,0 +1,69 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  padding: 2% 2% 2% 2%;
+}
+
+.grid2Cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 2%;
+}
+
+.deliveryMethodItem {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 80% 20%;
+  margin-bottom: 5%;
+}
+
+.streetDiv {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
+.marginRight {
+  margin-right: 2%;
+}
+
+.marginLeft {
+  margin-left: 2%;
+}
+
+.alignLeft {
+  text-align: left;
+}
+
+.halfInput {
+  width: 49%;
+  margin-bottom: 2%;
+}
+
+.gridColumnMargin {
+  margin-left: 10%;
+}
+
+.radioButton {
+  color: transparent;
+}
+
+.selected {
+  color: white;
+  background-color: black;
+}
+
+.paymentButton {
+  width: 80%;
+  margin-bottom: 5%;
+  padding: 3%;
+}
+
+.placeOrderDiv {
+  margin-left: 10%;
+  margin-top: 70%;
+  text-align: center;
+}
+
+.placeOrderButton {
+  width: 80%;
+}

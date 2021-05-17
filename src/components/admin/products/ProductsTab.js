@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, ButtonGroup, Form, Spinner } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
+import { BrandsContext } from '../../../context/BrandsContext';
+import { MenuBarContext } from '../../../context/MenuBarContext';
 
 import { ProductsContext } from '../../../context/ProductsContext';
 import {
@@ -29,6 +31,9 @@ function ProductsTab() {
   const { products, apiParams, setApiParams } =
     React.useContext(ProductsContext);
 
+  const { setBrandsSortValue } = React.useContext(BrandsContext);
+  const { setProductCategoriesSort } = React.useContext(MenuBarContext);
+
   const [searchInput, setSearchInput] = React.useState('');
 
   const pageHandler = (pageIndex) => {
@@ -38,7 +43,6 @@ function ProductsTab() {
   const searchHandler = (e) => {
     e.preventDefault();
     setApiParams({ ...apiParams, search: searchInput });
-    console.log(searchInput);
   };
 
   const showBrandsModalHandler = () => dispatch(showBrandsModal);
@@ -51,21 +55,31 @@ function ProductsTab() {
       <ButtonGroup>
         <Button
           variant="outline-black"
-          onClick={() => dispatch(showProductModal)}
+          onClick={() => {
+            dispatch(showProductModal);
+            setBrandsSortValue('nameAsc');
+            setProductCategoriesSort('nameAsc');
+          }}
         >
           Add Product
         </Button>
 
         <Button
           variant="outline-black"
-          onClick={() => dispatch(showBrandsModal)}
+          onClick={() => {
+            dispatch(showBrandsModal);
+            setBrandsSortValue('latest');
+          }}
         >
           Edit Brands
         </Button>
 
         <Button
           variant="outline-black"
-          onClick={() => dispatch(showCategoriesModal)}
+          onClick={() => {
+            dispatch(showCategoriesModal);
+            setProductCategoriesSort('latest');
+          }}
         >
           Edit Categories
         </Button>
@@ -120,29 +134,23 @@ function ProductsTab() {
         </>
       )}
 
-      {state.showProductModal && (
-        <ProductModal
-          product={initialProduct}
-          show={true}
-          close={() => dispatch(closeProductModal)}
-        />
-      )}
+      <ProductModal
+        product={initialProduct}
+        show={state.showProductModal}
+        close={() => dispatch(closeProductModal)}
+      />
 
-      {state.showCategoriesModal && (
-        <CategoriesModal
-          show={true}
-          close={() => dispatch(closeCategoriesModal)}
-          dispatch={dispatch}
-        />
-      )}
+      <CategoriesModal
+        show={state.showCategoriesModal}
+        close={() => dispatch(closeCategoriesModal)}
+        dispatch={dispatch}
+      />
 
-      {state.showBrandsModal && (
-        <BrandsModal
-          visible={true}
-          show={showBrandsModalHandler}
-          close={hideBrandsModalHandler}
-        />
-      )}
+      <BrandsModal
+        visible={state.showBrandsModal}
+        show={showBrandsModalHandler}
+        close={hideBrandsModalHandler}
+      />
     </>
   );
 }
