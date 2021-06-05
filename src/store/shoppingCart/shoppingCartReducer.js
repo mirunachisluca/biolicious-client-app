@@ -3,13 +3,17 @@ import {
   LOAD_CART,
   REMOVE_ITEM,
   SET_CART_STATUS,
+  SET_DELIVERY_METHOD,
   UPDATE_ITEM_QUANTITY
 } from './shoppingCartActions';
 
 const initialState = {
   shoppingCartId: null,
   status: 'PENDING',
-  items: []
+  items: [],
+  clientSecret: '',
+  paymentIntentId: '',
+  deliveryMethodId: ''
 };
 
 function shoppingCartReducer(state, action) {
@@ -18,7 +22,10 @@ function shoppingCartReducer(state, action) {
       return {
         ...state,
         shoppingCartId: action.payload.id,
-        items: action.payload.items
+        items: action.payload.items,
+        deliveryMethodId: parseInt(action.payload.deliveryMethodId, 10),
+        clientSecret: action.payload.clientSecret,
+        paymentIntentId: action.payload.paymentIntentId
       };
     case SET_CART_STATUS:
       return { ...state, status: action.payload };
@@ -68,6 +75,8 @@ function shoppingCartReducer(state, action) {
 
       return { ...state, items: newItems };
     }
+    case SET_DELIVERY_METHOD:
+      return { ...state, deliveryMethodId: action.payload };
     default:
       return state;
   }

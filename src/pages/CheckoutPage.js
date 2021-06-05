@@ -1,13 +1,19 @@
 import React from 'react';
+
 import { Form, FormControl, FormLabel, Button, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+
 import { axiosInstance } from '../api/axios';
 import { DeliveryMethodsContext } from '../context/DeliveryMethodsContext';
 import { ShoppingCartContext } from '../context/ShoppingCartContext';
 import { UserDetailsContext } from '../context/UserDetailsContext';
 import { calculatePriceWithTwoDecimals } from '../helpers/pricesCalculator';
-import { API_ORDERS_ROUTE } from '../routes/apiRoutes';
-import { ORDERS_PAGE_ROUTE } from '../routes/pageRoutes';
+import { API_ORDERS_ROUTE, API_PAYMENTS_ROUTE } from '../routes/apiRoutes';
+import {
+  ORDERS_PAGE_ROUTE,
+  ORDER_PLACED,
+  PAYMENT_PAGE
+} from '../routes/pageRoutes';
 import {
   setAddress,
   setCityName,
@@ -29,8 +35,14 @@ import styles from './css/CheckoutPage.module.scss';
 function CheckoutPage() {
   const { userDetails } = React.useContext(UserDetailsContext);
   const { deliveryMethods } = React.useContext(DeliveryMethodsContext);
-  const { status, calculateTotal, fetchShoppingCart } =
-    React.useContext(ShoppingCartContext);
+  const {
+    status,
+    calculateTotal,
+    fetchShoppingCart,
+    deliveryMethodId,
+    setCartDeliveryMethodId,
+    deleteShoppingCart
+  } = React.useContext(ShoppingCartContext);
 
   const [state, dispatch] = React.useReducer(checkoutReducer, initialState);
 
@@ -55,6 +67,24 @@ function CheckoutPage() {
   );
 
   React.useEffect(
+    function updateDeliveryMethod() {
+      if (
+        deliveryMethodId !== 0 &&
+        !Number.isNaN(deliveryMethodId) &&
+        deliveryMethods.status === 'FETCHED'
+      ) {
+        const method = deliveryMethods.result.find(
+          (x) => x.id === deliveryMethodId
+        );
+
+        dispatch(setDeliveryMethodId(deliveryMethodId));
+        dispatch(setDeliveryPrice(parseFloat(method.price)));
+      }
+    },
+    [deliveryMethodId, deliveryMethods.status, deliveryMethods.result]
+  );
+
+  React.useEffect(
     function setCartPrice() {
       if (status === 'FETCHED') {
         setTotal(calculatePriceWithTwoDecimals(calculateTotal()));
@@ -73,12 +103,25 @@ function CheckoutPage() {
 
     axiosInstance
       .post(API_ORDERS_ROUTE, order)
-      .then((response) => {
-        if (response.status === 201) {
-          history.push(ORDERS_PAGE_ROUTE);
-        }
-      })
+      .then((response) => {})
       .catch((error) => console.log(error));
+  };
+
+  const placeOrderHandler = () => {
+    if (state.paymentMethod === 'card') {
+      history.push({
+        pathname: PAYMENT_PAGE,
+        state: {
+          price: calculatePriceWithTwoDecimals(
+            parseFloat(total) + parseFloat(state.deliveryPrice)
+          )
+        }
+      });
+    } else {
+      placeOrder();
+      deleteShoppingCart();
+      history.push(ORDER_PLACED);
+    }
   };
 
   return (
@@ -202,6 +245,7 @@ function CheckoutPage() {
                     }
                     onClick={() => {
                       dispatch(setDeliveryMethodId(method.id));
+                      setCartDeliveryMethodId(method.id);
                       dispatch(setDeliveryPrice(parseFloat(method.price)));
                     }}
                   >
@@ -231,18 +275,6 @@ function CheckoutPage() {
             <Button
               variant="outline-black"
               className={
-                state.paymentMethod === 'card'
-                  ? `${styles.paymentButton} ${styles.selected}`
-                  : styles.paymentButton
-              }
-              onClick={() => dispatch(setPaymentMethod('card'))}
-            >
-              Credit card
-            </Button>
-
-            <Button
-              variant="outline-black"
-              className={
                 state.paymentMethod === 'cash'
                   ? `${styles.paymentButton} ${styles.selected}`
                   : styles.paymentButton
@@ -250,6 +282,18 @@ function CheckoutPage() {
               onClick={() => dispatch(setPaymentMethod('cash'))}
             >
               Cash on delivery
+            </Button>
+
+            <Button
+              variant="outline-black"
+              className={
+                state.paymentMethod === 'card'
+                  ? `${styles.paymentButton} ${styles.selected}`
+                  : styles.paymentButton
+              }
+              onClick={() => dispatch(setPaymentMethod('card'))}
+            >
+              Credit card
             </Button>
           </div>
 
@@ -263,12 +307,15 @@ function CheckoutPage() {
                     parseFloat(total) + parseFloat(state.deliveryPrice)
                   )} €`}
                 </h5>
+
                 <Button
                   variant="outline-black"
-                  onClick={placeOrder}
+                  onClick={placeOrderHandler}
                   className={`${styles.placeOrderButton} uppercase-bembo`}
                 >
-                  Place order
+                  {state.paymentMethod === 'cash'
+                    ? 'Place order'
+                    : 'Place order &  go to payment'}
                 </Button>
               </>
             )}

@@ -10,6 +10,7 @@ import {
   Dropdown,
   ToggleButtonGroup
 } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 import { axiosInstance } from '../../../api/axios';
 import { BrandsContext } from '../../../context/BrandsContext';
@@ -122,6 +123,8 @@ function ProductModal({ product, show, close }) {
             setSelectedCategory({ id: 0, name: 'Category' });
             setSelectedSubcategory({ id: 0, name: 'Subcategory' });
             fetchProducts();
+
+            toast.dark('Product added successfully!');
           }
         })
         .catch((error) => console.log(error));
@@ -132,6 +135,8 @@ function ProductModal({ product, show, close }) {
           if (response.status === 204) {
             fetchProducts();
             close();
+
+            toast.dark('Product updated successfully!');
           }
         })
         .catch((error) => console.log(error));
@@ -140,7 +145,7 @@ function ProductModal({ product, show, close }) {
 
   return (
     <>
-      <Modal size="lg" show={show} onHide={close} animation={false}>
+      <Modal size="lg" show={show} onHide={close} animation={false} scrollable>
         <Modal.Header closeButton>
           {product.id === 0 ? (
             <Modal.Title>New product</Modal.Title>
@@ -149,10 +154,10 @@ function ProductModal({ product, show, close }) {
           )}
         </Modal.Header>
 
-        <Form>
-          <Modal.Body>
+        <Modal.Body>
+          <Form>
             <FormGroup>
-              <FormLabel>Name</FormLabel>
+              <FormLabel className="uppercase-bembo">Name</FormLabel>
               <FormControl
                 type="text"
                 placeholder="Name"
@@ -162,7 +167,7 @@ function ProductModal({ product, show, close }) {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Description</FormLabel>
+              <FormLabel className="uppercase-bembo">Description</FormLabel>
               <textarea
                 rows="3"
                 placeholder="Description"
@@ -174,12 +179,14 @@ function ProductModal({ product, show, close }) {
               />
             </FormGroup>
 
+            <FormLabel className="uppercase-bembo">Details</FormLabel>
+
             <div className={styles.grid3Cols}>
               <FormGroup>
                 <FormLabel>Brand</FormLabel>
                 <Dropdown>
                   <Dropdown.Toggle
-                    className={styles.dropdownInput}
+                    className="dropdown-toggle"
                     variant="dropdown-simple"
                   >
                     {selectedBrand.name}
@@ -191,7 +198,6 @@ function ProductModal({ product, show, close }) {
                         <Dropdown.Item
                           key={brand.id}
                           id={brand.id}
-                          value={brand.name}
                           onClick={productBrandHandler}
                         >
                           {brand.name}
@@ -206,7 +212,7 @@ function ProductModal({ product, show, close }) {
                 <FormLabel>Category</FormLabel>
                 <Dropdown>
                   <Dropdown.Toggle
-                    className={styles.dropdownInput}
+                    className="dropdown-toggle"
                     variant="dropdown-simple"
                   >
                     {selectedCategory.name}
@@ -234,7 +240,7 @@ function ProductModal({ product, show, close }) {
                     <FormLabel>Subcategory</FormLabel>
                     <Dropdown>
                       <Dropdown.Toggle
-                        className={styles.dropdownInput}
+                        className="dropdown-toggle"
                         variant="dropdown-simple"
                       >
                         {selectedSubcategory.name}
@@ -336,14 +342,14 @@ function ProductModal({ product, show, close }) {
                 </ToggleButtonGroup>
               </FormGroup>
             </div>
-          </Modal.Body>
+          </Form>
+        </Modal.Body>
 
-          <Modal.Footer>
-            <Button type="submit" variant="black" onClick={saveProduct}>
-              Save
-            </Button>
-          </Modal.Footer>
-        </Form>
+        <Modal.Footer>
+          <Button type="submit" variant="black" onClick={saveProduct}>
+            Save
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
   );

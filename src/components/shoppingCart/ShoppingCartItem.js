@@ -58,7 +58,7 @@ function ShoppingCartItem({ item }) {
         </td>
 
         <td>
-          <p className={item.discount !== 0 && 'crossed'}>
+          <p className={item.discount !== 0 ? 'crossed' : undefined}>
             {`${calculatePriceWithTwoDecimals(item.price)} €`}
           </p>
           {item.discount !== 0 && (

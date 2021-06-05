@@ -1,49 +1,52 @@
 import React from 'react';
 import { Button, ButtonGroup, Card } from 'react-bootstrap';
 import { PencilSquare, Trash } from 'react-bootstrap-icons';
+import ImageFadeIn from 'react-image-fade-in';
+import { toast } from 'react-toastify';
+
 import { axiosInstance } from '../../../api/axios';
 import { ProductsContext } from '../../../context/ProductsContext';
 import { API_PRODUCTS_ROUTE } from '../../../routes/apiRoutes';
 import { ConfirmationModal } from '../common/ConfirmationModal';
-
-import styles from './ProductListItem.module.scss';
+import { useActionModals } from '../../../customHooks/useActionModals';
 import { ProductModal } from './ProductModal';
 
-function ProductListItem({ product }) {
-  const [displayEditModal, setDisplayEditModal] = React.useState(false);
-  const [displayConfirmationModal, setDisplayConfirmationModal] =
-    React.useState(false);
+import styles from './ProductListItem.module.scss';
 
+function ProductListItem({ product }) {
   const { fetchProducts } = React.useContext(ProductsContext);
 
-  const displayEditModalHandler = () => {
-    setDisplayEditModal(true);
-  };
-
-  const hideEditModalHandler = () => {
-    setDisplayEditModal(false);
-  };
-
-  const displayConfirmationModalHandler = () => {
-    setDisplayConfirmationModal(true);
-  };
-
-  const hideConfirmationModalHandler = () => {
-    setDisplayConfirmationModal(false);
-  };
+  const {
+    displayEditModal,
+    displayConfirmationModal,
+    displayEditModalHandler,
+    displayConfirmationModalHandler,
+    hideEditModalHandler,
+    hideConfirmationModalHandler
+  } = useActionModals();
 
   const deleteProduct = () => {
     axiosInstance
       .delete(`${API_PRODUCTS_ROUTE}/${product.id}`)
-      .then(() => fetchProducts())
-      .catch((error) => console.log(error));
+      .then(() => {
+        fetchProducts();
+        toast.dark('Item deleted successfully');
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error('Something went wrong. Please try again');
+      });
   };
 
   return (
     <>
-      <Card className={`shadow ${styles.card}`}>
+      <Card className="shadow m-1">
         <div className={styles.grid}>
-          <Card.Img src={product.pictureUrl} height="100%" />
+          <ImageFadeIn
+            src={product.pictureUrl}
+            width="100%"
+            opacityTransition={2}
+          />
 
           <Card.Body className={styles.cardBody}>
             <div className={styles.bodyGrid}>
@@ -65,14 +68,14 @@ function ProductListItem({ product }) {
                 <ButtonGroup vertical>
                   <Button
                     variant="no-margin"
-                    onClick={() => displayEditModalHandler(product)}
+                    onClick={() => displayEditModalHandler()}
                   >
                     <PencilSquare />
                   </Button>
 
                   <Button
                     variant="no-margin"
-                    onClick={() => displayConfirmationModalHandler(product)}
+                    onClick={() => displayConfirmationModalHandler()}
                   >
                     <Trash />
                   </Button>

@@ -53,20 +53,22 @@ function ItemSummaryCard({ item }) {
               variant="outline-black"
               className={styles.uppercase}
               onClick={() => {
+                console.log(item);
                 dispatch(
                   addItemToCart({
                     id: item.productId,
                     name: item.productName,
                     price: item.productPrice,
                     discount: item.discount,
-                    weight: item.weight,
+                    weight: item.productWeight,
                     quantity,
                     pictureUrl: item.pictureUrl,
                     brand: item.productBrand,
-                    category: item.productCategory
+                    category: item.productCategory,
+                    subcategory: item.productSubcategory
                   })
                 );
-                toast.success('Item added to cart');
+                toast.dark('Item added to cart');
               }}
             >
               Add

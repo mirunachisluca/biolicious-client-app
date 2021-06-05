@@ -17,7 +17,7 @@ const initialState = {
     categoryId: 0,
     dietId: 0,
     pageIndex: 1,
-    pageSize: 15,
+    pageSize: 10,
     search: ''
   },
   urlParams: {
@@ -25,7 +25,7 @@ const initialState = {
     diet: '',
     search: ''
   },
-  recipes: { status: 'IDLE', count: 0, results: [] },
+  recipes: { status: 'PENDING', count: 0, results: [] },
   searchString: '',
   searchActive: false
 };

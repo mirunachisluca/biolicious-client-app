@@ -8,7 +8,7 @@ import {
 } from './recipesTabActions';
 
 const initialState = {
-  showRecipesModal: false,
+  showRecipeModal: false,
   showDietsModal: false,
   showCategoriesModal: false
 };
@@ -16,9 +16,9 @@ const initialState = {
 function recipesTabReducer(state, action) {
   switch (action.type) {
     case SHOW_RECIPE_MODAL:
-      return { ...state, showRecipesModal: true };
+      return { ...state, showRecipeModal: true };
     case CLOSE_RECIPE_MODAL:
-      return { ...state, showRecipesModal: false };
+      return { ...state, showRecipeModal: false };
     case SHOW_DIETS_MODAL:
       return { ...state, showDietsModal: true };
     case CLOSE_DIETS_MODAL:

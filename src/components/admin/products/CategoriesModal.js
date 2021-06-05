@@ -242,8 +242,6 @@ function CategoriesModal({ show, close, dispatch }) {
               ))}
           </ul>
         </Modal.Body>
-
-        <Modal.Footer />
       </Modal>
 
       <EditNameModal

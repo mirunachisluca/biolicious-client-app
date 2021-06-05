@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.4.1",
+    "@stripe/stripe-js": "^1.15.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
@@ -21,6 +23,7 @@
     "react-scripts": "4.0.2",
     "react-toastify": "^7.0.4",
     "react-uuid": "^1.0.2",
+    "shortid": "^2.2.16",
     "web-vitals": "^1.1.0"
   },
   "scripts": {

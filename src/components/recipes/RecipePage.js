@@ -84,9 +84,9 @@ function RecipePage() {
                 <br />
                 <ol>
                   {recipe.result.recipeSteps.map((step) => (
-                    <li key={step}>
-                      <p key={step} className={styles.recipeStep}>
-                        {step}
+                    <li key={step.id}>
+                      <p key={step.id} className={styles.recipeStep}>
+                        {step.step}
                       </p>
                     </li>
                   ))}
@@ -108,9 +108,9 @@ function RecipePage() {
 
       <ToastContainer
         position="bottom-left"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
-        newestOnTop={false}
+        newestOnTop
         closeOnClick
         rtl={false}
         pauseOnFocusLoss

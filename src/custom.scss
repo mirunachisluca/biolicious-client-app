@@ -44,8 +44,23 @@ $btn-font-size-xs: 1rem * 0.78;
 }
 
 .btn-dropdown-simple {
-  @include button-outline-variant(white);
+  @include button-outline-variant(black);
   border-color: #ced4da;
+}
+
+.dropdown-toggle,
+.dropdown-toggle:hover,
+.dropdown-toggle:active {
+  background-color: transparent;
+  color: #495057;
+  border-color: #ced4da;
+  border-radius: 0.25rem;
+}
+
+.nav-link {
+  color: black;
+  display: block;
+  padding: 0.5rem 1rem;
 }
 
 .btn-no-margin {
@@ -92,4 +107,15 @@ $btn-font-size-xs: 1rem * 0.78;
 
 .crossed {
   text-decoration: line-through;
+}
+
+.flexbox-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
 }

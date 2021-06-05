@@ -10,7 +10,7 @@ import styles from './RecipeCard.module.scss';
 function RecipeCard({ name, description, image }) {
   return (
     <>
-      <Card className="shadow">
+      <Card className="shadow mb-3">
         <div className={styles.grid}>
           <LinkContainer to={`${RECIPES_PAGE_ROUTE}/${convertToUrl(name)}`}>
             <ImageFadeIn

@@ -9,32 +9,14 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { ShoppingCartProvider } from './context/ShoppingCartContext';
-import { UserProvider } from './context/UserContext';
-import { MenuBarProvider } from './context/MenuBarContext';
-import { BrandsProvider } from './context/BrandsContext';
-import { ProductsProvider } from './context/ProductsContext';
-import { UserDetailsProvider } from './context/UserDetailsContext';
-import { DeliveryMethodsProvider } from './context/DeliveryMethodsContext';
+import { ContextWrapper } from './context/ContextWrapper';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <MenuBarProvider>
-        <UserProvider>
-          <UserDetailsProvider>
-            <ShoppingCartProvider>
-              <BrandsProvider>
-                <ProductsProvider>
-                  <DeliveryMethodsProvider>
-                    <App />
-                  </DeliveryMethodsProvider>
-                </ProductsProvider>
-              </BrandsProvider>
-            </ShoppingCartProvider>
-          </UserDetailsProvider>
-        </UserProvider>
-      </MenuBarProvider>
+      <ContextWrapper>
+        <App />
+      </ContextWrapper>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

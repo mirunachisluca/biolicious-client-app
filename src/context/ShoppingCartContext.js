@@ -7,9 +7,11 @@ import {
 } from '../store/shoppingCart/shoppingCartReducer';
 import {
   loadCart,
-  setCartStatus
+  setCartStatus,
+  setDeliveryMethod
 } from '../store/shoppingCart/shoppingCartActions';
 import { UserContext } from './UserContext';
+import { API_ORDERS_ROUTE, API_SHOPPING_CART } from '../routes/apiRoutes';
 
 const ShoppingCartContext = createContext({
   items: []
@@ -25,13 +27,19 @@ function ShoppingCartProvider({ children }) {
     dispatch(setCartStatus('LOADING'));
 
     axiosInstance
-      .get(`/shoppingCart/${cartId}`)
+      .get(`${API_SHOPPING_CART}/${cartId}`)
       .then((response) => {
         if (response.status === 200) {
           dispatch(loadCart(response.data));
           dispatch(setCartStatus('FETCHED'));
         }
       })
+      .catch((error) => console.log(error));
+  }
+
+  function deleteShoppingCart() {
+    axiosInstance
+      .delete(`${API_SHOPPING_CART}/${localStorage.getItem('cartId')}`)
       .catch((error) => console.log(error));
   }
 
@@ -51,7 +59,13 @@ function ShoppingCartProvider({ children }) {
   React.useEffect(
     function updateCart() {
       if (state.shoppingCartId) {
-        const shoppingCart = { id: state.shoppingCartId, items: state.items };
+        const shoppingCart = {
+          id: state.shoppingCartId,
+          items: state.items,
+          deliveryMethodId: state.deliveryMethodId,
+          clientSecret: state.clientSecret,
+          paymentIntentId: state.paymentIntentId
+        };
         axiosInstance
           .post('shoppingCart/update/', shoppingCart)
           .then()
@@ -60,7 +74,13 @@ function ShoppingCartProvider({ children }) {
           });
       }
     },
-    [state.shoppingCartId, state.items]
+    [
+      state.shoppingCartId,
+      state.items,
+      state.deliveryMethodId,
+      state.clientSecret,
+      state.paymentIntentId
+    ]
   );
 
   function calculateTotal() {
@@ -84,6 +104,8 @@ function ShoppingCartProvider({ children }) {
     return saved;
   }
 
+  const setCartDeliveryMethodId = (id) => dispatch(setDeliveryMethod(id));
+
   return (
     <ShoppingCartContext.Provider
       value={{
@@ -92,7 +114,10 @@ function ShoppingCartProvider({ children }) {
         fetchShoppingCart,
         dispatch,
         calculateTotal,
-        calculateSavedAmount
+        calculateSavedAmount,
+        setCartDeliveryMethodId,
+        deliveryMethodId: state.deliveryMethodId,
+        deleteShoppingCart
       }}
     >
       {children}

@@ -1,0 +1,23 @@
+.input {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 0.25fr;
+}
+
+.smallInput {
+  width: 90%;
+}
+
+.dropdownWidth {
+  width: 80%;
+}
+
+.trashIcon {
+  padding: 0;
+  width: fit-content;
+  height: fit-content;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10%;
+  font-size: 20px;
+}

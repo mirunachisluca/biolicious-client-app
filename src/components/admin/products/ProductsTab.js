@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, ButtonGroup, Form, Spinner } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
+import { ToastContainer } from 'react-toastify';
 import { BrandsContext } from '../../../context/BrandsContext';
 import { MenuBarContext } from '../../../context/MenuBarContext';
 
@@ -47,6 +48,8 @@ function ProductsTab() {
 
   const showBrandsModalHandler = () => dispatch(showBrandsModal);
   const hideBrandsModalHandler = () => dispatch(closeBrandsModal);
+
+  React.useEffect(() => setApiParams({ pageIndex: 1, search: '' }), []);
 
   return (
     <>
@@ -105,7 +108,7 @@ function ProductsTab() {
       </Form>
 
       {products.status === 'FETCHED' ? (
-        <div className={styles.flexboxColumn}>
+        <div className="flexbox-column">
           <Pagination
             pageSize={products.result.pageSize}
             totalProducts={products.result.count}
@@ -150,6 +153,18 @@ function ProductsTab() {
         visible={state.showBrandsModal}
         show={showBrandsModalHandler}
         close={hideBrandsModalHandler}
+      />
+
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
       />
     </>
   );

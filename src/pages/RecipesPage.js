@@ -57,6 +57,7 @@ function RecipesPage() {
           params: {
             dietId: state.apiParams.dietId,
             categoryId: state.apiParams.categoryId,
+            pageSize: state.apiParams.pageSize,
             pageIndex: state.apiParams.pageIndex,
             search: state.apiParams.search
           }
@@ -74,7 +75,8 @@ function RecipesPage() {
       state.apiParams.dietId,
       state.apiParams.categoryId,
       state.apiParams.search,
-      state.apiParams.pageIndex
+      state.apiParams.pageIndex,
+      state.apiParams.pageSize
     ]
   );
 

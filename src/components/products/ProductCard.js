@@ -37,11 +37,19 @@ function ProductCard({ product }) {
 
         <Card.Body>
           <div className={`${styles.titleDiv}`}>
-            <LinkContainer key={product.id} to={`${url}/${product.urlName}`}>
-              <h5 className={`${styles.title} ${styles.pointerCursor}`}>
-                {product.name}
-              </h5>
-            </LinkContainer>
+            <div>
+              <LinkContainer key={product.id} to={`${url}/${product.urlName}`}>
+                <h5 className={`${styles.title} ${styles.pointerCursor}`}>
+                  {`${product.name} `}
+
+                  {product.discount !== 0 && (
+                    <Badge pill variant="dark" className={styles.badge}>
+                      %
+                    </Badge>
+                  )}
+                </h5>
+              </LinkContainer>
+            </div>
 
             <p className={`${styles.weight}`}>{product.weight}</p>
           </div>
@@ -51,12 +59,12 @@ function ProductCard({ product }) {
               {`${calculatePriceWithTwoDecimals(
                 product.price - (product.discount * product.price) / 100
               )} €`}
+              {/* {product.discount !== 0 && (
+                <Badge pill variant="dark" className={styles.badge}>
+                  %
+                </Badge>
+              )} */}
             </p>
-            {product.discount !== 0 && (
-              <Badge pill variant="dark" className={styles.badge}>
-                %
-              </Badge>
-            )}
 
             <Button
               variant="outline-black"
@@ -77,7 +85,7 @@ function ProductCard({ product }) {
                   })
                 );
 
-                toast.success('Item added to cart');
+                toast.dark('Item added to cart');
               }}
             >
               Add to cart

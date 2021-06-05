@@ -1,0 +1,26 @@
+.mainDiv {
+  width: 50%;
+  padding: 5% 10% 5% 10%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2%;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 2%;
+  margin-bottom: 2%;
+  color: #495057;
+  font-size: 16px;
+  height: 6%;
+  cursor: text;
+}
+
+.input:focus {
+  outline: none;
+}

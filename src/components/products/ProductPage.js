@@ -104,7 +104,7 @@ function ProductPage() {
                       subcategory: product.result.productSubcategory
                     })
                   );
-                  toast.success('Item added to cart');
+                  toast.dark('Item added to cart');
                 }}
               >
                 Add to cart
@@ -116,9 +116,9 @@ function ProductPage() {
 
       <ToastContainer
         position="bottom-left"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
-        newestOnTop={false}
+        newestOnTop
         closeOnClick
         rtl={false}
         pauseOnFocusLoss

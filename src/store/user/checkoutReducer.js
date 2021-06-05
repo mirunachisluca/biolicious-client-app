@@ -24,9 +24,9 @@ export const initialState = {
     zipCode: ''
   },
   email: '',
-  deliveryMethodId: 3,
+  deliveryMethodId: 0,
   deliveryPrice: 0.0,
-  paymentMethod: 'card'
+  paymentMethod: 'cash'
 };
 
 function checkoutReducer(state, action) {

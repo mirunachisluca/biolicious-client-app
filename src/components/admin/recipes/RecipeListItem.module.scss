@@ -1,0 +1,11 @@
+.cardGrid {
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+
+.cardBodyGrid {
+  display: grid;
+  grid-template-columns: 80% 20%;
+  height: 100%;
+  align-items: center;
+}

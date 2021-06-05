@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 
 import { axiosInstance } from '../../../api/axios';
-import { MenuBarContext } from '../../../context/MenuBarContext';
+// import { MenuBarContext } from '../../../context/MenuBarContext';
 import { useModal } from '../../../customHooks/useModal';
 import { API_DIETS_ROUTE } from '../../../routes/apiRoutes';
 import { ConfirmationModal } from '../common/ConfirmationModal';
@@ -10,8 +10,8 @@ import { EditNameModal } from '../common/EditNameModal';
 import { ListItemWithActions } from '../common/ListItemWithActions';
 import { NewInputForm } from '../common/NewInputForm';
 
-function DietsModal({ visible, show, close }) {
-  const { diets, fetchRecipeDiets } = React.useContext(MenuBarContext);
+function DietsModal({ visible, show, close, diets, fetchRecipeDiets }) {
+  // const { diets, fetchRecipeDiets } = React.useContext(MenuBarContext);
 
   const {
     selectedItem,
