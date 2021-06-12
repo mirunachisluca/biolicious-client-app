@@ -2,12 +2,12 @@ import React from 'react';
 import { Jumbotron, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import styles from './css/home-page.module.scss';
+import styles from './css/HomePage.module.scss';
 
 function Homepage() {
   return (
     <>
-      <div>
+      <div className={styles.page}>
         <Jumbotron className={styles.shopBackground}>
           <div className={styles.textRectangle}>
             <h1>Shop</h1>

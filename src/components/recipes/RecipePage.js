@@ -45,7 +45,8 @@ function RecipePage() {
       {recipe.status === 'FETCHED' && (
         <>
           <div className={styles.recipePage}>
-            <h3>{recipe.result.name}</h3>
+            <br />
+            <h3 className="uppercase-bembo">{recipe.result.name}</h3>
             <br />
 
             <div className={styles.pictureWithDescription}>

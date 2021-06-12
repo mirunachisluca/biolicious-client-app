@@ -1,9 +1,15 @@
+.page {
+  height: 90vh;
+}
+
 .shopBackground {
   background-image: url(../../images/groceries.jpg);
   background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  height: 50%;
 }
 
 .recipesBackground {
@@ -12,11 +18,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  height: 50%;
 }
 
 .textRectangle {
   //   backgroundColor: "rgba(255, 255, 255, 0.80)",
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.38);
   color: white;
   padding: 5px;
   width: 45%;

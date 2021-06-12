@@ -21,7 +21,7 @@ import {
   SET_RECIPE_NAME,
   SET_RECIPE_PICTURE,
   SET_RECIPE_PREPARATION_TIME,
-  SET_RPOTEINS,
+  SET_PROTEINS,
   SET_SALT,
   SET_SATURATES,
   SET_SERVING_SIZE,
@@ -33,7 +33,7 @@ export const initialRecipe = {
   id: 0,
   name: '',
   description: '',
-  pictureUrl: '',
+  pictureUrl: 'no-image.png',
   preparationTime: '',
   servingSize: '',
   steps: [],
@@ -52,7 +52,8 @@ export const initialRecipe = {
     proteins: '',
     fibres: ''
   },
-  key: 1
+  key: 1,
+  imageFile: null
 };
 
 function recipeReducer(state, action) {
@@ -68,7 +69,11 @@ function recipeReducer(state, action) {
     case SET_SERVING_SIZE:
       return { ...state, servingSize: action.payload };
     case SET_RECIPE_PICTURE:
-      return { ...state, pictureUrl: action.payload };
+      return {
+        ...state,
+        pictureUrl: action.payload.url,
+        imageFile: action.payload.image
+      };
     case SET_RECIPE_CATEGORY:
       return { ...state, recipeCategory: action.payload };
     case SET_RECIPE_DIET:
@@ -174,7 +179,7 @@ function recipeReducer(state, action) {
         ...state,
         intake: { ...state.intake, carbohydrates: action.payload }
       };
-    case SET_RPOTEINS:
+    case SET_PROTEINS:
       return {
         ...state,
         intake: { ...state.intake, proteins: action.payload }

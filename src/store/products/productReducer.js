@@ -10,7 +10,8 @@ import {
   SET_PRODUCT_SUBCATEGORY_ID,
   SET_PRODUCT_ENTRY_STATUS,
   SET_PRODUCT_STOCK,
-  RESET_PRODUCT
+  RESET_PRODUCT,
+  SET_PRODUCT_PICTURE_URL
 } from './productActionTypes';
 
 export const initialProduct = {
@@ -20,12 +21,13 @@ export const initialProduct = {
   weight: '',
   price: '',
   discount: '',
-  pictureUrl: '',
+  pictureUrl: 'no-image.png',
   productBrandId: 0,
   productCategoryId: 0,
   productSubcategoryId: null,
   newEntry: false,
-  stock: ''
+  stock: '',
+  imageFile: null
 };
 
 function productReducer(state, action) {
@@ -52,6 +54,12 @@ function productReducer(state, action) {
       return { ...state, newEntry: action.payload };
     case SET_PRODUCT_STOCK:
       return { ...state, stock: action.payload };
+    case SET_PRODUCT_PICTURE_URL:
+      return {
+        ...state,
+        pictureUrl: action.payload.url,
+        imageFile: action.payload.image
+      };
     case RESET_PRODUCT:
       return { ...initialProduct };
     default:

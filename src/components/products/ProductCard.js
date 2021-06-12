@@ -69,6 +69,7 @@ function ProductCard({ product }) {
             <Button
               variant="outline-black"
               className={styles.addToCartButton}
+              disabled={product.stock === 0}
               onClick={() => {
                 dispatch(
                   addItemToCart({
@@ -88,7 +89,7 @@ function ProductCard({ product }) {
                 toast.dark('Item added to cart');
               }}
             >
-              Add to cart
+              {product.stock === 0 ? 'Out of stock' : 'Add to cart'}
             </Button>
           </div>
         </Card.Body>

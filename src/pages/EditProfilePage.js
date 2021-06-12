@@ -35,6 +35,7 @@ function EditProfilePage() {
 
   return (
     <>
+      <br />
       <h3 className="uppercase-bembo">PROFILE PAGE</h3>
       {userDetails.status === 'FETCHED' && (
         <div className={styles.page}>

@@ -1,3 +1,5 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-restricted-syntax */
 import React from 'react';
 import {
   Button,
@@ -9,7 +11,7 @@ import {
   Dropdown
 } from 'react-bootstrap';
 
-import { ChevronCompactLeft, Trash } from 'react-bootstrap-icons';
+import { Trash } from 'react-bootstrap-icons';
 import { toast } from 'react-toastify';
 import { axiosInstance } from '../../../api/axios';
 import { RecipesContext } from '../../../context/RecipesContext';
@@ -31,6 +33,7 @@ import {
   setRecipeDescription,
   setRecipeDiet,
   setRecipeName,
+  setRecipePicture,
   setRecipePreparationTime,
   setSalt,
   setSaturates,
@@ -42,6 +45,40 @@ import { recipeReducer } from '../../../store/recipes/recipeReducer';
 import { IngredientInput } from './IngredientInput';
 
 import styles from './RecipeModal.module.scss';
+
+function toFormData(obj, form, namespace) {
+  const fd = form || new FormData();
+  let formKey;
+
+  for (const property in obj) {
+    if (
+      obj.hasOwnProperty(property) &&
+      obj[property] != null &&
+      obj[property] !== undefined
+    ) {
+      if (namespace) {
+        formKey = `${namespace}[${property}]`;
+      } else {
+        formKey = property;
+      }
+
+      // if the property is an object, but not a File, use recursivity.
+      if (obj[property] instanceof Date) {
+        fd.append(formKey, obj[property].toISOString());
+      } else if (
+        typeof obj[property] === 'object' &&
+        !(obj[property] instanceof File)
+      ) {
+        toFormData(obj[property], fd, formKey);
+      } else {
+        // if it's a string or a File object
+        fd.append(formKey, obj[property]);
+      }
+    }
+  }
+
+  return fd;
+}
 
 function mapRecipe(recipe) {
   const ingredients = recipe.ingredients.map((ingredient) => {
@@ -80,7 +117,8 @@ function mapRecipe(recipe) {
     ingredients,
     recipeCategoryId: recipe.recipeCategory.id,
     dietId: recipe.diet.id,
-    intake: recipe.intake
+    intake: recipe.intake,
+    imageFile: recipe.imageFile
   };
 }
 
@@ -94,7 +132,7 @@ function RecipeModal({ recipe, show, close, diets, categories }) {
 
     if (state.id === 0) {
       axiosInstance
-        .post(API_RECIPES_ROUTE, mapRecipe(state))
+        .post(API_RECIPES_ROUTE, toFormData(mapRecipe(state)))
         .then((response) => {
           if (response.status === 201) {
             dispatch(resetRecipe());
@@ -103,12 +141,12 @@ function RecipeModal({ recipe, show, close, diets, categories }) {
             toast.dark('Recipe added successfully!');
           }
         })
-        .catch((error) => console.log(error));
+        .catch(() => {
+          toast.error('Something went wrong, please try again later');
+        });
     } else {
-      console.log(mapRecipe(state));
-
       axiosInstance
-        .put(API_RECIPES_ROUTE, mapRecipe(state))
+        .put(API_RECIPES_ROUTE, toFormData(mapRecipe(state)))
         .then((response) => {
           if (response.status === 204) {
             fetchRecipes();
@@ -117,14 +155,16 @@ function RecipeModal({ recipe, show, close, diets, categories }) {
             toast.dark('Recipe updated successfully!');
           }
         })
-        .catch((error) => console.log(error));
+        .catch(() => {
+          toast.error('Something went wrong, please try again later');
+        });
     }
   };
 
   const deleteStepHandler = (id) => {
-    axiosInstance
-      .delete(`${RECIPE_STEPS}/${id}`)
-      .catch((error) => console.log(error));
+    axiosInstance.delete(`${RECIPE_STEPS}/${id}`).catch(() => {
+      toast.error('Something went wrong, please try again later');
+    });
   };
 
   return (
@@ -478,6 +518,36 @@ function RecipeModal({ recipe, show, close, diets, categories }) {
                   }
                 />
               </div>
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>Picture</FormLabel>
+
+              <br />
+              <img
+                src={state.pictureUrl}
+                alt="recipe"
+                width="30%"
+                className="mb-2"
+              />
+
+              <FormControl
+                type="file"
+                placeholder="Image"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    const imageFile = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = (x) => {
+                      dispatch(setRecipePicture(x.target.result, imageFile));
+                    };
+                    reader.readAsDataURL(imageFile);
+                  } else {
+                    dispatch(setRecipePicture('no-image.png', null));
+                  }
+                }}
+              />
             </FormGroup>
           </Form>
         </Modal.Body>

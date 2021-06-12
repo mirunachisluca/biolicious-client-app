@@ -23,7 +23,7 @@ export const SET_SATURATES = 'SET_SATURATES';
 export const SET_SUGARS = 'SET_SUGARS';
 export const SET_SALT = 'SET_SALT';
 export const SET_CARBS = 'SET_CARBS';
-export const SET_RPOTEINS = 'SET_PROTEINS';
+export const SET_PROTEINS = 'SET_PROTEINS';
 export const SET_FIBRES = 'SET_FIBRES';
 export const RESET_RECIPE = 'RESET_RECIPE';
 
@@ -44,9 +44,9 @@ export const setServingSize = (size) => ({
   payload: size
 });
 
-export const setRecipePicture = (url) => ({
+export const setRecipePicture = (url, image) => ({
   type: SET_RECIPE_PICTURE,
-  payload: url
+  payload: { url, image }
 });
 
 export const setRecipePreparationTime = (time) => ({
@@ -119,7 +119,7 @@ export const setSalt = (value) => ({ type: SET_SALT, payload: value });
 
 export const setCarbs = (value) => ({ type: SET_CARBS, payload: value });
 
-export const setProteins = (value) => ({ type: SET_RPOTEINS, payload: value });
+export const setProteins = (value) => ({ type: SET_PROTEINS, payload: value });
 
 export const setFibres = (value) => ({ type: SET_FIBRES, payload: value });
 

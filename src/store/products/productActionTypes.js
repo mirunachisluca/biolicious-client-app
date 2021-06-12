@@ -4,6 +4,7 @@ export const SET_PRODUCT_NAME = 'SET_PRODUCT_NAME';
 export const SET_PRODUCT_DESCRIPTION = 'SET_PRODUCT_DESCRIPTION';
 export const SET_PRODUCT_WEIGHT = 'SET_PRODUCT_WEIGHT';
 export const SET_PRODUCT_PICTURE_URL = 'SET_PRODUCT_PICTURE_URL';
+export const SET_PRODUCT_PICTURE = 'SET_PRODUCT_PICTURE';
 export const SET_PRODUCT_PRICE = 'SET_PRODUCT_PRICE';
 export const SET_PRODUCT_DISCOUNT = 'SET_PRODUCT_DISCOUNT';
 export const SET_PRODUCT_BRAND_ID = 'SET_PRODUCT_WBRAND_ID';
@@ -68,6 +69,11 @@ export const setProductStock = (stock) => ({
 export const setProductEntryStatus = (status) => ({
   type: SET_PRODUCT_ENTRY_STATUS,
   payload: status
+});
+
+export const setProductPicture = (url, image) => ({
+  type: SET_PRODUCT_PICTURE_URL,
+  payload: { url, image }
 });
 
 export const resetProduct = { type: RESET_PRODUCT };

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import { axiosInstance } from '../api/axios';
 import { UserContext } from '../context/UserContext';
-import styles from './css/login-page.module.scss';
+import styles from './css/LoginPage.module.scss';
 
 function LoginPage() {
   const { login } = useContext(UserContext);

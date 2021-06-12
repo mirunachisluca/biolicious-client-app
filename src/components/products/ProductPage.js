@@ -50,14 +50,14 @@ function ProductPage() {
           <div className={`${styles.pictureDiv}`}>
             <ImageFadeIn
               width={600}
-              height={500}
+              height={600}
               src={product.result.pictureUrl}
               opacityTransition={3}
             />
           </div>
 
           <div className={`${styles.productDetailsDiv}`}>
-            <h2>{product.result.name}</h2>
+            <h2 className="uppercase-bembo">{product.result.name}</h2>
 
             <p>{product.result.description}</p>
 
@@ -89,6 +89,7 @@ function ProductPage() {
 
               <Button
                 variant="outline-black"
+                disabled={product.result.stock === 0}
                 onClick={() => {
                   dispatch(
                     addItemToCart({
@@ -107,7 +108,7 @@ function ProductPage() {
                   toast.dark('Item added to cart');
                 }}
               >
-                Add to cart
+                {product.result.stock === 0 ? 'Out of stock' : 'Add to cart'}
               </Button>
             </div>
           </div>

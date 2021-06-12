@@ -25,6 +25,7 @@ import {
   setProductDiscount,
   setProductEntryStatus,
   setProductName,
+  setProductPicture,
   setProductPrice,
   setProductStock,
   setProductSubcategoryId,
@@ -35,21 +36,26 @@ import { productReducer } from '../../../store/products/productReducer';
 import styles from './ProductModal.module.scss';
 
 function mapProduct(product) {
-  return {
-    id: product.id,
-    name: product.name,
-    description: product.description,
-    weight: product.weight,
-    price: product.price,
-    discount: product.discount,
-    pictureUrl: product.pictureUrl.substring(24, product.pictureUrl.lentgh),
-    productBrandId: product.productBrandId,
-    productCategoryId: product.productCategoryId,
-    productSubcategoryId:
-      product.productSubcategoryId === 0 ? null : product.productSubcategoryId,
-    newEntry: product.newEntry,
-    stock: product.stock
-  };
+  const formData = new FormData();
+
+  formData.append('id', product.id);
+  formData.append('name', product.name);
+  formData.append('description', product.description);
+  formData.append('weight', product.weight);
+  formData.append('price', product.price);
+  formData.append('discount', product.discount);
+  formData.append(
+    'pictureUrl',
+    product.pictureUrl.substring(24, product.pictureUrl.lentgh)
+  );
+  formData.append('productBrandId', product.productBrandId);
+  formData.append('productCategoryId', product.productCategoryId);
+  formData.append('productSubcategoryId', product.productSubcategoryId);
+  formData.append('newEntry', product.newEntry);
+  formData.append('stock', product.stock);
+  formData.append('imageFile', product.imageFile);
+
+  return formData;
 }
 
 function ProductModal({ product, show, close }) {
@@ -115,7 +121,7 @@ function ProductModal({ product, show, close }) {
 
     if (state.id === 0) {
       axiosInstance
-        .post(API_PRODUCTS_ROUTE, state)
+        .post(API_PRODUCTS_ROUTE, mapProduct(state))
         .then((response) => {
           if (response.status === 201) {
             dispatch(resetProduct);
@@ -127,7 +133,9 @@ function ProductModal({ product, show, close }) {
             toast.dark('Product added successfully!');
           }
         })
-        .catch((error) => console.log(error));
+        .catch(() => {
+          toast.error('Something went wrong, please try again later');
+        });
     } else {
       axiosInstance
         .put(API_PRODUCTS_ROUTE, mapProduct(state))
@@ -139,7 +147,9 @@ function ProductModal({ product, show, close }) {
             toast.dark('Product updated successfully!');
           }
         })
-        .catch((error) => console.log(error));
+        .catch(() => {
+          toast.error('Something went wrong, please try again later');
+        });
     }
   };
 
@@ -320,7 +330,32 @@ function ProductModal({ product, show, close }) {
             <div className={styles.grid2Cols}>
               <FormGroup>
                 <FormLabel>Picture</FormLabel>
-                <FormControl type="file" placeholder="Image" accept="image/*" />
+
+                <br />
+                <img
+                  src={state.pictureUrl}
+                  alt="product"
+                  width="65%"
+                  className="mb-2"
+                />
+
+                <FormControl
+                  type="file"
+                  placeholder="Image"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const imageFile = e.target.files[0];
+                      const reader = new FileReader();
+                      reader.onload = (x) => {
+                        dispatch(setProductPicture(x.target.result, imageFile));
+                      };
+                      reader.readAsDataURL(imageFile);
+                    } else {
+                      dispatch(setProductPicture('no-image.png', null));
+                    }
+                  }}
+                />
               </FormGroup>
 
               <FormGroup>

@@ -3,7 +3,8 @@ import React from 'react';
 function OrdersPage() {
   return (
     <>
-      <h1>ORDERS</h1>
+      <br />
+      <h3 className="uppercase-bembo">Orders</h3>
     </>
   );
 }

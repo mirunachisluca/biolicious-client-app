@@ -16,7 +16,7 @@
 }
 
 .icon {
-  color: black;
+  color: rgba(0, 0, 0, 0.7);
   font-size: 26px;
   text-decoration: none;
   border: 0;
@@ -24,7 +24,7 @@
 }
 
 .icon:hover {
-  color: #0056b3;
+  color: black;
 }
 
 .fixedNavbar {
@@ -33,4 +33,5 @@
   top: 0;
   z-index: 1;
   padding: 1% 5% 1% 5%;
+  height: 10vh;
 }

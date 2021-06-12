@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 import { axiosInstance } from '../api/axios';
-import styles from './css/sign-up-page.module.scss';
+import styles from './css/SignupPage.module.scss';
 
 function SignupPage() {
   const history = useHistory();
