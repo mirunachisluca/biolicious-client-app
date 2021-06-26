@@ -42,6 +42,12 @@ function ProductCard({ product }) {
                 <h5 className={`${styles.title} ${styles.pointerCursor}`}>
                   {`${product.name} `}
 
+                  {product.newEntry && (
+                    <Badge pill variant="dark" className={styles.badge}>
+                      NEW
+                    </Badge>
+                  )}
+
                   {product.discount !== 0 && (
                     <Badge pill variant="dark" className={styles.badge}>
                       %
@@ -59,11 +65,6 @@ function ProductCard({ product }) {
               {`${calculatePriceWithTwoDecimals(
                 product.price - (product.discount * product.price) / 100
               )} €`}
-              {/* {product.discount !== 0 && (
-                <Badge pill variant="dark" className={styles.badge}>
-                  %
-                </Badge>
-              )} */}
             </p>
 
             <Button

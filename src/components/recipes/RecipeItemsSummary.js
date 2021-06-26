@@ -10,6 +10,7 @@ function RecipeItemsSummary({ show, handleClose, items }) {
       animation={false}
       backdrop="static"
       scrollable
+      size="lg"
     >
       <Modal.Header closeButton>
         <Modal.Title>Summary</Modal.Title>

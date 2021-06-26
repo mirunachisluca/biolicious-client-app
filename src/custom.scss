@@ -48,9 +48,9 @@ $btn-font-size-xs: 1rem * 0.78;
   border-color: #ced4da;
 }
 
-.dropdown-toggle,
-.dropdown-toggle:hover,
-.dropdown-toggle:active {
+.dropdown-toggle-custom,
+.dropdown-toggle-custom:hover,
+.dropdown-toggle-custom:active {
   background-color: transparent;
   color: #495057;
   border-color: #ced4da;
@@ -118,4 +118,8 @@ $btn-font-size-xs: 1rem * 0.78;
   height: auto;
   max-height: 200px;
   overflow-x: hidden;
+}
+
+.pointerCursor {
+  cursor: pointer;
 }

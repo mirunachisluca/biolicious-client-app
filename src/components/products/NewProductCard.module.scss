@@ -1,0 +1,9 @@
+.card {
+  margin: 2%;
+}
+
+.cardBody {
+  display: grid;
+  grid-template-columns: 65% 35%;
+  text-align: left;
+}

@@ -10,7 +10,9 @@ export const API_PAYMENTS_ROUTE = '/payments';
 export const API_SHOPPING_CART = '/shoppingCart';
 
 export const GET_USER_DETAILS_ROUTE = '/accounts/details';
+export const USER_ADDRESS_ROUTE = '/accounts/address';
 export const PRODUCT_SUBCATEGORY_ROUTE = '/productCategories/subcategory';
 export const DELIVERY_METHODS_ROUTE = '/orders/deliveryMethods';
 export const RECIPE_STEPS = '/recipes/steps';
 export const RECIPE_INGREDIENTS = '/recipes/ingredients';
+export const NEW_PRODUCTS_ROUTE = 'products/new';

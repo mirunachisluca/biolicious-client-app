@@ -11,6 +11,3 @@ export const ORDERS_PAGE_ROUTE = '/orders';
 export const ADMIN_PAGE = '/admin';
 export const PAYMENT_PAGE = '/payment';
 export const ORDER_PLACED = '/orders/status';
-
-export const DIETS_PAGE_ROUTE = `${RECIPES_PAGE_ROUTE}/diets`;
-export const CATEGORIES_PAGE_ROUTE = `${RECIPES_PAGE_ROUTE}/categories`;

@@ -32,7 +32,7 @@ function ShoppingCartPage() {
         </>
       )}
 
-      <div className={`${styles.flex}`}>
+      <div className={`${styles.flex} ${styles.pageLayout}`}>
         {status === 'LOADING' ||
           (status === 'PENDING' && (
             <div className={styles.spinner}>

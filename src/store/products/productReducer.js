@@ -25,7 +25,7 @@ export const initialProduct = {
   productBrandId: 0,
   productCategoryId: 0,
   productSubcategoryId: null,
-  newEntry: false,
+  newEntry: true,
   stock: '',
   imageFile: null
 };

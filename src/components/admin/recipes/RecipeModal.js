@@ -208,7 +208,7 @@ function RecipeModal({ recipe, show, close, diets, categories }) {
                 <FormLabel>Category</FormLabel>
                 <Dropdown>
                   <Dropdown.Toggle
-                    className="dropdown-toggle"
+                    className="dropdown-toggle-custom"
                     variant="dropdown-simple"
                   >
                     {state.recipeCategory.name}
@@ -234,7 +234,7 @@ function RecipeModal({ recipe, show, close, diets, categories }) {
                 <FormLabel>Diet</FormLabel>
                 <Dropdown>
                   <Dropdown.Toggle
-                    className="dropdown-toggle"
+                    className="dropdown-toggle-custom"
                     variant="dropdown-simple"
                   >
                     {state.diet.name}

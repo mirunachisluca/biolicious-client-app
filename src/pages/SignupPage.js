@@ -58,7 +58,8 @@ function SignupPage() {
 
   return (
     <>
-      <h2>Create your account now</h2>
+      <br />
+      <h3 className="uppercase-bembo">Create your account now</h3>
 
       <div className={`${styles.flexbox} mt-5`}>
         <Form className={styles.flexboxColumn}>
@@ -83,9 +84,7 @@ function SignupPage() {
                   onChange={lastNameInputHandler}
                 />
               </Form.Group>
-            </div>
 
-            <div className={styles.accountInfoDiv}>
               <Form.Group controlId="formEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
@@ -95,7 +94,9 @@ function SignupPage() {
                   onChange={emailInputHandler}
                 />
               </Form.Group>
+            </div>
 
+            <div className={styles.accountInfoDiv}>
               <Form.Group controlId="formPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control

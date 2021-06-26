@@ -2,38 +2,21 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { PersonCircle } from 'react-bootstrap-icons';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useHistory } from 'react-router-dom';
 import { UserDetailsContext } from '../context/UserDetailsContext';
 import { EDIT_PROFILE_PAGE_ROUTE } from '../routes/pageRoutes';
 
 import styles from './css/ProfilePage.module.scss';
 
 function ProfilePage() {
-  // const [userDetails, setUserDetails] = React.useState({
-  //   status: 'IDLE',
-  //   result: null
-  // });
-
-  // const { user } = React.useContext(UserContext);
-
-  // React.useEffect(
-  //   function fetchUserDetails() {
-  //     if (user) {
-  //       axiosInstance
-  //         .get(GET_USER_DETAILS_ROUTE)
-  //         .then((response) => {
-  //           if (response.status === 200) {
-  //             setUserDetails({ status: 'FETCHED', result: response.data });
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           console.log(error);
-  //         });
-  //     }
-  //   },
-  //   [user]
-  // );
-
   const { userDetails } = React.useContext(UserDetailsContext);
+  const history = useHistory();
+
+  React.useEffect(() => {
+    if (localStorage.getItem('token') == null) {
+      history.push('/login');
+    }
+  }, []);
 
   return (
     <>
@@ -69,7 +52,7 @@ function ProfilePage() {
             {userDetails.result.address && (
               <Card className={`shadow ${styles.addressCard}`}>
                 <Card.Title className={`${styles.title}  uppercase-bembo`}>
-                  Address
+                  Delivery address
                 </Card.Title>
 
                 <Card.Body className={styles.bodyGrid}>
@@ -98,6 +81,10 @@ function ProfilePage() {
                   </div>
                 </Card.Body>
               </Card>
+            )}
+
+            {userDetails.result.address === null && (
+              <p>No delivery address saved</p>
             )}
           </div>
 

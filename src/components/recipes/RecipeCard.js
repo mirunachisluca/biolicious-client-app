@@ -21,7 +21,7 @@ function RecipeCard({ name, description, image }) {
             />
           </LinkContainer>
 
-          <div>
+          <div className="my-auto">
             <LinkContainer to={`${RECIPES_PAGE_ROUTE}/${convertToUrl(name)}`}>
               <Card.Title
                 className={`${styles.recipeTitle}  ${styles.pointerCursor}`}

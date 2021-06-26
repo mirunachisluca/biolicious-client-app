@@ -49,9 +49,11 @@ function ItemSummaryCard({ item }) {
 
           <Card.Body className={styles.body}>
             <p className={styles.price}>{`${price}€`}</p>
+
             <Button
               variant="outline-black"
               className={styles.uppercase}
+              disabled={item.productStock === 0}
               onClick={() => {
                 console.log(item);
                 dispatch(

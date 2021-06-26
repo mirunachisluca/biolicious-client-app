@@ -196,7 +196,7 @@ function ProductModal({ product, show, close }) {
                 <FormLabel>Brand</FormLabel>
                 <Dropdown>
                   <Dropdown.Toggle
-                    className="dropdown-toggle"
+                    className="dropdown-toggle-custom"
                     variant="dropdown-simple"
                   >
                     {selectedBrand.name}
@@ -222,7 +222,7 @@ function ProductModal({ product, show, close }) {
                 <FormLabel>Category</FormLabel>
                 <Dropdown>
                   <Dropdown.Toggle
-                    className="dropdown-toggle"
+                    className="dropdown-toggle-custom"
                     variant="dropdown-simple"
                   >
                     {selectedCategory.name}

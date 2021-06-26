@@ -347,7 +347,7 @@ function ProductsList({ categoryId, subcategoryId, name }) {
       <ToastContainer
         position="bottom-left"
         autoClose={3000}
-        hideProgressBar={false}
+        hideProgressBar={true}
         newestOnTop
         closeOnClick
         rtl={false}

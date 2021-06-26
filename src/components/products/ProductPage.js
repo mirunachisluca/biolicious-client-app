@@ -49,8 +49,7 @@ function ProductPage() {
         <div className={`${styles.flexbox} ${styles.productDiv}`}>
           <div className={`${styles.pictureDiv}`}>
             <ImageFadeIn
-              width={600}
-              height={600}
+              height="100%"
               src={product.result.pictureUrl}
               opacityTransition={3}
             />
@@ -59,9 +58,11 @@ function ProductPage() {
           <div className={`${styles.productDetailsDiv}`}>
             <h2 className="uppercase-bembo">{product.result.name}</h2>
 
-            <p>{product.result.description}</p>
+            <div className={`text-justify ${styles.descriptionDiv}`}>
+              <span>{product.result.description}</span>
+            </div>
 
-            <div>
+            <div className="m-auto">
               <h4 className={product.result.discount !== 0 && 'crossed'}>
                 {`${calculatePriceWithTwoDecimals(product.result.price)} € `}
               </h4>
@@ -79,7 +80,7 @@ function ProductPage() {
 
             <p>{getStock(product.result.stock)}</p>
 
-            <div className={`${styles.flexbox} ${styles.inputsDiv}`}>
+            <div className={` ${styles.inputsDiv}`}>
               <input
                 type="number"
                 value={quantity}
@@ -118,7 +119,7 @@ function ProductPage() {
       <ToastContainer
         position="bottom-left"
         autoClose={3000}
-        hideProgressBar={false}
+        hideProgressBar={true}
         newestOnTop
         closeOnClick
         rtl={false}

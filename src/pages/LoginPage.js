@@ -43,7 +43,8 @@ function LoginPage() {
 
   return (
     <>
-      <h2>Login</h2>
+      <br />
+      <h3 className="uppercase-bembo">Login</h3>
 
       <div className={`${styles.flexbox} mt-5`}>
         <Form className={styles.formFlexbox}>
@@ -81,8 +82,8 @@ function LoginPage() {
 
       <ToastContainer
         position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
+        autoClose={3000}
+        hideProgressBar={true}
         newestOnTop={false}
         closeOnClick
         rtl={false}
