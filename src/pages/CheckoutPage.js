@@ -8,12 +8,8 @@ import { DeliveryMethodsContext } from '../context/DeliveryMethodsContext';
 import { ShoppingCartContext } from '../context/ShoppingCartContext';
 import { UserDetailsContext } from '../context/UserDetailsContext';
 import { calculatePriceWithTwoDecimals } from '../helpers/pricesCalculator';
-import { API_ORDERS_ROUTE, API_PAYMENTS_ROUTE } from '../routes/apiRoutes';
-import {
-  ORDERS_PAGE_ROUTE,
-  ORDER_PLACED,
-  PAYMENT_PAGE
-} from '../routes/pageRoutes';
+import { API_ORDERS_ROUTE } from '../routes/apiRoutes';
+import { ORDER_PLACED, PAYMENT_PAGE } from '../routes/pageRoutes';
 import {
   setAddress,
   setCityName,
