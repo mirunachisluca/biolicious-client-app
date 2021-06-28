@@ -19,6 +19,9 @@ function ItemSummaryCard({ item }) {
     if (inputQuantity <= 0) {
       inputQuantity = 1;
     }
+    if (inputQuantity > 15) {
+      inputQuantity = 15;
+    }
     setQuantity(inputQuantity);
   }
 
@@ -55,7 +58,6 @@ function ItemSummaryCard({ item }) {
               className={styles.uppercase}
               disabled={item.productStock === 0}
               onClick={() => {
-                console.log(item);
                 dispatch(
                   addItemToCart({
                     id: item.productId,

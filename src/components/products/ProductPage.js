@@ -40,6 +40,7 @@ function ProductPage() {
   function quantityInputHandler(e) {
     const inputQuantity = parseInt(e.target.value, 10);
     if (inputQuantity <= 0) setQuantity(1);
+    if (inputQuantity > 15) setQuantity(15);
     else setQuantity(inputQuantity);
   }
 

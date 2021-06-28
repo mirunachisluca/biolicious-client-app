@@ -4,7 +4,6 @@ import './index.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.scss';
 import 'react-toastify/dist/ReactToastify.css';
-import 'react-notifications/lib/notifications.css';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';

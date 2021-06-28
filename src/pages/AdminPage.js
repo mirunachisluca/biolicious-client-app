@@ -20,7 +20,7 @@ import {
 } from '../store/admin/adminPageReducer';
 
 function AdminPage() {
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = React.useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
 
   const [state, dispatch] = React.useReducer(adminPageReducer, initialState);
