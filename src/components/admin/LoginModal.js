@@ -17,13 +17,7 @@ function LoginModal({ show, loginHandler, errorMessage }) {
 
   return (
     <>
-      <Modal
-        show={show}
-        animation={false}
-        backdrop="static"
-        // backdropClassName={styles.modalBackdrop}
-        keyboard={false}
-      >
+      <Modal show={show} animation={false} backdrop="static" keyboard={false}>
         <Modal.Header>
           <Modal.Title>Login</Modal.Title>
         </Modal.Header>
@@ -48,7 +42,7 @@ function LoginModal({ show, loginHandler, errorMessage }) {
               />
             </Form.Group>
 
-            <p className="text-danger">{errorMessage}</p>
+            <p className="error m-auto text-center">{errorMessage}</p>
           </Modal.Body>
 
           <Modal.Footer>

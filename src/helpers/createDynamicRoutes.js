@@ -2,7 +2,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { ProductPage } from '../components/products/ProductPage';
 import { ProductsList } from '../components/products/ProductsList';
-import { SHOP_PAGE_ROUTE } from '../routes/pageRoutes';
 import { convertToUrl } from './convertToUrl';
 
 export function createCategoryRoutes(path, navbarData) {

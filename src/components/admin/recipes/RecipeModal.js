@@ -280,10 +280,6 @@ function RecipeModal({ recipe, show, close, diets, categories }) {
                   onChange={(e) =>
                     dispatch(setServingSize(parseInt(e.target.value, 10)))
                   }
-                  // onKeyPress={(e) => {
-                  //   e.preventDefault();
-                  //   return false;
-                  // }}
                 />
               </FormGroup>
             </div>

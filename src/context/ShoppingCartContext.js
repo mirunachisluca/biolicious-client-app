@@ -11,7 +11,7 @@ import {
   setDeliveryMethod
 } from '../store/shoppingCart/shoppingCartActions';
 import { UserContext } from './UserContext';
-import { API_ORDERS_ROUTE, API_SHOPPING_CART } from '../routes/apiRoutes';
+import { API_SHOPPING_CART } from '../routes/apiRoutes';
 
 const ShoppingCartContext = createContext({
   items: []

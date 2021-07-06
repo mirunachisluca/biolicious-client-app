@@ -165,7 +165,7 @@ function SignupPage() {
                     }
                   }}
                 />
-                <span className={styles.error}>{firstNameError}</span>
+                <span className="error">{firstNameError}</span>
               </Form.Group>
 
               <Form.Group controlId="formLastName">
@@ -181,7 +181,7 @@ function SignupPage() {
                     }
                   }}
                 />
-                <span className={styles.error}>{lastNameError}</span>
+                <span className="error">{lastNameError}</span>
               </Form.Group>
 
               <Form.Group controlId="formEmail">
@@ -197,7 +197,7 @@ function SignupPage() {
                     }
                   }}
                 />
-                <span className={styles.error}>{emailError}</span>
+                <span className="error">{emailError}</span>
               </Form.Group>
             </div>
 
@@ -230,7 +230,7 @@ function SignupPage() {
                     }
                   }}
                 />
-                <span className={styles.error}>{passwordError}</span>
+                <span className="error">{passwordError}</span>
               </Form.Group>
 
               <Form.Group controlId="formConfirmPassword">
@@ -246,7 +246,7 @@ function SignupPage() {
                     }
                   }}
                 />
-                <span className={styles.error}>{repeatedPasswordError}</span>
+                <span className="error">{repeatedPasswordError}</span>
               </Form.Group>
             </div>
           </div>

@@ -19,8 +19,6 @@ import {
   SIGNUP_PAGE_ROUTE
 } from '../../routes/pageRoutes';
 
-// 404 pt /:name cand nu e category
-
 // The forwardRef is important!!
 // Dropdown needs access to the DOM node in order to position the Menu
 const CustomToggle = React.forwardRef(({ onClick }, ref) => (

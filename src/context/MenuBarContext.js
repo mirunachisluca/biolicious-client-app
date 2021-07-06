@@ -9,7 +9,7 @@ import {
   SET_CATEGORIES_DATA,
   SET_DIETS_DATA,
   SET_SHOP_DATA
-} from '../store/menuBar/menuBarActionTypes';
+} from '../store/menuBar/menuBarActions';
 import { initialState, menuBarReducer } from '../store/menuBar/menuBarReducer';
 
 const MenuBarContext = React.createContext();

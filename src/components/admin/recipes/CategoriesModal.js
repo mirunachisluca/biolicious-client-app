@@ -2,7 +2,6 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 
 import { axiosInstance } from '../../../api/axios';
-// import { MenuBarContext } from '../../../context/MenuBarContext';
 import { useModal } from '../../../customHooks/useModal';
 import { API_RECIPE_CATEGORIES_ROUTE } from '../../../routes/apiRoutes';
 import { ConfirmationModal } from '../common/ConfirmationModal';
@@ -17,9 +16,6 @@ function CategoriesModal({
   categories,
   fetchRecipeCategories
 }) {
-  // const { categories, fetchRecipeCategories } =
-  //   React.useContext(MenuBarContext);
-
   const {
     selectedItem,
     selectedItemHandler,

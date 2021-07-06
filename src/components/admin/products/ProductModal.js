@@ -30,7 +30,7 @@ import {
   setProductStock,
   setProductSubcategoryId,
   setProductWeight
-} from '../../../store/products/productActionTypes';
+} from '../../../store/products/productActions';
 import { productReducer } from '../../../store/products/productReducer';
 
 import styles from './ProductModal.module.scss';

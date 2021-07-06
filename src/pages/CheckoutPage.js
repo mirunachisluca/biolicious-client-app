@@ -1,6 +1,14 @@
 import React from 'react';
 
-import { Form, FormControl, FormLabel, Button, Spinner } from 'react-bootstrap';
+import {
+  Form,
+  FormControl,
+  FormLabel,
+  Button,
+  Spinner,
+  OverlayTrigger,
+  Tooltip
+} from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 import { axiosInstance } from '../api/axios';
@@ -43,6 +51,7 @@ function CheckoutPage() {
   const [state, dispatch] = React.useReducer(checkoutReducer, initialState);
 
   const [total, setTotal] = React.useState(0);
+  const [disabled, setDisabled] = React.useState(true);
 
   const history = useHistory();
 
@@ -60,6 +69,24 @@ function CheckoutPage() {
       }
     },
     [userDetails]
+  );
+  React.useEffect(
+    function checkValidation() {
+      if (
+        state.address.firstName === '' ||
+        state.address.lastName === '' ||
+        state.address.phoneNumber === '' ||
+        state.address.street === '' ||
+        state.address.city === '' ||
+        state.address.county === '' ||
+        state.address.zipCode === '' ||
+        state.email === '' ||
+        state.deliveryMethodId === 0
+      ) {
+        setDisabled(true);
+      } else setDisabled(false);
+    },
+    [state]
   );
 
   React.useEffect(
@@ -308,15 +335,30 @@ function CheckoutPage() {
                   )} €`}
                 </h5>
 
-                <Button
-                  variant="outline-black"
-                  onClick={placeOrderHandler}
-                  className={`${styles.placeOrderButton} uppercase-bembo`}
+                <OverlayTrigger
+                  placement="bottom"
+                  overlay={
+                    disabled ? (
+                      <Tooltip>Please complete all fields to continue</Tooltip>
+                    ) : (
+                      <div />
+                    )
+                  }
                 >
-                  {state.paymentMethod === 'cash'
-                    ? 'Place order'
-                    : 'Place order &  go to payment'}
-                </Button>
+                  <div>
+                    <Button
+                      variant="outline-black"
+                      disabled={disabled}
+                      style={disabled ? { pointerEvents: 'none' } : undefined}
+                      onClick={placeOrderHandler}
+                      className={`${styles.placeOrderButton} uppercase-bembo`}
+                    >
+                      {state.paymentMethod === 'cash'
+                        ? 'Place order'
+                        : 'Place order &  go to payment'}
+                    </Button>
+                  </div>
+                </OverlayTrigger>
               </>
             )}
           </div>

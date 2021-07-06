@@ -11,7 +11,7 @@ import {
   SEARCH_INPUT_CHANGE,
   SET_DROPDOWN,
   SORT_BY
-} from './productsListActionTypes';
+} from './productsListActions';
 
 const initialState = {
   apiParams: {

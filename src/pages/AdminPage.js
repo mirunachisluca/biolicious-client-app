@@ -94,10 +94,6 @@ function AdminPage() {
             <Tab eventKey="recipes" title="Recipes" className="text-dark">
               {state.showRecipesTab && <RecipesTab />}
             </Tab>
-
-            {/* <Tab eventKey="users" title="Users" className="text-dark">
-              {state.showUsersTab && <p>???</p>}
-            </Tab> */}
           </Tabs>
         </div>
       )}

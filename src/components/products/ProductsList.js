@@ -28,7 +28,7 @@ import {
   SEARCH_INPUT_CHANGE,
   SET_DROPDOWN,
   SORT_BY
-} from '../../store/products/productsListActionTypes';
+} from '../../store/products/productsListActions';
 import { createNameIdMap } from '../../helpers/createNameIdMap';
 import { SearchBar } from '../filters/SearchBar';
 

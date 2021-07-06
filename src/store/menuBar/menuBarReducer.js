@@ -4,7 +4,7 @@ import {
   SET_SHOP_DATA,
   SET_DIETS_DATA,
   SET_CATEGORIES_DATA
-} from './menuBarActionTypes';
+} from './menuBarActions';
 
 const initialState = {
   activeData: [],

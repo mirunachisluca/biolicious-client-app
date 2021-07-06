@@ -12,7 +12,7 @@ import {
   SET_PRODUCT_STOCK,
   RESET_PRODUCT,
   SET_PRODUCT_PICTURE_URL
-} from './productActionTypes';
+} from './productActions';
 
 export const initialProduct = {
   id: 0,

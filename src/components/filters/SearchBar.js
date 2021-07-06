@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, FormControl } from 'react-bootstrap';
-import { Search, X } from 'react-bootstrap-icons';
+import { Search } from 'react-bootstrap-icons';
 
 import styles from './SearchBar.module.scss';
 
@@ -17,7 +17,6 @@ function SearchBar({ state, onChange, searchHandler, clearSearchHandler }) {
           onClick={clearSearchHandler}
         />
 
-        {/* {!state.searchActive && ( */}
         <button
           type="submit"
           className={`${styles.searchButton}`}
@@ -25,17 +24,6 @@ function SearchBar({ state, onChange, searchHandler, clearSearchHandler }) {
         >
           <Search />
         </button>
-        {/* )} */}
-
-        {/* {state.searchActive && (
-          <button
-            type="submit"
-            className={`${styles.searchButton}`}
-            onClick={clearSearchHandler}
-          >
-            <X className={`${styles.clearButton}`} />
-          </button>
-        )} */}
       </Form>
     </>
   );

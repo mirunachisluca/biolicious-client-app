@@ -43,45 +43,58 @@ function PaymentPage() {
   const { deleteShoppingCart } = React.useContext(ShoppingCartContext);
 
   const [isProcessing, setProcessingTo] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const createPayment = (e) => {
     e.preventDefault();
 
-    const cardElement = elements.getElement(CardElement);
+    if (
+      e.target.name.value === '' ||
+      e.target.email.value === '' ||
+      e.target.city.value === '' ||
+      e.target.address === '' ||
+      e.target.county.value === '' ||
+      e.target.zip.value === ''
+    ) {
+      setErrorMessage('Please complete all fields');
+    } else {
+      setErrorMessage('');
+      const cardElement = elements.getElement(CardElement);
 
-    const billingDetails = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-      address: {
-        city: e.target.city.value,
-        line1: e.target.address.value,
-        state: e.target.county.value,
-        postal_code: e.target.zip.value
-      }
-    };
+      const billingDetails = {
+        name: e.target.name.value,
+        email: e.target.email.value,
+        address: {
+          city: e.target.city.value,
+          line1: e.target.address.value,
+          state: e.target.county.value,
+          postal_code: e.target.zip.value
+        }
+      };
 
-    setProcessingTo(true);
+      setProcessingTo(true);
 
-    axiosInstance
-      .post(`${API_PAYMENTS_ROUTE}/${localStorage.getItem('cartId')}`, {})
-      .then(async (response) => {
-        console.log(response);
+      axiosInstance
+        .post(`${API_PAYMENTS_ROUTE}/${localStorage.getItem('cartId')}`, {})
+        .then(async (response) => {
+          console.log(response);
 
-        const paymentMethodRequest = await stripe.createPaymentMethod({
-          type: 'card',
-          card: cardElement,
-          billing_details: billingDetails
-        });
+          const paymentMethodRequest = await stripe.createPaymentMethod({
+            type: 'card',
+            card: cardElement,
+            billing_details: billingDetails
+          });
 
-        const confirmedCardPayment = await stripe.confirmCardPayment(
-          response.data.clientSecret,
-          { payment_method: paymentMethodRequest.paymentMethod.id }
-        );
+          const confirmedCardPayment = await stripe.confirmCardPayment(
+            response.data.clientSecret,
+            { payment_method: paymentMethodRequest.paymentMethod.id }
+          );
 
-        deleteShoppingCart();
-        history.push(ORDER_PLACED);
-      })
-      .catch((error) => console.log(error));
+          deleteShoppingCart();
+          history.push(ORDER_PLACED);
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   return (
@@ -99,6 +112,8 @@ function PaymentPage() {
         <CardElement options={cardElementOpts} className={styles.input} />
 
         <br />
+
+        <p className="error">{errorMessage}</p>
 
         <Button
           type="submit"

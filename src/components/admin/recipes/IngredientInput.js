@@ -69,13 +69,7 @@ function IngredientInput({
           }}
           value={ingredient.search}
         />
-        <ul className="list-unstyled scrollable-menu">
-          {/* {React.Children.toArray(children).filter(
-              (child) =>
-                !value || child.props.children.toLowerCase().startsWith(value)
-            )} */}
-          {children}
-        </ul>
+        <ul className="list-unstyled scrollable-menu">{children}</ul>
       </div>
     )
   );
@@ -90,7 +84,6 @@ function IngredientInput({
               {ingredient.name}
             </Dropdown.Toggle>
 
-            {/* <Dropdown.Menu className="scrollable-menu"> */}
             <Dropdown.Menu as={CustomMenu}>
               {products.status === 'FETCHED' ? (
                 products.result.data.map((product) => (

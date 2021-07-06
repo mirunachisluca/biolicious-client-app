@@ -1,5 +1,5 @@
 import React from 'react';
-import { Carousel, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { axiosInstance } from '../api/axios';
 import { NewProductCard } from '../components/products/NewProductCard';
 import { MenuBarContext } from '../context/MenuBarContext';
