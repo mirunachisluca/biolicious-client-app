@@ -48,6 +48,14 @@ $btn-font-size-xs: 1rem * 0.78;
   border-color: #ced4da;
 }
 
+.form-control:focus {
+  // color: #495057;
+  //   background-color: #fff;
+  border-color: #abadae;
+  // outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(103, 114, 132, 0.25);
+}
+
 .dropdown-toggle-custom,
 .dropdown-toggle-custom:hover,
 .dropdown-toggle-custom:active {

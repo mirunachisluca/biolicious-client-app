@@ -51,8 +51,8 @@ function OrdersPage() {
         <ul className="no-list-style">
           {orders.status === 'FETCHED' &&
             orders.result.map((order) => (
-              <>
-                <Accordion key={order.id}>
+              <li key={`list-item-${order.id}`}>
+                <Accordion key={`accordion-${order.id}`}>
                   <Card>
                     <Accordion.Toggle
                       as={Card.Header}
@@ -84,9 +84,12 @@ function OrdersPage() {
                           )} €`}
                         </p>
 
-                        <Table className={`${styles.table} shadow`}>
+                        <Table
+                          className={`${styles.table} shadow`}
+                          key={`table-${order.id}`}
+                        >
                           <thead>
-                            <tr>
+                            <tr key={`thead-tr-${order.id}`}>
                               <th className={`${styles.alignLeft}`}>
                                 Products
                               </th>
@@ -97,7 +100,7 @@ function OrdersPage() {
 
                           <tbody>
                             {order.orderItems.map((item) => (
-                              <tr>
+                              <tr key={`tbody-tr-${item.id}`}>
                                 <td className={styles.productColumn}>
                                   <ImageFadeIn
                                     src={item.pictureUrl}
@@ -123,7 +126,7 @@ function OrdersPage() {
                     </Accordion.Collapse>
                   </Card>
                 </Accordion>
-              </>
+              </li>
             ))}
         </ul>
       </div>

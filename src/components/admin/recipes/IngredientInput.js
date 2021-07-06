@@ -109,7 +109,12 @@ function IngredientInput({
                   </Dropdown.Item>
                 ))
               ) : (
-                <Spinner animation="border" />
+                <div>
+                  <Spinner
+                    animation="border"
+                    className={`m-auto ${styles.spinner}`}
+                  />
+                </div>
               )}
             </Dropdown.Menu>
           </Dropdown>

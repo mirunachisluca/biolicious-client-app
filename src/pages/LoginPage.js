@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -13,6 +13,7 @@ function LoginPage() {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const emailInputHandler = (e) => {
     setEmail(e.target.value);
@@ -24,6 +25,8 @@ function LoginPage() {
 
   const loginHandler = (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     axiosInstance
       .post('/accounts/login', {
@@ -38,6 +41,7 @@ function LoginPage() {
       })
       .catch(() => {
         toast.error('Wrong email or password');
+        setLoading(false);
       });
   };
 
@@ -68,8 +72,15 @@ function LoginPage() {
             />
           </Form.Group>
 
+          {loading && <Spinner animation="border" className="m-auto" />}
+
           <div className={styles.alignRight}>
-            <Button variant="dark" type="submit" onClick={loginHandler}>
+            <Button
+              variant="dark"
+              type="submit"
+              onClick={loginHandler}
+              disabled={loading}
+            >
               Login
             </Button>
           </div>

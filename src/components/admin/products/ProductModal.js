@@ -250,7 +250,7 @@ function ProductModal({ product, show, close }) {
                     <FormLabel>Subcategory</FormLabel>
                     <Dropdown>
                       <Dropdown.Toggle
-                        className="dropdown-toggle"
+                        className="dropdown-toggle-custom"
                         variant="dropdown-simple"
                       >
                         {selectedSubcategory.name}
@@ -318,6 +318,7 @@ function ProductModal({ product, show, close }) {
                 <FormControl
                   type="number"
                   placeholder="Stock"
+                  min="0"
                   className={styles.smallInput}
                   value={state.stock}
                   onChange={(e) =>

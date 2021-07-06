@@ -89,7 +89,7 @@ function CheckoutPage() {
     [status]
   );
 
-  const placeOrder = () => {
+  const placeOrderHandler = () => {
     const order = {
       shoppingCartId: localStorage.getItem('cartId'),
       deliveryMethodId: state.deliveryMethodId,
@@ -97,33 +97,37 @@ function CheckoutPage() {
       emailAddress: state.email
     };
 
-    axiosInstance
-      .post(API_ORDERS_ROUTE, order)
-      .then((response) => {})
-      .catch((error) => console.log(error));
-  };
-
-  const placeOrderHandler = () => {
     if (state.paymentMethod === 'card') {
-      history.push({
-        pathname: PAYMENT_PAGE,
-        state: {
-          price: calculatePriceWithTwoDecimals(
-            parseFloat(total) + parseFloat(state.deliveryPrice)
-          )
-        }
-      });
+      axiosInstance
+        .post(API_ORDERS_ROUTE, order)
+        .then((response) => {
+          if (response.status === 201) {
+            history.push({
+              pathname: PAYMENT_PAGE,
+              state: {
+                price: calculatePriceWithTwoDecimals(
+                  parseFloat(total) + parseFloat(state.deliveryPrice)
+                )
+              }
+            });
+          }
+        })
+        .catch((error) => console.log(error));
     } else {
-      placeOrder();
-      deleteShoppingCart();
-      history.push(ORDER_PLACED);
+      axiosInstance
+        .post(API_ORDERS_ROUTE, order)
+        .then((response) => {
+          if (response.status === 201) {
+            deleteShoppingCart();
+            history.push(ORDER_PLACED);
+          }
+        })
+        .catch((error) => console.log(error));
     }
   };
 
   return (
     <>
-      {/* <h3 className="uppercase-bembo">Checkout</h3> */}
-
       <div className={styles.grid}>
         <div>
           <h6 className="uppercase-bembo">delivery address</h6>

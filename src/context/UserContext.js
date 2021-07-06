@@ -61,7 +61,11 @@ function UserProvider({ children }) {
   React.useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      login(token);
+      const decodedToken = jwtDecode(token);
+      const today = new Date();
+      if (decodedToken.exp * 1000 < today.getTime()) {
+        localStorage.removeItem('token');
+      } else login(token);
     }
   }, [login]);
 

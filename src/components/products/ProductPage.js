@@ -64,7 +64,11 @@ function ProductPage() {
             </div>
 
             <div className="m-auto">
-              <h4 className={product.result.discount !== 0 && 'crossed'}>
+              <h4
+                className={
+                  product.result.discount !== 0 ? 'crossed' : undefined
+                }
+              >
                 {`${calculatePriceWithTwoDecimals(product.result.price)} € `}
               </h4>
 
@@ -84,6 +88,7 @@ function ProductPage() {
             <div className={` ${styles.inputsDiv}`}>
               <input
                 type="number"
+                min="1"
                 value={quantity}
                 onChange={quantityInputHandler}
                 className={`${styles.quantityInput}`}

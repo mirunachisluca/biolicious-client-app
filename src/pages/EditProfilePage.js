@@ -51,7 +51,7 @@ function EditProfilePage() {
               />
             </Tab>
 
-            <Tab eventKey="delete" title="Delete account" />
+            {/* <Tab eventKey="delete" title="Delete account" /> */}
           </Tabs>
         </div>
       )}
